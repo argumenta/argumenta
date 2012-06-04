@@ -1,5 +1,8 @@
-Argumenta = require './lib/argumenta'
-config    = require './config'
+config    = require '../config'
+Argumenta = require '../lib/argumenta'
+
+# Log level
+Argumenta.Logger.LogLevel = config.logLevel
 
 # Argumenta Instance
 argumenta = new Argumenta

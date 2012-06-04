@@ -1,0 +1,6 @@
+extends ../index
+
+block content
+  h1 #{user.name}
+  h2 Email: #{user.email}
+  pre #{ JSON.stringify(user, null, '  ')}
