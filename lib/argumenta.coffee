@@ -1,6 +1,8 @@
-Storage = require './argumenta/storage'
 
 class Argumenta
+
+  @Logger: Logger = require './argumenta/logger'
+  @Storage: Storage = require './argumenta/storage'
 
   constructor: (@options = {}) ->
     storageOpts = {storageType, storageUrl} = @options
