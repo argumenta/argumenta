@@ -1,0 +1,13 @@
+extends layout
+
+block content
+
+  form.login(action="/login", method="post")
+    ul
+      li
+        label Username
+        input(name="username", value="")
+      li
+        label Password
+        input(name="password", value="")
+    button(type="submit") Login!
