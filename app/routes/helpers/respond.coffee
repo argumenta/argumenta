@@ -19,7 +19,8 @@ respond = ( view, opts, req, res ) ->
   switch format
     when 'html'
       # Prepare any messages or errors
-      errors = []; messages = []
+      errors = res.locals.errors or []
+      messages = res.locals.messages or []
       if error then errors.push error
       if message then messages.push message
       # Render the view
