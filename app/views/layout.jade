@@ -3,9 +3,7 @@ html
   head
     title #{title ? title + ' | ' + siteName : siteName}
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    if errors.length == 0 && messages.length == 0
-      div= "No errors or messages."
+  body.argumenta
     each message in messages
       div= "Message: " + message
     each error in errors
