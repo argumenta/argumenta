@@ -37,7 +37,12 @@ configure = () ->
     app.use express.methodOverride()
     app.use express.session()
     app.use flash()
-    app.use globals {siteName: config.siteName, title: ''}
+    app.use globals {siteName: config.siteName, title: ''}, (ext, req, res) ->
+      errors = req.flash 'errors'
+      messages = req.flash 'messages'
+      res.locals
+        errors: errors,
+        messages: messages
     app.use reply()
     app.use app.router
 
@@ -63,6 +68,9 @@ app.get  '/',                     routes.main.index
 app.get  '/users',                routes.users.index
 app.post '/users',                routes.users.create
 app.get  '/users/:name.:format?', routes.users.show
+
+app.get  '/login',                routes.login.index
+app.post '/login',                routes.login.verify
 
 # Http
 http.createServer(app).listen(3000)
