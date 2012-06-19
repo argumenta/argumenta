@@ -1,5 +1,122 @@
-body
-  padding: 50px
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
-a
-  color: #00B7FF
+// Argumenta Namespace
+
+*.argumenta
+
+  // Simple css reset
+
+  *
+    margin: 0px
+    padding: 0px
+    border: 0px
+
+
+  // Mixins
+
+  aluminum = #eee
+
+  bg(color)
+    background-color: color
+
+  frame(size, color)
+    border: size solid color
+
+  rounded(r=5px)
+    border-radius: r
+
+  shadow(offset=3px, blur=2px, color=#aaa)
+    box-shadow: offset offset blur color
+
+  text-shadow(offset=1px, blur=0px, color=#aaa)
+    text-shadow: offset offset blur color
+
+
+  // Styles
+
+  light-form()
+    bg(aluminum)
+    frame(10px, #fff)
+    rounded(5px)
+    shadow(3px, 2px, #aaa)
+
+  light-input()
+    shadow(1px, 1px, #ccc)
+    rounded(2px)
+
+  button()
+    rounded()
+    shadow(1px, 2px)
+    color: #fff
+
+  blue-button()
+    button()
+    bg(#06d)
+
+  ebony-button()
+    button()
+    bg(#222)
+
+  form-style = light-form
+  input-style = light-input
+  button-style = ebony-button
+
+  // Elements
+
+  form
+    form-style()
+    margin: 10px
+    padding: 10px
+
+  input
+    input-style()
+    margin: 5px
+    padding: 3px
+    border: 1px solid #fff
+
+  input:focus
+    outline: none
+    border: 1px solid #2af
+    shadow(0px, 3px, #08f)
+
+  label
+    margin: 5px
+
+  button
+    button-style()
+    margin: 5px
+    padding: 5px
+
+  button:hover
+    text-shadow(0px, 4px, #fff)
+
+  ul
+    list-style: none
+
+
+  // Typography
+
+  *
+    font: 13px sans-serif
+
+
+  // Login
+
+  form.login
+    display: inline-block
+    text-align: center
+
+    *
+      margin-left: auto
+      margin-right: auto
+
+    label
+      display: inline-block
+      width: 70px
+
+
+  // Express
+
+  body
+    padding: 50px
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+  a
+    color: #00B7FF
