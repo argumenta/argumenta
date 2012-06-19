@@ -48,7 +48,7 @@ describe 'App', () ->
           email:    'tester@xyz.com'
         post '/users', badUser, (res) ->
           res.status.should.equal 400
-          res.text.should.match /error.*creating.*username.*blank/i
+          res.text.should.match /error.*password.*blank/i
           done()
 
       it 'should refuse to overwrite an already existing user', (done) ->
@@ -89,4 +89,35 @@ describe 'App', () ->
           res.status.should.equal 404
           res.type.should.equal 'application/json'
           res.text.should.match /error.*user.*nobody.*not found/i
+          done()
+
+  describe '/login', ->
+
+    describe 'GET /login', ->
+      it 'should show the login page', (done) ->
+        get '/login', (res) ->
+          res.status.should.equal 200
+          res.text.should.match /Username/
+          res.text.should.match /Password/
+          res.text.should.match /Login!/
+          done()
+
+    describe 'POST /login', ->
+
+      it 'should accept a correct login', (done) ->
+        data =
+          username: 'tester'
+          password: 'tester12'
+        post '/login', data, (res) ->
+          res.status.should.equal 200
+          res.text.should.match /Welcome back/
+          done()
+
+      it 'should deny an incorrect login', (done) ->
+        data =
+          username: 'tester'
+          password: 'wrong!'
+        post '/login', data, (res) ->
+          res.status.should.equal 200
+          res.text.should.match /Invalid username and password combination./
           done()

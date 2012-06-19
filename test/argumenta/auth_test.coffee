@@ -38,7 +38,8 @@ describe 'Auth', ->
   describe 'auth.verifyLogin()', ->
 
     Argumenta = require '../../lib/argumenta'
-    argumenta = new Argumenta storageType: 'local'
+    argumenta = new Argumenta
+      storageType: 'local', logLevel: 'fatal'
 
     before (done) ->
       params =
