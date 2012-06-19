@@ -39,6 +39,13 @@ class LocalStore extends Base
 
     return cb null, publicUser
 
+  getPasswordHash: (username, cb) ->
+    u = @users[username]
+    unless u
+      return cb new @Error("No user for username: " + username), null
+
+    return cb null, u.password_hash
+
   # Gets the *public* properties of all users.
   getAllUsers: (cb) ->
 

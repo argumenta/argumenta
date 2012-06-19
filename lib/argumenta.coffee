@@ -1,11 +1,18 @@
+Auth    = require './argumenta/auth'
+Logger  = require './argumenta/logger'
+Storage = require './argumenta/storage'
 
 class Argumenta
 
-  @Logger: Logger = require './argumenta/logger'
-  @Storage: Storage = require './argumenta/storage'
-
+  # Constructor
   constructor: (@options = {}) ->
-    storageOpts = {storageType, storageUrl} = @options
-    storage = @storage = new Storage storageOpts
+    storageOpts = {storageType, storageUrl} = options
+
+    # Set log level
+    Logger.LogLevel = options.logLevel
+
+    # Auth and Storage instances
+    @auth = new Auth this
+    @storage = new Storage storageOpts
 
 module.exports = Argumenta

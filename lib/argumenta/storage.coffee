@@ -30,8 +30,11 @@ class Storage extends Base
         throw new @Error "Construction error: Invalid storageType: #{storageType}"
 
   addUser: (user, cb) ->
-    unless user instanceof User and user.validate()
-      return cb new User.ValidationError "Won't add invalid user."
+    unless user instanceof User
+      return cb new @Error "User instance required to add user."
+
+    unless user.validate()
+      return cb user.validationError
 
     @store.addUser user, (err) ->
       return cb err if err
@@ -46,6 +49,12 @@ class Storage extends Base
     @store.getUserByName username, (err, user) ->
       return cb new @Error("Failed getting user: " + username, err) if err
       return cb null, user
+
+  # Get a password hash by username.
+  getPasswordHash: (username, cb) ->
+    @store.getPasswordHash username, (err, password_hash) ->
+      return cb new @Error("Failed getting user: "  + username, err) if err
+      return cb null, password_hash
 
   getAllUsers: (cb) ->
     @store.getAllUsers (err, users) ->
