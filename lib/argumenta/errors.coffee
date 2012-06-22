@@ -1,16 +1,16 @@
-Base = require '../argumenta/base'
+BaseError = require '../argumenta/base_error'
 
 class Errors
 
-  @Auth:             class AuthError extends Base.Error
+  @Auth:             class AuthError extends BaseError
 
-  @Storage:          class StorageError extends Base.Error
+  @Storage:          class StorageError extends BaseError
   @StorageConflict:  class ConflictError extends StorageError
 
-  @LocalStore:       class LocalStoreError extends Base.Error
+  @LocalStore:       class LocalStoreError extends BaseError
 
-  @User:             class UserError extends Base.Error
+  @User:             class UserError extends BaseError
 
-  @Validation:       class ValidationError extends Base.Error
+  @Validation:       class ValidationError extends BaseError
 
 module.exports = Errors
