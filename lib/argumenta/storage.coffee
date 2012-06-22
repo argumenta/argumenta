@@ -6,16 +6,17 @@ class Storage extends Base
   # Errors
   # ------
 
-  # Storage.Error: A custom error class for general storage errors.
+  # A custom error class for general storage errors.
   Error: @Error = class StorageError extends Base.Error
 
-  # Storage.ConflictError: Indicates storage errors due to
-  # resource conflicts; ie, attempts to overwrite existing resources.
+  # A storage error indicating a resource conflict,
+  # ie, attempts to overwrite existing users or objects.
   ConflictError: @ConflictError = class ConflictError extends StorageError
 
   # Construction
   # ------------
 
+  # Constructs a new storage instance, backed by a particular type of store.
   constructor: (@options = {}) ->
     {storageType} = @options
 
@@ -29,6 +30,7 @@ class Storage extends Base
       else
         throw new @Error "Construction error: Invalid storageType: #{storageType}"
 
+  # Add a user to the store, given a valid `user`.
   addUser: (user, cb) ->
     unless user instanceof User
       return cb new @Error "User instance required to add user."
@@ -45,17 +47,20 @@ class Storage extends Base
     @store.clearAll (err) ->
       return cb err
 
+  # Get a user by `username`, omitting sensitive information.
+  # See: `getPasswordHash()`
   getUserByName: (username, cb) ->
     @store.getUserByName username, (err, user) ->
       return cb new @Error("Failed getting user: " + username, err) if err
       return cb null, user
 
-  # Get a password hash by username.
+  # Get a user's password hash, given `username`.
   getPasswordHash: (username, cb) ->
     @store.getPasswordHash username, (err, password_hash) ->
       return cb new @Error("Failed getting user: "  + username, err) if err
       return cb null, password_hash
 
+  # Get an array of all users, omitting sensitive information.
   getAllUsers: (cb) ->
     @store.getAllUsers (err, users) ->
       return cb new @Error "Failed getting all users from store." if err
