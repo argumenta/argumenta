@@ -1,14 +1,13 @@
 Base = require '../argumenta/base'
 Auth = require '../argumenta/auth'
-Errors = require '../argumenta/errors'
 
 class User extends Base
 
   # Errors
   # ------
 
-  Error: @Error = Errors.User
-  ValidationError: @ValidationError = Errors.Validation
+  Error: @Error = @Errors.User
+  ValidationError: @ValidationError = @Errors.Validation
 
   # Static constructor
   # ------------------

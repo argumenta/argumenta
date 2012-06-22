@@ -1,6 +1,5 @@
 Base       = require '../argumenta/base'
 User       = require '../argumenta/user'
-Errors     = require '../argumenta/errors'
 
 class Storage extends Base
 
@@ -8,11 +7,11 @@ class Storage extends Base
   # ------
 
   # A custom error class for general storage errors.
-  Error: @Error = Errors.Storage
+  Error: @Error = @Errors.Storage
 
   # A storage error indicating a resource conflict,
   # ie, attempts to overwrite existing users or objects.
-  ConflictError: @ConflictError = Errors.StorageConflict
+  ConflictError: @ConflictError = @Errors.StorageConflict
 
   # Construction
   # ------------

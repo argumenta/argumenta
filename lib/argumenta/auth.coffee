@@ -1,6 +1,5 @@
 bcrypt = require 'bcrypt'
 Base   = require '../argumenta/base'
-Errors = require '../argumenta/errors'
 
 class Auth extends Base
 
@@ -8,7 +7,7 @@ class Auth extends Base
   # ----------------
 
   # A custom error for this class.
-  Error: @Error = Errors.Auth
+  Error: @Error = @Errors.Auth
 
   # The bcrypt cost; log_2 of the number of rounds performed.
   @bcryptCost = 10

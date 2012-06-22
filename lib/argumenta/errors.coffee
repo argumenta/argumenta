@@ -2,6 +2,8 @@ BaseError = require '../argumenta/base_error'
 
 class Errors
 
+  @Base:             BaseError
+
   @Auth:             class AuthError extends BaseError
 
   @Storage:          class StorageError extends BaseError
