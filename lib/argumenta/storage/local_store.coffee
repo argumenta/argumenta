@@ -1,10 +1,10 @@
 Base    = require '../../argumenta/base'
-Storage = require '../../argumenta/storage'
+Errors  = require '../../argumenta/errors'
 
 class LocalStore extends Base
 
   # Prototype and static refs to custom error class.
-  Error: @Error = class LocalStoreError extends Base.Error
+  Error: @Error = Errors.LocalStore
 
   constructor: () ->
     # Init users hash
@@ -14,7 +14,7 @@ class LocalStore extends Base
   addUser: (user, cb) ->
     # Check for existing user
     if @users[user.username]
-      return cb new Storage.ConflictError 'User already exists.'
+      return cb new Errors.StorageConflict 'User already exists.'
 
     # Store the user
     @users[user.username] = user

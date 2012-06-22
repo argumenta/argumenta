@@ -17,9 +17,12 @@ class BaseError extends Error
 # An extensible base class supporting custom errors.
 # Example:
 #
+#   class Errors
+#     @Another: class AnotherError extends Base.Error
+#
 #   class Another extends Base
 #
-#     Error: @Error = class AnotherError extends Base.Error
+#     Error: @Error = Errors.Another
 #
 #     constructor: (@foo) ->
 #       unless @foo is 'valid!'
