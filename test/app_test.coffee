@@ -1,14 +1,30 @@
-app    = require '../app'
-agent  = require 'superagent'
-should = require 'should'
+app     = require '../app'
+agent   = require 'superagent'
+request = require 'request'
+should  = require 'should'
 
 base = 'http://localhost:3000'
 
+# Url helper prepends `base` to a relative `path`.
+abs_url = (path) ->
+  if ~path.search /https?:\/\// then path else base + path
+
+# Superagent helpers.
 get = (path, cb) ->
-  agent.get( base + path ).end( cb )
+  agent.get( abs_url path ).end( cb )
 
 post = (path, data, cb) ->
-  agent.post( base + path ).send( data ).end( cb )
+  agent.post( abs_url path ).send( data ).end( cb )
+
+# Request helpers.
+req_get = (path, cb) ->
+  request abs_url(path), cb
+
+req_post = (path, data, cb) ->
+  options =
+    uri: abs_url(path)
+    form: data
+  request.post options, cb
 
 describe 'App', () ->
 
@@ -108,16 +124,30 @@ describe 'App', () ->
         data =
           username: 'tester'
           password: 'tester12'
-        post '/login', data, (res) ->
-          res.status.should.equal 200
-          res.text.should.match /Welcome back/
-          done()
+
+        req_post '/login', data, (err, res, body) ->
+          should.not.exist err
+          res.statusCode.should.equal 302
+          res.headers.location.should.match /^http.*tester$/
+          url = res.headers.location
+
+          req_get url, (err, res, body) ->
+            should.not.exist err
+            res.statusCode.should.equal 200
+            body.should.match /Welcome back/
+            done()
 
       it 'should deny an incorrect login', (done) ->
         data =
           username: 'tester'
           password: 'wrong!'
-        post '/login', data, (res) ->
-          res.status.should.equal 200
-          res.text.should.match /Invalid username and password combination./
-          done()
+        req_post '/login', data, (err, res, body) ->
+          should.not.exist err
+          res.statusCode.should.equal 302
+          res.headers.location.should.match /^http.*login$/
+          url = res.headers.location
+
+          req_get url, (err, res, body) ->
+            res.statusCode.should.equal 200
+            res.body.should.match /Invalid username and password combination./
+            done()
