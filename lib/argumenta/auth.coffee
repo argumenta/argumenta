@@ -19,10 +19,11 @@ class Auth extends Base
   #
   #     auth = new Auth( argumenta )
   #
-  constructor: (@argumenta, options) ->
+  # @param [Argumenta] argumenta Provides storage access.
+  constructor: (@argumenta) ->
 
-  # Prototype
-  # ---------
+  # Instance Methods
+  # ----------------
 
   # Verify login credentials `username` and `password` match a user account:
   #
@@ -30,14 +31,19 @@ class Auth extends Base
   #       if result and not err
   #           console.log 'verified!'
   #
+  # @param [String]   username The login username.
+  # @param [String]   password The login password.
+  # @param [Function] callback(err, result) Called on success or error.
+  # @param [AuthError|StorageError] err Any auth or storage error.
+  # @param [Boolean]  result The verification result.
   verifyLogin: (username, password, callback) ->
 
     @argumenta.storage.getPasswordHash username, (err, hash) ->
       return callback err, null if err
 
-      Auth.verifyPassword password, hash, (err, verifyResult) ->
+      Auth.verifyPassword password, hash, (err, result) ->
         return callback err, null if err
-        return callback null, verifyResult
+        return callback null, result
 
   # Static Methods
   # --------------
@@ -49,7 +55,11 @@ class Auth extends Base
   #       if not err                 # success
   #         typeof hash is 'string'  # true, it's the bcrypt hash
   #
-  # See `Auth.bcryptCost`.
+  # @see Auth.bcryptCost
+  # @param [String]    password The password to hash.
+  # @param [Function]  callback(err, hash) Called on completion or error.
+  # @param [AuthError] err Wraps any bcrypt error; otherwise null.
+  # @param [String]    hash Passed to callback on success.
   @hashPassword: (password, callback) ->
 
     cost = Auth.bcryptCost
@@ -69,11 +79,11 @@ class Auth extends Base
   #         else
   #           console.log 'password incorrect!'
   #
-  # - `password`           _String_    The password to verify.
-  # - `hash`               _String_    The original bcrypt hash.
-  # - `callback(err, res)` _Function_  Called on completion or error.
-  # - `err`                _AuthError_ An AuthError wrapping any bcrypt error, or null.
-  # - `res`                _Boolean_   The verification result.
+  # @param [String]     password The password to verify.
+  # @param [String]     hash The original bcrypt hash.
+  # @param [Function]   callback(err, res) Called on completion or error.
+  # @param [AuthError]  err Wraps any bcrypt error; otherwise null.
+  # @param [Boolean]    res The verification result.
   @verifyPassword: (password, hash, callback) ->
 
     bcrypt.compare password, hash, (err, res) ->
