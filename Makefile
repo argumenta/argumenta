@@ -1,4 +1,5 @@
 COFFEE_PATHS := app config lib test
+DOC_SOURCES := lib
 TEST_PATHS := test
 
 TESTS := $(shell find $(TEST_PATHS) -name '*.js')
@@ -13,8 +14,13 @@ coffee:
 coffee_forever:
 	coffee -c -w $(COFFEE_PATHS) &
 
-docs:
-	find $(COFFEE_PATHS) -name '*.coffee' | xargs docco
+docs: docco sweeten-docco
+
+docco:
+	find $(DOC_SOURCES) -name '*.coffee' | xargs docco
+
+sweeten-docco:
+	./bin/sweeten-docco.sh
 
 test:
 	NODE_ENV=testing ./node_modules/.bin/mocha $(TESTS)
