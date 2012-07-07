@@ -20,7 +20,7 @@ docco:
 	find $(DOC_SOURCES) -name '*.coffee' | xargs docco
 
 sweeten-docco:
-	./bin/sweeten-docco.sh
+	./node_modules/.bin/sweeten-docco
 
 test:
 	NODE_ENV=testing ./node_modules/.bin/mocha $(TESTS)
