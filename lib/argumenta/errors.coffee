@@ -8,8 +8,7 @@ class Errors
 
   @Storage:          class StorageError extends BaseError
   @StorageConflict:  class ConflictError extends StorageError
-
-  @LocalStore:       class LocalStoreError extends BaseError
+  @LocalStore:       class LocalStoreError extends StorageError
 
   @User:             class UserError extends BaseError
 
