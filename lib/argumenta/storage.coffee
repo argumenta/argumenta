@@ -52,6 +52,7 @@ class Storage extends Base
   #
   # @param [User] user A valid user with a unique username.
   # @param [Function] cb(err) Called on completion or error.
+  # @param [StorageError|ValidationError|StorageConflictError] err Any error.
   addUser: (user, cb) ->
     unless user instanceof User
       return cb new @Error "User instance required to add user."
@@ -65,7 +66,8 @@ class Storage extends Base
 
   # Delete *all* entities from the store.
   #
-  # @param [Function] cb(err) Called on completion or error.
+  # @param [Function]     cb(err) Called on completion or error.
+  # @param [StorageError] err Any error.
   clearAll: (cb) ->
     @store.clearAll (err) ->
       return cb err
@@ -73,8 +75,10 @@ class Storage extends Base
   # Get a user by username, omitting sensitive fields.
   #
   # @see getPasswordHash()
-  # @param [String]   username Of the user to retrieve.
-  # @param [Function] cb Called on completion or error.
+  # @param [String]       username Of the user to retrieve.
+  # @param [Function]     cb(err, user) Called on completion or error.
+  # @param [StorageError] err Any error.
+  # @param [Object]       user The retrieved user's public fields.
   getUserByName: (username, cb) ->
     @store.getUserByName username, (err, user) ->
       return cb new @Error("Failed getting user: " + username, err) if err
@@ -82,16 +86,20 @@ class Storage extends Base
 
   # Get a user's password hash.
   #
-  # @param [String]   username Of the user whose hash to retrieve.
-  # @param [Function] cb Called on completion or error.
+  # @param [String]       username Of the user whose hash to retrieve.
+  # @param [Function]     cb(err, hash) Called on completion or error.
+  # @param [StorageError] err Any error.
+  # @param [String]       hash The retrieved password hash.
   getPasswordHash: (username, cb) ->
-    @store.getPasswordHash username, (err, password_hash) ->
+    @store.getPasswordHash username, (err, hash) ->
       return cb new @Error("Failed getting user: "  + username, err) if err
-      return cb null, password_hash
+      return cb null, hash
 
   # Get an array of all users, omitting sensitive fields.
   #
-  # @param [Function] cb Called on completion or error.
+  # @param [Function]      cb(err, users) Called on completion or error.
+  # @param [StorageError]  err Any error.
+  # @param [Array<Object>] users An object array of users' public fields.
   getAllUsers: (cb) ->
     @store.getAllUsers (err, users) ->
       return cb new @Error "Failed getting all users from store." if err
