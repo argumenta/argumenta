@@ -43,6 +43,31 @@ class Proposition
     shasum = crypto.createHash 'sha1'
     return shasum.update(@objectRecord(), 'utf8').digest('hex')
 
+  # Validates the proposition instance, returns true on success:
+  #
+  #     isValid = proposition.validate()
+  #
+  # Also sets properties `validationStatus` and `validationError`:
+  #
+  #     proposition.validationStatus # True on success
+  #     proposition.validationError  # Null on success; otherwise the last error object.
+  #
+  # @see validationStatus, validationError
+  # @return [Boolean] The validation status; true on success.
+  validate: () ->
+    try
+      if @validateText()
+        @validationStatus = true
+        @validationError  = null
+    catch err
+      @validationStatus = false
+      @validationError  = err
+    finally
+      return @validationStatus
+
+  validateText: () ->
+    Proposition.validateText @text
+
   # Static Methods
   # --------------
 
@@ -71,5 +96,17 @@ class Proposition
       return new Proposition text
     else
       return null
+
+  # Validates a proposition text field.
+  #
+  # @throws ValidationError
+  # @param [String] text The proposition text.
+  # @return [Boolean] True only on success.
+  @validateText: (text) ->
+    unless text.match /\S+/
+      throw new @Errors.Validation "Propositions must not be blank."
+    unless text.length <= 240
+      throw new @Errors.Validation "Propositions must be 240 characters or less."
+    return true
 
 module.exports = Proposition
