@@ -1,5 +1,6 @@
-Base       = require '../argumenta/base'
-User       = require '../argumenta/user'
+Base        = require '../argumenta/base'
+User        = require '../argumenta/user'
+Proposition = require '../argumenta/objects/proposition'
 
 # Storage persists users and objects to a backend store.
 
@@ -104,5 +105,32 @@ class Storage extends Base
     @store.getAllUsers (err, users) ->
       return cb new @Error "Failed getting all users from store." if err
       return cb null, users
+
+  # Add an array of propositions to the store.
+  #
+  # @param [Array<Propositions>] propositions The propositions array.
+  # @param [Function]     cb(err) Called on completion or error.
+  # @param [StorageError] err Any error.
+  addPropositions: (propositions, cb) ->
+    for p in propositions
+      unless p instanceof Proposition
+        return cb new @Error("Won't add non-proposition: " + p)
+      unless p.validate()
+        return cb new @Error("Won't add invalid proposition: " + p)
+
+    @store.addPropositions propositions, (err) ->
+      return cb new @Error "Failed adding propositions to the store." if err
+      return cb null
+
+  # Get propositions from the store by hashes.
+  #
+  # @param [Array<String>] hashes Hash ids of the propositions to retrieve.
+  # @param [Function]      cb(err, propositions) Called on completion or error.
+  # @param [StorageError]  err Any error.
+  # @param [Array<Proposition>] propositions The retrieved propositions.
+  getPropositions: (hashes, cb) ->
+    @store.getPropositions hashes, (err, propositions) ->
+      return cb new @Error "Failed getting propositions from the store." if err
+      return cb null, propositions
 
 module.exports = Storage
