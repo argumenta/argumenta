@@ -1,4 +1,5 @@
 Storage     = require '../lib/argumenta/storage'
+User        = require '../lib/argumenta/user'
 Proposition = require '../lib/argumenta/objects/proposition'
 should      = require 'should'
 
@@ -19,6 +20,34 @@ describe 'Storage', ->
 
     describe 'with storageType: ' + type, ->
       storage = getStorage type
+
+      tester = new User
+        username: 'tester'
+        password: 'tester12'
+        email:    'tester@xyz.com'
+
+      describe 'addUser()', ->
+        it 'should add a user successfully', (done) ->
+          storage.addUser tester, (err) ->
+            should.not.exist err
+            done()
+
+      describe 'getUserByName()', ->
+        it 'should get a stored user', (done) ->
+          storage.getUserByName 'tester', (err, user) ->
+            should.not.exist err
+            user.username.should.equal 'tester'
+            done()
+
+      describe 'clearAll()', ->
+        it 'should delete all stored entities', (done) ->
+          storage.clearAll (err) ->
+            should.not.exist err
+            # Check that user is really gone
+            storage.getUserByName 'tester', (err, user)->
+              should.exist err
+              should.not.exist user
+              done()
 
       describe 'storage.addPropositions()', ->
 
