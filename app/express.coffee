@@ -30,8 +30,8 @@ configure = () ->
     app.set 'view engine', 'jade'
     app.set 'view options', {layout: false}
     app.use express.favicon()
-    app.use require('stylus').middleware({ src: __dirname + '/public' })
-    app.use express.static(__dirname + '/public')
+    app.use require('stylus').middleware({ src: __dirname + '/../public' })
+    app.use express.static(__dirname + '/../public')
     app.use express.bodyParser()
     app.use express.cookieParser( config.appSecret )
     app.use express.methodOverride()
