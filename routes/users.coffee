@@ -1,7 +1,7 @@
 # Argumenta instance, User and Storage classes
-argumenta = require '../argumenta'
-User      = require '../../lib/argumenta/user'
-Storage   = require '../../lib/argumenta/storage'
+argumenta = require '../app/argumenta'
+User      = require '../lib/argumenta/user'
+Storage   = require '../lib/argumenta/storage'
 
 # Users index
 exports.index = (req, res) ->

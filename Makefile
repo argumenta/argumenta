@@ -1,4 +1,4 @@
-COFFEE_PATHS := app config lib test
+COFFEE_PATHS := app config lib routes test
 DOC_SOURCES := lib
 TEST_PATHS := test
 

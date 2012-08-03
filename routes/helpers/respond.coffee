@@ -1,4 +1,4 @@
-config = require '../../../config'
+config = require '../../config'
 _      = require 'underscore'
 
 # Respond helper: serves on success or error, as html or json

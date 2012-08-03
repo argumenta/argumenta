@@ -1,5 +1,5 @@
-Auth      = require '../../lib/argumenta/auth'
-argumenta = require '../../app/argumenta'
+Auth      = require '../lib/argumenta/auth'
+argumenta = require '../app/argumenta'
 
 # Show the login page
 exports.index = (req, res) ->

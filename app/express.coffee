@@ -1,7 +1,7 @@
 express = require 'express'
 flash   = require 'connect-flash'
 http    = require 'http'
-routes  = require './routes'
+routes  = require '../routes'
 config  = require '../config'
 
 # Express Instance
@@ -15,7 +15,7 @@ globals = ( extensions, processor ) ->
     next()
 
 # Reply middleware: Adds a res.reply helper
-respond = require './routes/helpers/respond'
+respond = require '../routes/helpers/respond'
 reply = ( processor ) ->
   replyFunc = (req, res, next) ->
     res.reply = ( view, opts ) ->
