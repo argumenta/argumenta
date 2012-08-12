@@ -14,7 +14,7 @@ Errors      = require './object_errors'
 #
 class Argument
 
-  ## Constants
+  ### Constants ###
 
   # The character limit for argument titles.
   @MAX_TITLE_LENGTH: 160
@@ -22,7 +22,7 @@ class Argument
   # Static and instance refs to all object errors.
   Errors: @Errors = Errors
 
-  ## Constructor
+  ### Constructor ###
 
   # Inits an Argument instance.
   #
@@ -46,7 +46,7 @@ class Argument
     @conclusion = new Proposition conclusion
     @propositions = [].concat @premises, @conclusion
 
-  ## Accessors
+  ### Accessors ###
 
   # Gets all child objects (premises and conclusion).
   #
@@ -89,7 +89,7 @@ class Argument
       .update( @objectRecord(), 'utf8' )
       .digest('hex')
 
-  ## Validation
+  ### Validation ###
 
   # Validates the argument instance.
   #
@@ -147,7 +147,7 @@ class Argument
 
     return true
 
-  ## Static Methods
+  ### Static Methods ###
 
   # Sanitizes title text.  
   # Strips newlines because titles are included in argument object records.

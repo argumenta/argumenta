@@ -7,16 +7,14 @@ Errors = require './object_errors'
 #
 class Proposition
 
-  # Constants
-  # ---------
+  ### Constants ###
 
   # The character limit for proposition text.
   @MAX_PROPOSITION_LENGTH = 240
 
   Errors: @Errors = Errors
 
-  # Constructor
-  # -----------
+  ### Constructor ###
 
   # Create a Proposition instance for the given text.
   #
@@ -27,8 +25,7 @@ class Proposition
   # @param [String] text The proposition text.
   constructor: (@text) ->
 
-  # Instance Methods
-  # ----------------
+  ### Instance Methods ###
 
   # Get an object record representing this proposition.
   #
@@ -90,8 +87,7 @@ class Proposition
   validateText: () ->
     Proposition.validateText @text
 
-  # Static Methods
-  # --------------
+  ### Static Methods ###
 
   # Parse a proposition object record, creating a new Proposition instance.
   #
