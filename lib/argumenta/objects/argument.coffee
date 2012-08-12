@@ -77,7 +77,7 @@ class Argument
     body = "title #{@title}\n"
     for p in @premises
       body += "premise #{p.sha1()}\n"
-    body += "conclusion #{@conclusion.sha1()}"
+    body += "conclusion #{@conclusion.sha1()}\n"
     return header + body
 
   # Gets the sha1 of the argument's object record.

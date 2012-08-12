@@ -45,13 +45,14 @@ describe 'Argument', ->
         premise d7574671f9327761109829761d97d7001b60cd43
         premise 503db2aa0a6d31e73f66c3efd8e15f92ee7d11be
         conclusion 3940b2a6a3d5778297f0e37a06109f9d3dcffe6d
+
         """
 
   describe 'sha1()', ->
     it 'should return the sha1 sum of the object record', ->
       argument = new Argument title, premises, conclusion
       sha1 = argument.sha1()
-      sha1.should.equal '39cb3925a38f954cf4ca12985f5f948177f6da5e'
+      sha1.should.equal '7077e1ce31bc8e9d2a88479aa2d159f2f9de4856'
 
   describe 'validate()', ->
 
