@@ -1,5 +1,5 @@
-crypto = require 'crypto'
 Errors = require './object_errors'
+Utils  = require './object_utils'
 
 #
 # Propositions represent assertions as short strings of text.  
@@ -43,18 +43,15 @@ class Proposition
   # The sha1 hash of the object record identifies the object:
   #
   #     proposition = new Proposition('The proposition text')
+  #     sha1 = proposition.sha1()
   #
-  #     shasum  = require('crypto').createHash('sha1')
-  #     objSha1 = shasum.update( proposition.objectRecord(), 'utf8' ).digest('hex')
-  #
-  #     assert.ok objSha1 ==  proposition.sha1()
-  #     assert.ok objSha1 == '84a9386b1b5cba65cd32cb2558e5c4beba4053ae'
+  #     assert.ok sha1 == '84a9386b1b5cba65cd32cb2558e5c4beba4053ae'
+  #     assert.ok sha1 == Utils.SHA1( proposition.objectRecord() )
   #
   # @api public
   # @return [String] The sha1 hex value.
   sha1: () ->
-    shasum = crypto.createHash 'sha1'
-    return shasum.update(@objectRecord(), 'utf8').digest('hex')
+    return Utils.SHA1 @objectRecord()
 
   # Validates the proposition instance, returns true on success:
   #

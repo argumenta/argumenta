@@ -1,7 +1,7 @@
-crypto      = require 'crypto'
 _           = require 'underscore'
 Proposition = require './proposition'
 Errors      = require './object_errors'
+Utils       = require './object_utils'
 
 #
 # Arguments represent a series of premises leading to a conclusion.  
@@ -85,9 +85,7 @@ class Argument
   # @api public
   # @return [String] The sha1 hex value.
   sha1: () ->
-    return crypto.createHash('sha1')
-      .update( @objectRecord(), 'utf8' )
-      .digest('hex')
+    return Utils.SHA1 @objectRecord()
 
   ### Validation ###
 

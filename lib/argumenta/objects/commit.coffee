@@ -1,6 +1,6 @@
-crypto = require 'crypto'
 _      = require 'underscore'
 Errors = require './object_errors'
+Utils  = require './object_utils'
 User   = require '../../argumenta/user'
 
 #
@@ -78,9 +78,7 @@ class Commit
   # @api public
   # @return [String] The sha1 hex value.
   sha1: () ->
-    return crypto.createHash('sha1')
-      .update( @objectRecord(), 'utf8' )
-      .digest('hex')
+    return Utils.SHA1 @objectRecord()
 
   #### Validation ####
 
