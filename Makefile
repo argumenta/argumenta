@@ -1,8 +1,7 @@
 COFFEE_PATHS := app config lib routes test
 DOC_SOURCES := lib
 TEST_PATHS := test
-
-TESTS := $(shell find $(TEST_PATHS) -name '*.js')
+TESTS := $(shell find $(TEST_PATHS) -name '*.coffee' | sed 's/coffee$$/js/')
 
 all: build docs
 
@@ -22,7 +21,7 @@ docco:
 sweeten-docco:
 	./node_modules/.bin/sweeten-docco
 
-test:
+test: coffee
 	NODE_ENV=testing ./node_modules/.bin/mocha $(TESTS)
 
 test_forever:
