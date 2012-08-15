@@ -1,5 +1,5 @@
 should = require 'should'
-Commit = require '../../lib/argumenta/objects/commit'
+Commit = require '../../../lib/argumenta/objects/commit'
 
 describe 'Commit', ->
 

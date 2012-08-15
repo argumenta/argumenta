@@ -1,6 +1,6 @@
 should      = require 'should'
-Argument    = require '../../lib/argumenta/objects/argument'
-Proposition = require '../../lib/argumenta/objects/proposition'
+Argument    = require '../../../lib/argumenta/objects/argument'
+Proposition = require '../../../lib/argumenta/objects/proposition'
 
 describe 'Argument', ->
 
