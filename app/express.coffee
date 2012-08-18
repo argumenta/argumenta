@@ -69,6 +69,8 @@ app.get  '/users',                routes.users.index
 app.post '/users',                routes.users.create
 app.get  '/users/:name.:format?', routes.users.show
 
+app.get  '/join',                 routes.join.index
+
 app.get  '/login',                routes.login.index
 app.post '/login',                routes.login.verify
 
