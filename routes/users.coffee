@@ -1,7 +1,7 @@
-# Argumenta instance, User and Storage classes
+# Argumenta instance, User, Storage and Errors classes
 argumenta = require '../app/argumenta'
-User      = require '../lib/argumenta/user'
 Storage   = require '../lib/argumenta/storage'
+Errors    = require '../lib/argumenta/errors'
 
 # Users index
 exports.index = (req, res) ->
@@ -11,37 +11,16 @@ exports.index = (req, res) ->
 
 # Create a user via POST
 exports.create = (req, res) ->
-  User.new req.body, (err, user) ->
-    if err
-      if err instanceof User.ValidationError
-        return res.reply 'index',
-          error: err.message,
-          status: 400
-      else
-        return res.reply 'index',
-          error: "Error creating user.",
-          status: 500
+  {username, password, email} = req.body
 
-    argumenta.storage.addUser user, (err) ->
-      if not err
-        switch req.param 'format'
-          when 'json'
-            return res.reply null,
-              headers: 'Location': "/users/#{user.username}"
-              message: "Created user."
-              status: 201
-          else
-            req.flash 'message', "Welcome aboard, #{user.username}!"
-            return res.redirect "users/#{user.username}"
-      else
-        if err instanceof Storage.ConflictError
-          return res.reply 'index',
-            error: "User already exists.",
-            status: 409
-        else
-          return res.reply 'index',
-            error: "Error storing user.",
-            status: 500
+  argumenta.users.create username, password, email, (err, user) ->
+    if err
+      return res.reply 'index',
+        error: err.message,
+        status: Errors.statusFor err
+    else
+      req.flash 'message', "Welcome aboard, #{user.username}!"
+      return res.redirect "/users/#{user.username}"
 
 # Show a user as html or json
 exports.show = (req, res) ->
