@@ -43,6 +43,24 @@
 *.argumenta * {
   font: 13px sans-serif;
 }
+*.argumenta h1 {
+  font-size: 1.8em;
+}
+*.argumenta h2 {
+  font-size: 1.5em;
+}
+*.argumenta h3 {
+  font-size: 1.4em;
+}
+*.argumenta h4 {
+  font-size: 1.3em;
+}
+*.argumenta h5 {
+  font-size: 1.2em;
+}
+*.argumenta h6 {
+  font-size: 1.1em;
+}
 *.argumenta form.login {
   display: inline-block;
   text-align: center;
