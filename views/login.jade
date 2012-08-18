@@ -2,6 +2,7 @@ extends layout
 
 block content
 
+  h1 Login with your account!
   form.login(action="/login", method="post")
     ul
       li
@@ -9,5 +10,5 @@ block content
         input(name="username", value="")
       li
         label Password
-        input(name="password", value="")
+        input(name="password", value="", type="password")
     button(type="submit") Login!

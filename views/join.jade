@@ -1,7 +1,7 @@
 extends layout
 
 block content
-
+  h1 Create your account!
   form.join(action="/users", method="post")
     ul
       li
@@ -9,8 +9,8 @@ block content
         input(name="username", value="")
       li
         label Password
-        input(name="password", value="")
+        input(name="password", value="", type="password")
       li
         label Email
         input(name="email", value="")
-    button(type="submit") Join Argumenta!
+    button(type="submit") Join!
