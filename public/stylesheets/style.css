@@ -43,6 +43,14 @@
 *.argumenta * {
   font: 13px sans-serif;
 }
+*.argumenta h1,
+*.argumenta h2,
+*.argumenta h3,
+*.argumenta h4,
+*.argumenta h5,
+*.argumenta h6 {
+  font-weight: bold;
+}
 *.argumenta h1 {
   font-size: 1.8em;
 }
@@ -61,6 +69,21 @@
 *.argumenta h6 {
   font-size: 1.1em;
 }
+*.argumenta .header-logo {
+  font-family: sans-serif;
+  font-size: 2em;
+  color: #333;
+}
+*.argumenta .nav-login {
+  float: right;
+}
+*.argumenta form.join {
+  display: inline-block;
+  text-align: center;
+}
+*.argumenta form.join li {
+  text-align: right;
+}
 *.argumenta form.login {
   display: inline-block;
   text-align: center;
@@ -78,5 +101,5 @@
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 *.argumenta a {
-  color: #00b7ff;
+  color: #08f;
 }
