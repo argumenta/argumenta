@@ -5,12 +5,13 @@ html
     title #{title ? title + ' | ' + siteName : siteName}
     link(rel='stylesheet', href='/stylesheets/style.css')
   body.argumenta
-    a.header-logo(href="/")= siteName
-    ul.nav-login
-      li
-        a(href="/login") Sign in
-        |  or 
-        a(href="/join") Join now!
+    div.header
+      a.header-logo(href="/")= siteName
+      ul.nav-login
+        li
+          a(href="/login") Sign in
+          |  or 
+          a(href="/join") Join now!
     each message in messages
       div= "Message: " + message
     each error in errors
