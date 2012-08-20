@@ -1,3 +1,6 @@
+*.argumenta {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
 *.argumenta * {
   margin: 0px;
   padding: 0px;
@@ -40,8 +43,14 @@
 *.argumenta ul {
   list-style: none;
 }
-*.argumenta * {
-  font: 13px sans-serif;
+*.argumenta button,
+*.argumenta input,
+*.argumenta select,
+*.argumenta textarea {
+  font-size: 100%;
+}
+*.argumenta a {
+  color: #08f;
 }
 *.argumenta h1,
 *.argumenta h2,
@@ -95,11 +104,4 @@
 *.argumenta form.login label {
   display: inline-block;
   width: 70px;
-}
-*.argumenta body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-*.argumenta a {
-  color: #08f;
 }

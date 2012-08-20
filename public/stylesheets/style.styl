@@ -94,8 +94,14 @@
 
   // Typography
 
-  *
-    font: 13px sans-serif
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+
+  // Fix for font-size inheritance
+  button, input, select, textarea
+    font-size: 100%
+
+  a
+    color: #08F
 
   h1, h2, h3, h4, h5, h6
     font-weight: bold
@@ -147,12 +153,3 @@
     label
       display: inline-block
       width: 70px
-
-
-  // Express
-
-  body
-    padding: 50px
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
-  a
-    color: #08F
