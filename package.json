@@ -21,6 +21,6 @@
     "mocha": "1.0.x",
     "request": "~2.9.202",
     "should": "0.6.x",
-    "superagent": "0.4.x"
+    "superagent": "~0.8.1"
   }
 }
