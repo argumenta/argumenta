@@ -35,7 +35,7 @@ configure = () ->
     app.use express.bodyParser()
     app.use express.cookieParser( config.appSecret )
     app.use express.methodOverride()
-    app.use express.session()
+    app.use express.cookieSession()
     app.use flash()
     app.use globals {siteName: config.siteName, title: ''}, (ext, req, res) ->
       errors = req.flash 'errors'
