@@ -55,3 +55,28 @@ describe 'User', ->
 
       # Verify password
       should.ok bcrypt.compareSync 'tester12', user.password_hash
+
+  describe 'validate()', ->
+    username = 'tester'
+    password_hash = '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
+    email = 'tester@xyz.com'
+
+    it 'should return true if the user is valid', ->
+      user = new User {username, password_hash, email}
+      user.validate().should.equal true
+
+    it 'should return false if the username is missing', ->
+      user = new User {password_hash, email}
+      user.validate().should.equal false
+
+    it 'should return false if the username is blank', ->
+      user = new User {username: '', password_hash, email}
+      user.validate().should.equal false
+
+    it 'should return false if the password_hash is missing', ->
+      user = new User {username, email}
+      user.validate().should.equal false
+
+    it 'should return false if the email is invalid', ->
+      user = new User {username, password_hash, email: 'bad-email'}
+      user.validate().should.equal false

@@ -101,7 +101,7 @@ class User extends Base
     User.validateUsername @username
 
   validatePasswordHash: () ->
-    User.validatePasswordHash @passwordHash
+    User.validatePasswordHash @password_hash
 
   validateEmail: () ->
     User.validateEmail @email
@@ -119,6 +119,9 @@ class User extends Base
   #       message = validateErr.message
   #
   @validateUsername: (username) ->
+    unless username?
+      throw new @ValidationError "Username must exist"
+
     unless /\S+/.test username
       throw new @ValidationError "Username must not be blank"
 
@@ -128,6 +131,9 @@ class User extends Base
     return true
 
   @validatePassword: (password) ->
+    unless password?
+      throw new @ValidationError "Password must exist"
+
     unless /\S+/.test password
       throw new @ValidationError "Password must not be blank"
 
@@ -137,12 +143,18 @@ class User extends Base
     return true
 
   @validatePasswordHash: (password_hash) ->
+    unless password_hash?
+      throw new @ValidationError "Password hash must exist"
+
     unless /\S+/.test password_hash
       throw new @ValidationError "Password hash must not be blank"
 
     return true
 
   @validateEmail: (email) ->
+    unless email?
+      throw new @ValidationError "Email must exist"
+
     unless /\S+/.test email
       throw new @ValidationError "Email must not be blank"
 
