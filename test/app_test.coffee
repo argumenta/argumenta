@@ -101,6 +101,9 @@ describe 'App', () ->
           res.status.should.equal 200
           res.type.should.equal 'application/json'
           res.text.should.match /tester/
+          res.body.should.be.an.instanceof Object
+          res.body.user.should.eql { username: 'tester' }
+          should.not.exist res.body.error
           done()
 
       it 'should show an error when user not found', (done) ->
@@ -163,4 +166,24 @@ describe 'App', () ->
             res.status.should.equal 200
             res.redirects.should.eql(['http://localhost:3000/'])
             res.text.should.match /Sign in.*or.*Join now!/
+            done()
+
+    describe '/:name.:format?', ->
+
+      describe 'GET /:name', ->
+        it 'should be an alias for /users/:name', (done) ->
+          get '/tester', (err, res)->
+            res.status.should.equal 200
+            res.text.should.match /tester/
+            res.text.should.not.match /error/i
+            done()
+
+      describe 'GET /:name.json', ->
+        it 'should be an alias for /users/:name.json', (done) ->
+          get '/tester.json', (err, res) ->
+            res.status.should.equal 200
+            res.type.should.equal 'application/json'
+            res.body.should.be.an.instanceof Object
+            res.body.user.should.eql { username: 'tester' }
+            should.not.exist res.body.error
             done()

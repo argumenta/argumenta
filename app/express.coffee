@@ -77,6 +77,8 @@ app.post '/login',                routes.login.verify
 
 app.get  '/logout',               routes.logout.index
 
+app.get  '/:name.:format?',       routes.users.show
+
 # Http
 http.createServer(app).listen(3000)
 
