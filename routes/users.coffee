@@ -19,6 +19,7 @@ exports.create = (req, res) ->
         error: err.message,
         status: Errors.statusFor err
     else
+      req.session.username = username
       req.flash 'message', "Welcome aboard, #{user.username}!"
       return res.redirect "/users/#{user.username}"
 

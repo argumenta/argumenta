@@ -41,8 +41,9 @@ configure = () ->
       errors = req.flash 'errors'
       messages = req.flash 'messages'
       res.locals
-        errors: errors,
+        errors: errors
         messages: messages
+        username: req.session.username or ''
     app.use reply()
     app.use app.router
 
@@ -73,6 +74,8 @@ app.get  '/join',                 routes.join.index
 
 app.get  '/login',                routes.login.index
 app.post '/login',                routes.login.verify
+
+app.get  '/logout',               routes.logout.index
 
 # Http
 http.createServer(app).listen(3000)

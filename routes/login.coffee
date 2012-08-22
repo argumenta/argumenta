@@ -18,7 +18,7 @@ exports.verify = (req, res) ->
       res.redirect '/login'
     else
       if result
-        req.session.name = params.username
+        req.session.username = params.username
         req.flash 'messages', "Welcome back, #{params.username}"
         res.redirect "/users/#{params.username}"
       else

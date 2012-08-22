@@ -51,6 +51,7 @@
 }
 *.argumenta a {
   color: #08f;
+  text-decoration: none;
 }
 *.argumenta h1,
 *.argumenta h2,
@@ -81,10 +82,13 @@
 *.argumenta .header-logo {
   font-family: sans-serif;
   font-size: 2em;
+  text-decoration: underline;
   color: #333;
 }
-*.argumenta .nav-login {
+*.argumenta .nav-login,
+*.argumenta .nav-logout {
   float: right;
+  color: #999;
 }
 *.argumenta form.join {
   display: inline-block;

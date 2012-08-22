@@ -1,7 +1,7 @@
-app     = require '../app'
-agent   = require 'superagent'
-request = require 'request'
-should  = require 'should'
+app        = require '../app'
+superagent = require 'superagent'
+request    = require 'request'
+should     = require 'should'
 
 base = 'http://localhost:3000'
 
@@ -10,6 +10,7 @@ abs_url = (path) ->
   if ~path.search /https?:\/\// then path else base + path
 
 # Superagent helpers.
+agent = superagent.agent()
 get = (path, cb) ->
   agent.get( abs_url path ).end( cb )
 
@@ -37,24 +38,26 @@ describe 'App', () ->
       done()
 
   describe '/index', () ->
-    it 'should respond successfully', (done) ->
+    it 'should respond with index and links to log in', (done) ->
       get '/', (res) ->
         res.status.should.equal 200
         res.text.should.match /Argumenta/
+        res.text.should.match /Sign in.*or.*Join now!/
         done()
 
   # TODO: Users (GET /users, GET /user/:name.json)
   describe '/users', () ->
 
-    describe 'POST /users', ->
-      it 'should create a new user', (done) ->
+    describe 'POST /users', (done) ->
+      it 'should create a new user and sign in', (done) ->
         user =
           username: 'tester'
           password: 'tester12'
           email:    'tester@xyz.com'
-        post '/users', user, (res) ->
+        post '/users', user, (err, res) ->
           res.status.should.equal 200
           res.text.should.match /tester/
+          res.text.should.match new RegExp 'Logged in as <a href="/tester">tester</a>'
           done()
 
       it 'should refuse to create an invalid user', (done) ->
@@ -135,6 +138,7 @@ describe 'App', () ->
             should.not.exist err
             res.statusCode.should.equal 200
             body.should.match /Welcome back/
+            body.should.match new RegExp 'Logged in as <a href="/tester">tester</a>'
             done()
 
       it 'should deny an incorrect login', (done) ->
@@ -150,4 +154,13 @@ describe 'App', () ->
           req_get url, (err, res, body) ->
             res.statusCode.should.equal 200
             res.body.should.match /Invalid username and password combination./
+            done()
+
+    describe '/logout', ->
+      describe 'GET logout', ->
+        it 'should clear session cookie and redirect to index', (done) ->
+          get '/logout', (err, res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql(['http://localhost:3000/'])
+            res.text.should.match /Sign in.*or.*Join now!/
             done()

@@ -7,11 +7,19 @@ html
   body.argumenta
     div.header
       a.header-logo(href="/")= siteName
-      ul.nav-login
-        li
-          a(href="/login") Sign in
-          |  or 
-          a(href="/join") Join now!
+      - if (username)
+        ul.nav-logout
+          li Logged in as 
+              a(href="/#{username}") #{username}
+              |  (
+              a(href="/logout") Sign out
+              | )
+      - else
+        ul.nav-login
+          li
+            a(href="/login") Sign in
+            |  or 
+            a(href="/join") Join now!
     each message in messages
       div= "Message: " + message
     each error in errors
