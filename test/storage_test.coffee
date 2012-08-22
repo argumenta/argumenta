@@ -23,7 +23,7 @@ describe 'Storage', ->
 
       tester = new User
         username: 'tester'
-        password: 'tester12'
+        password_hash: '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
         email:    'tester@xyz.com'
 
       describe 'addUser()', ->

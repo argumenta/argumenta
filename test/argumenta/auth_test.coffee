@@ -42,14 +42,12 @@ describe 'Auth', ->
       storageType: 'local', logLevel: 'fatal'
 
     before (done) ->
-      params =
-        username: 'tester'
-        password: 'tester12'
-        email:    'tester@xyz.com'
-      User.new params, (err, user) ->
-        argumenta.storage.addUser user, (err) ->
-          should.not.exist err
-          done()
+      username = 'tester'
+      password = 'tester12'
+      email = 'tester@xyz.com'
+      argumenta.users.create username, password, email, (err, user) ->
+        should.not.exist err
+        done()
 
     it 'should authenticate a valid user login', (done) ->
       username = 'tester'

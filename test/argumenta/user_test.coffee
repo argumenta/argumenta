@@ -4,33 +4,6 @@ should = require 'should'
 
 describe 'User', ->
 
-  describe 'User.new()', ->
-    it 'should create a new user instance asynchronously from user input', (done) ->
-
-      # User input includes plaintext password
-      params =
-        username: 'tester'
-        password: 'tester12'
-        email:    'tester@xyz.com'
-
-      # Create user asyncronously
-      User.new params, (err, user) ->
-
-        # Test values
-        should.not.exist err
-        should.not.exist user.password
-        user.should.be.an.instanceof     User
-        user.username.should.equal      'tester'
-        user.email.should.equal         'tester@xyz.com'
-        user.password_hash.should.match /\$.+\$.+\$.+/
-
-        # Validate user
-        should.ok user.validate()
-
-        # Verify password
-        should.ok bcrypt.compareSync 'tester12', user.password_hash
-        done()
-
   describe 'new User', ->
     it 'should create a user instance from storable attributes', ->
 

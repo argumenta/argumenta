@@ -27,6 +27,11 @@ class Users extends Base
 
   # Creates a user account.
   #
+  # Example:
+  #
+  #     users.create username, password, email, (err, user) ->
+  #       console.log "created account for #{user.username}!" unless err
+  #
   # @param [String] username The user's username.
   # @param [String] password The user's password.
   # @param [String] email The user's email.
@@ -34,9 +39,15 @@ class Users extends Base
   # @param [Error] err Any error.
   # @param [User] user The new user.
   create: (username, password, email, callback) ->
-    params = {username, password, email}
-    User.new params, (err, user) =>
+
+    try User.validatePassword password
+    catch err
+      return callback err, null
+
+    Auth.hashPassword password, (err, hash) =>
       return callback err, null if err
+
+      user = new User { username, password_hash: hash, email }
 
       @storage.addUser user, (err) =>
         return callback err, null if err

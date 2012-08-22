@@ -9,45 +9,6 @@ class User extends Base
   Error: @Error = @Errors.User
   ValidationError: @ValidationError = @Errors.Validation
 
-  # Static constructor
-  # ------------------
-
-  # Create a new user instance asynchronously from username, password, & email.
-  # The password plaintext is hashed with bcrypt, & discarded.
-  # The result is stored on the instance as `user.password_hash`:
-  #
-  #     params =
-  #       username: 'demosthenes'
-  #       password: 'secret'
-  #       email:    'demos@athens.net'
-  #
-  #     User.new params, (err, user) ->
-  #       if err is null
-  #         user.password is null           # true; it's been discarded
-  #         user.password_hash isnt null    # true; it's a string with the hash
-  #
-  @new: (params, callback) ->
-
-    # Only proceed to hashing if password is valid.
-    try
-      User.validatePassword params.password
-    catch err
-      return callback err, null
-
-    # Hash the password asynchronously.
-    Auth.hashPassword params.password, (err, hash) ->
-      return callback err, null if err
-
-      # Discard the plaintext; keep the hash.
-      delete params.password
-      params.password_hash = hash
-
-      # Create a new instance.
-      user = new User params
-
-      # Pass the instance to the callback.
-      return callback null, user
-
   # Constructor
   # -----------
 
