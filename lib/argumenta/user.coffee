@@ -1,34 +1,41 @@
 Base = require '../argumenta/base'
 Auth = require '../argumenta/auth'
 
+#
+# User models a user account.
+#
 class User extends Base
 
-  # Errors
-  # ------
+  ### Errors ###
 
   Error: @Error = @Errors.User
   ValidationError: @ValidationError = @Errors.Validation
 
-  # Constructor
-  # -----------
+  ### Constructor ###
 
-  # Create a user instance with given attributes (username, email, & password_hash):
+  # Creates a user instance.
   #
   #     user = new User
   #       username:      'demosthenes'
   #       email:         'demos@athens.net'
   #       password_hash: '$2a$12$6nZyzVgeCmBK9JkZb9rNG.9s/d/i/g2Tbyf4vk318XQLQKi4GXXZ2'
   #
-  # See also: User.new()
+  # @api public
+  # @see Users#create()
+  # @param [Object] params A hash of user params.
+  # @param [String] params.username The user's login name.
+  # @param [String] params.email    The user's email adress.
+  # @param [String] params.password_hash The user's password hash.
   constructor: (params) ->
     @username      = params.username
     @email         = params.email
     @password_hash = params.password_hash
 
-  # Validation
-  # ----------
+  ### Instance Methods ###
 
-  # Performs instance validation, returns true on success:
+  #### Validation ####
+
+  # Validates a user instance.
   #
   #     isValid = user.validate()
   #
@@ -37,6 +44,8 @@ class User extends Base
   #     user.validationStatus # True on success, otherwise false.
   #     user.validationError  # Null on success, otherwise the last error object.
   #
+  # @api public
+  # @return [Boolean] The validation status.
   validate: () ->
     try
       @validateUsername() and @validatePasswordHash() and @validateEmail()
@@ -48,8 +57,7 @@ class User extends Base
     finally
       return @validationStatus
 
-  # Instance validators
-  # -------------------
+  #### Instance Field Validators ####
 
   # Each calls the static validator, passing parameters from the instance:
   #
@@ -57,6 +65,9 @@ class User extends Base
   #       isValid = user.validateUsername()
   #     catch validationErr
   #       message = validationErr.message
+  #
+  # @throws ValidationError
+  # @return [Boolean] True only on success
   #
   validateUsername: () ->
     User.validateUsername @username
@@ -67,9 +78,9 @@ class User extends Base
   validateEmail: () ->
     User.validateEmail @email
 
+  ### Static Methods ###
 
-  # Static validators
-  # -----------------
+  #### Static Validators ####
 
   # In addition to validated user instances, static validators are available.
   # Each throws an error on failure describing the problem, or returns true:
@@ -78,6 +89,9 @@ class User extends Base
   #       isValid = User.validateUsername('demosthenes42')
   #     catch validateErr
   #       message = validateErr.message
+  #
+  # @throws ValidationError
+  # @return [Boolean] True only on success
   #
   @validateUsername: (username) ->
     unless username?
