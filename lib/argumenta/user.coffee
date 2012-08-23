@@ -98,7 +98,7 @@ class User extends Base
     unless /\S+/.test password
       throw new @ValidationError "Password must not be blank"
 
-    unless /.{0,6}/.test password
+    unless /.{6,}/.test password
       throw new @ValidationError "Password must be at least six characters"
 
     return true

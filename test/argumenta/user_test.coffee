@@ -29,6 +29,13 @@ describe 'User', ->
       # Verify password
       should.ok bcrypt.compareSync 'tester12', user.password_hash
 
+  describe 'User.validatePassword()', ->
+    it 'should fail if password is less than 6 characters', ->
+      validatorFor = (pass) ->
+        return -> User.validatePassword( pass )
+      validatorFor('12345').should.throw
+      validatorFor('123456').should.not.throw
+
   describe 'validate()', ->
     username = 'tester'
     password_hash = '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
