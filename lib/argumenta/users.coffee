@@ -3,7 +3,7 @@ Auth = require '../argumenta/auth'
 User = require '../argumenta/user'
 
 #
-# Users models user accounts.
+# Users models user accounts.  
 # It integrates the Storage, Auth, and User modules.
 #
 class Users extends Base
@@ -19,6 +19,7 @@ class Users extends Base
 
   # Inits a Users instance.
   #
+  # @api public
   # @param [Argumenta] argumenta An argumenta instance.
   # @param [Storage] storage A storage instance.
   constructor: (@argumenta, @storage) ->
@@ -32,12 +33,13 @@ class Users extends Base
   #     users.create username, password, email, (err, user) ->
   #       console.log "created account for #{user.username}!" unless err
   #
+  # @api public
   # @param [String] username The user's username.
   # @param [String] password The user's password.
   # @param [String] email The user's email.
   # @param [Function] callback(err, user) Called on error or success.
   # @param [Error] err Any error.
-  # @param [User] user The new user.
+  # @param [User] user The new user instance.
   create: (username, password, email, callback) ->
 
     try User.validatePassword password
