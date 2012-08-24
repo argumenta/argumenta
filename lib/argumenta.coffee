@@ -10,7 +10,7 @@ class Argumenta
     storageOpts = {storageType, storageUrl} = options
 
     # Set log level
-    Logger.LogLevel = options.logLevel
+    Logger.setLevel options.logLevel
 
     # Auth, Storage and Users instances
     @auth = new Auth this
