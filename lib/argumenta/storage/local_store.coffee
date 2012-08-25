@@ -8,6 +8,7 @@ class LocalStore extends Base
   constructor: () ->
     # Init users hash
     @users = {}
+    @arguments = { bySha1: {} }
     @propositions = { bySha1: {} }
 
   # Store a User in memory.
@@ -57,6 +58,22 @@ class LocalStore extends Base
 
     # Success
     return cb null, publicUsers
+
+  # Add an argument to the store
+  addArgument: (argument, cb) ->
+    hash = argument.sha1()
+    @arguments.bySha1[ hash ] = argument
+
+    return cb null
+
+  # Get arguments from the store by hashes.
+  getArguments: (hashes, cb) ->
+    results = []
+    for hash in hashes
+      a = @arguments.bySha1[hash]
+      results.push a
+
+    return cb null, results
 
   # Add an array of valid propositions to the store.
   addPropositions: (propositions, cb) ->

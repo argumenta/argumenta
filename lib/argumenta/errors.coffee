@@ -9,6 +9,8 @@ class Errors
 
   @Storage:          class StorageError extends BaseError
   @StorageConflict:  class ConflictError extends StorageError
+  @StorageInput:     class StorageInputError extends StorageError
+  @StorageRetrieval: class StorageRetrievalError extends StorageError
   @LocalStore:       class LocalStoreError extends StorageError
 
   @User:             class UserError extends BaseError
@@ -23,6 +25,8 @@ class Errors
     'AuthError'             : 500
     'StorageError'          : 500
     'ConflictError'         : 409
+    'StorageInputError'     : 400
+    'StorageRetrievalError' : 500
     'LocalStoreError'       : 500
     'UserError'             : 500
     'UsersError'            : 500

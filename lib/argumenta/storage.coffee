@@ -1,5 +1,6 @@
 Base        = require '../argumenta/base'
 User        = require '../argumenta/user'
+Argument    = require '../argumenta/objects/argument'
 Proposition = require '../argumenta/objects/proposition'
 
 # Storage persists users and objects to a backend store.
@@ -45,6 +46,12 @@ class Storage extends Base
   # A storage error indicating a resource conflict,
   # ie, attempts to overwrite existing users or objects.
   ConflictError: @ConflictError = @Errors.StorageConflict
+
+  # Indicates input of bad data for storage.
+  InputError: @InputError = @Errors.StorageInput
+
+  # Indicates error retrieving the requested items.
+  RetrievalError: @RetrievalError = @Errors.StorageRetrieval
 
   # Instance Methods
   # ----------------
@@ -106,9 +113,33 @@ class Storage extends Base
       return cb new @Error "Failed getting all users from store." if err
       return cb null, users
 
+  # Add an argument to the store.
+  #
+  # @param [Argument] argument The argument to store.
+  # @param [Function] cb(err) Called on completion or error.
+  # @param [StorageError] err Any error.
+  addArgument: (argument, cb) ->
+    unless argument instanceof Argument
+      return cb new @InputError "Argument instance required to store argument."
+    unless argument.validate()
+      return cb new @InputError "Argument to store must be valid."
+
+    @store.addArgument argument, cb
+
+  # Get arguments from the store by hashes.
+  #
+  # @param [Array<String>] hashes Hash ids of the arguments to retrieve.
+  # @param [Function]      cb(err, args) Called on completion or error.
+  # @param [StorageError]  err Any error.
+  # @param [Array<Argument>] args The retrieved arguments.
+  getArguments: (hashes, cb) ->
+    @store.getArguments hashes, (err, args) ->
+      return cb new @RetrievalError "Failed getting arguments from the store." if err
+      return cb null, args
+
   # Add an array of propositions to the store.
   #
-  # @param [Array<Propositions>] propositions The propositions array.
+  # @param [Array<Proposition>] propositions The propositions array.
   # @param [Function]     cb(err) Called on completion or error.
   # @param [StorageError] err Any error.
   addPropositions: (propositions, cb) ->

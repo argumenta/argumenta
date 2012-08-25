@@ -1,5 +1,6 @@
 Storage     = require '../lib/argumenta/storage'
 User        = require '../lib/argumenta/user'
+Argument    = require '../lib/argumenta/objects/argument'
 Proposition = require '../lib/argumenta/objects/proposition'
 should      = require 'should'
 
@@ -26,20 +27,20 @@ describe 'Storage', ->
         password_hash: '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
         email:    'tester@xyz.com'
 
-      describe 'addUser()', ->
+      describe 'addUser( user, callback )', ->
         it 'should add a user successfully', (done) ->
           storage.addUser tester, (err) ->
             should.not.exist err
             done()
 
-      describe 'getUser( username )', ->
+      describe 'getUser( username, callback )', ->
         it 'should get a stored user', (done) ->
           storage.getUser 'tester', (err, user) ->
             should.not.exist err
             user.username.should.equal 'tester'
             done()
 
-      describe 'clearAll()', ->
+      describe 'clearAll( callback )', ->
         it 'should delete all stored entities', (done) ->
           storage.clearAll (err) ->
             should.not.exist err
@@ -49,7 +50,37 @@ describe 'Storage', ->
               should.not.exist user
               done()
 
-      describe 'storage.addPropositions()', ->
+      describe 'addArgument( argument, callback )', ->
+
+        title = 'The Argument Title'
+        premises = [
+          'The first premise.'
+          'The second premise.'
+        ]
+        conclusion = 'The conclusion.'
+
+        it 'should store a valid argument', (done) ->
+          argument = new Argument title, premises, conclusion
+          storage.addArgument argument, (err) ->
+            should.not.exist err
+
+            storage.getArguments [argument.sha1()], (err, args) ->
+              should.not.exist err
+              args.length.should.equal 1
+              arg = args[0]
+              arg.title.should.equal 'The Argument Title'
+              arg.sha1().should.equal '7077e1ce31bc8e9d2a88479aa2d159f2f9de4856'
+              arg.should.eql argument
+              done()
+
+        it 'should not store an invalid argument', (done) ->
+          badArgument = new Argument '', [''], ''
+          storage.addArgument badArgument, (err) ->
+            should.exist err
+            err.should.be.an.instanceOf Storage.InputError
+            done()
+
+      describe 'addPropositions( propositions, callback )', ->
 
         it 'should add valid propositions successfully', (done) ->
           props = [
@@ -81,7 +112,7 @@ describe 'Storage', ->
             should.exist err
             done()
 
-      describe 'storage.getPropositions()', ->
+      describe 'getPropositions( hashes, callback )', ->
 
         it 'should get stored propositions', (done) ->
           hashes = [
