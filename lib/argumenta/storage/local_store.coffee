@@ -8,8 +8,11 @@ class LocalStore extends Base
   constructor: () ->
     # Init users hash
     @users = {}
+
+    # Init object hashes
     @arguments = { bySha1: {} }
     @propositions = { bySha1: {} }
+    @commits = { bySha1: {} }
 
   # Store a User in memory.
   addUser: (user, cb) ->
@@ -59,6 +62,8 @@ class LocalStore extends Base
     # Success
     return cb null, publicUsers
 
+  #### Objects ####
+
   # Add an argument to the store
   addArgument: (argument, cb) ->
     hash = argument.sha1()
@@ -90,6 +95,22 @@ class LocalStore extends Base
     for hash in hashes
       p = @propositions.bySha1[hash]
       results.push p
+
+    return cb null, results
+
+  # Add an commit to the store
+  addCommit: (commit, cb) ->
+    hash = commit.sha1()
+    @commits.bySha1[ hash ] = commit
+
+    return cb null
+
+  # Get commits from the store by hashes.
+  getCommits: (hashes, cb) ->
+    results = []
+    for hash in hashes
+      c = @commits.bySha1[hash]
+      results.push c
 
     return cb null, results
 

@@ -2,6 +2,7 @@ Base        = require '../argumenta/base'
 User        = require '../argumenta/user'
 Argument    = require '../argumenta/objects/argument'
 Proposition = require '../argumenta/objects/proposition'
+Commit      = require '../argumenta/objects/commit'
 
 # Storage persists users and objects to a backend store.
 
@@ -113,6 +114,8 @@ class Storage extends Base
       return cb new @Error "Failed getting all users from store." if err
       return cb null, users
 
+  #### Objects ####
+
   # Add an argument to the store.
   #
   # @param [Argument] argument The argument to store.
@@ -163,5 +166,29 @@ class Storage extends Base
     @store.getPropositions hashes, (err, propositions) ->
       return cb new @Error "Failed getting propositions from the store." if err
       return cb null, propositions
+
+  # Add a commit to the store.
+  #
+  # @param [Commit] commit The commit to store.
+  # @param [Function] cb(err) Called on completion or error.
+  # @param [StorageError] err Any error.
+  addCommit: (commit, cb) ->
+    unless commit instanceof Commit
+      return cb new @InputError "Commit instance required to store commit."
+    unless commit.validate()
+      return cb new @InputError "Commit to store must be valid."
+
+    @store.addCommit commit, cb
+
+  # Get commits from the store by hashes.
+  #
+  # @param [Array<String>] hashes Hash ids of the commits to retrieve.
+  # @param [Function]      cb(err, commits) Called on completion or error.
+  # @param [StorageError]  err Any error.
+  # @param [Array<Commit>] commits The retrieved commits.
+  getCommits: (hashes, cb) ->
+    @store.getCommits hashes, (err, commits) ->
+      return cb new @RetrievalError "Failed getting commits from the store." if err
+      return cb null, commits
 
 module.exports = Storage

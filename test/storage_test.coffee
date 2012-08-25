@@ -2,6 +2,7 @@ Storage     = require '../lib/argumenta/storage'
 User        = require '../lib/argumenta/user'
 Argument    = require '../lib/argumenta/objects/argument'
 Proposition = require '../lib/argumenta/objects/proposition'
+Commit      = require '../lib/argumenta/objects/commit'
 should      = require 'should'
 
 getStorage = (type) ->
@@ -78,6 +79,43 @@ for type in storageTypes
           should.exist err
           err.should.be.an.instanceOf Storage.InputError
           done()
+
+    #### Commits ####
+
+    targetType = 'argument'
+    targetSha1 = '39cb3925a38f954cf4ca12985f5f948177f6da5e'
+    committer = 'tester'
+    commitDate = '1970-01-01T00:00:00Z'
+    parentSha1 = '0123456789abcdef000000000000000000000000'
+
+    describe 'addCommit( commit, callback )', ->
+      it 'should store a valid commit', (done) ->
+        commit = new Commit targetType, targetSha1, committer, commitDate, [parentSha1]
+        storage.addCommit commit, (err) ->
+          should.not.exist err
+          done()
+
+      it 'should not store an invalid commit', (done) ->
+        badCommit = new Commit '', '', '', '', ''
+        storage.addCommit badCommit, (err) ->
+          should.exist err
+          err.should.be.an.instanceOf Storage.InputError
+          done()
+
+    describe 'getCommits( hashes, callback )', ->
+      it 'should retrieve a stored commit', (done) ->
+        commitA = new Commit targetType, targetSha1, committer, commitDate, [parentSha1]
+        storage.addCommit commitA, (err) ->
+          should.not.exist err
+          storage.getCommits [commitA.sha1()], (err, commits) ->
+            should.not.exist err
+            commits.length.should.equal 1
+            commitB = commits[0]
+            commitB.should.be.an.instanceOf Commit
+            commitB.objectRecord().should.equal commitA.objectRecord()
+            commitB.sha1().should.equal 'c757c63182236eaddf12942ecd284bf0d678c040'
+            commitB.validate().should.equal true
+            done()
 
     #### Propositions ####
 
