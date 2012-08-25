@@ -30,7 +30,7 @@ class LocalStore extends Base
     return cb null
 
   # Gets the *public* properties of a user by name.
-  getUserByName: (username, cb) ->
+  getUser: (username, cb) ->
     u = @users[username]
     unless u
       return cb new @Error("No user for username: " + username), null

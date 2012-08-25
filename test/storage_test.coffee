@@ -32,9 +32,9 @@ describe 'Storage', ->
             should.not.exist err
             done()
 
-      describe 'getUserByName()', ->
+      describe 'getUser( username )', ->
         it 'should get a stored user', (done) ->
-          storage.getUserByName 'tester', (err, user) ->
+          storage.getUser 'tester', (err, user) ->
             should.not.exist err
             user.username.should.equal 'tester'
             done()
@@ -44,7 +44,7 @@ describe 'Storage', ->
           storage.clearAll (err) ->
             should.not.exist err
             # Check that user is really gone
-            storage.getUserByName 'tester', (err, user)->
+            storage.getUser 'tester', (err, user)->
               should.exist err
               should.not.exist user
               done()

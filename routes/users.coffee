@@ -29,6 +29,6 @@ exports.show = (req, res) ->
   unless name?
     return res.reply 'index', error: "Error getting user: Missing name."
 
-  argumenta.storage.getUserByName name, (err, user) ->
+  argumenta.storage.getUser name, (err, user) ->
     return res.reply 'index', error: "User '#{name}' not found.", status: 404 if err
     return res.reply 'users/user', user: user

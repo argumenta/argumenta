@@ -80,8 +80,8 @@ class Storage extends Base
   # @param [Function]     cb(err, user) Called on completion or error.
   # @param [StorageError] err Any error.
   # @param [Object]       user The retrieved user's public fields.
-  getUserByName: (username, cb) ->
-    @store.getUserByName username, (err, user) ->
+  getUser: (username, cb) ->
+    @store.getUser username, (err, user) ->
       return cb new @Error("Failed getting user: " + username, err) if err
       return cb null, user
 
