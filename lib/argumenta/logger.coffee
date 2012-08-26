@@ -14,7 +14,7 @@ class Logger
     fatal: 5
 
   # Current log level
-  @LogLevel = @DEFAULT_LEVEL
+  @LogLevel = process.env.LOG_LEVEL or @DEFAULT_LEVEL
 
   # Set the current log level
   @setLevel: (level) ->
