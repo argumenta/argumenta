@@ -29,8 +29,9 @@ class LocalStore extends Base
 
   # Delete *all* entities from the store.
   clearAll: (cb) ->
-    delete @users[name] for name in Object.keys @users
     @users = {}
+    for collection in [@arguments, @propositions, @commits, @tags]
+      collection.bySha1 = {}
 
     return cb null
 

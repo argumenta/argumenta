@@ -52,14 +52,41 @@ for type in storageTypes
           done()
 
     describe 'clearAll( callback )', ->
-      it 'should delete all stored entities', (done) ->
-        storage.clearAll (err) ->
-          should.not.exist err
-          # Check that user is really gone
-          storage.getUser 'tester', (err, user)->
-            should.exist err
-            should.not.exist user
-            done()
+      it 'should delete all stored users', (done) ->
+        tester = fixtures.validUser()
+        storage.addUser tester, (err1) ->
+          storage.clearAll (err2) ->
+            storage.getUser tester.username, (err3, user)->
+              should.ok err1 == err2 == null
+              should.exist err3
+              should.not.exist user
+              done()
+
+      it 'should delete all stored arguments & propositions', (done) ->
+        argument = fixtures.validArgument()
+        proposition = fixtures.validProposition()
+        storage.addArgument argument, (er1) ->
+          storage.addPropositions [proposition], (er2) ->
+            storage.clearAll (er3) ->
+              storage.getArguments [argument.sha1()], (er4, args) ->
+                storage.getPropositions [proposition.sha1()], (er5, props) ->
+                  [er1, er2, er3, er4, er5].should.eql ([1..5].map -> null)
+                  args.length.should.equal 0
+                  props.length.should.equal 0
+                  done()
+
+      it 'should delete all stored tags & commits', (done) ->
+        tag = fixtures.validTag()
+        commit = fixtures.validCommit()
+        storage.addTag tag, (er1) ->
+          storage.addCommit commit, (er2) ->
+            storage.clearAll (er3) ->
+              storage.getTags [tag.sha1()], (er4, tags) ->
+                storage.getCommits [commit.sha1()], (er5, commits) ->
+                  [er1, er2, er3, er4, er5].should.eql ([1..5].map -> null)
+                  tags.length.should.equal 0
+                  commits.length.should.equal 0
+                  done()
 
     #### Arguments ####
 
