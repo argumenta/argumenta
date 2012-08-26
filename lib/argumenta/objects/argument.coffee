@@ -87,6 +87,17 @@ class Argument
   sha1: () ->
     return Utils.SHA1 @objectRecord()
 
+  # Checks for equality with another argument.
+  #
+  #   isEqual = argument1.equals( argument2 )
+  #
+  # @api public
+  # @param [Argument] argument The other argument.
+  # @return [Boolean] The equality result.
+  equals: (argument) ->
+    return argument instanceof Argument and
+      @objectRecord() == argument.objectRecord()
+
   ### Validation ###
 
   # Validates the argument instance.

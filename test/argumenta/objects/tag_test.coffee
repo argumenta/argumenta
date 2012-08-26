@@ -59,6 +59,17 @@ describe 'Tag', ->
       tag = new Tag('support', targetType, targetSha1, sourceType, 'bad-sha1')
       tag.validate().should.equal false
 
+  describe 'equals()', ->
+    it 'should return true if tags are equal', ->
+      tagA = new Tag 'support', targetType, targetSha1, sourceType, sourceSha1
+      tagB = new Tag 'support', targetType, targetSha1, sourceType, sourceSha1
+      tagA.equals(tagB).should.equal true
+
+    it 'should return false if tags are not equal', ->
+      tagA = new Tag 'support', targetType, targetSha1, sourceType, sourceSha1
+      tagB = new Tag 'dispute', targetType, targetSha1, sourceType, sourceSha1
+      tagA.equals(tagB).should.equal false
+
 describe 'SupportTag', ->
 
   targetType = 'proposition'

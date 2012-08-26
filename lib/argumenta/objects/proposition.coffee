@@ -53,6 +53,17 @@ class Proposition
   sha1: () ->
     return Utils.SHA1 @objectRecord()
 
+  # Checks for equality with another proposition.
+  #
+  #   isEqual = proposition1.equals( proposition2 )
+  #
+  # @api public
+  # @param [Proposition] proposition The other proposition.
+  # @return [Boolean] The equality result.
+  equals: (proposition) ->
+    return proposition instanceof Proposition and
+      @objectRecord() == proposition.objectRecord()
+
   # Validates the proposition instance, returns true on success:
   #
   #     isValid = proposition.validate()

@@ -54,6 +54,17 @@ describe 'Argument', ->
       sha1 = argument.sha1()
       sha1.should.equal '7077e1ce31bc8e9d2a88479aa2d159f2f9de4856'
 
+  describe 'equals()', ->
+    it 'should return true if arguments are equal', ->
+      argumentA = new Argument title, premises, conclusion
+      argumentB = new Argument title, premises, conclusion
+      argumentA.equals(argumentB).should.equal true
+
+    it 'should return false if arguments are not equal', ->
+      argumentA = new Argument title, premises, conclusion
+      argumentB = new Argument title, premises, 'different-conclusion'
+      argumentA.equals(argumentB).should.equal false
+
   describe 'validate()', ->
 
     it 'should return true if all components are valid', ->

@@ -58,6 +58,17 @@ describe 'Commit', ->
       sha1 = commit.sha1()
       sha1.should.equal 'fa95fa7684ec4156c5616931d8e233a3397ba9e5'
 
+  describe 'equals()', ->
+    it 'should return true if commits are equal', ->
+      commitA = new Commit targetType, targetSha1, committer, commitDate
+      commitB = new Commit targetType, targetSha1, committer, commitDate
+      commitA.equals(commitB).should.equal true
+
+    it 'should return false if commits are not equal', ->
+      commitA = new Commit targetType, targetSha1, committer, commitDate
+      commitB = new Commit targetType, targetSha1, 'diff-committer', commitDate
+      commitA.equals(commitB).should.equal false
+
   describe 'validate()', ->
     it 'should return true for a valid Commit instance', ->
       commit = new Commit( targetType, targetSha1, committer )

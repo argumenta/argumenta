@@ -80,6 +80,17 @@ class Commit
   sha1: () ->
     return Utils.SHA1 @objectRecord()
 
+  # Checks for equality with another commit.
+  #
+  #   isEqual = commit1.equals( commit2 )
+  #
+  # @api public
+  # @param [Commit] commit The other commit.
+  # @return [Boolean] The equality result.
+  equals: (commit) ->
+    return commit instanceof Commit and
+      @objectRecord() == commit.objectRecord()
+
   #### Validation ####
 
   # Validates the commit instance.

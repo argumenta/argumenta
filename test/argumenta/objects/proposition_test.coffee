@@ -19,6 +19,17 @@ describe 'Proposition', ->
       prop = new Proposition 'the proposition text'
       prop.sha1().should.equal '5d0f8723e110378563ba8d6e3cf336c0dcae4103'
 
+  describe 'equals()', ->
+    it 'should return true if propositions are equal', ->
+      propositionA = new Proposition 'the proposition text'
+      propositionB = new Proposition 'the proposition text'
+      propositionA.equals(propositionB).should.equal true
+
+    it 'should return false if propositions are not equal', ->
+      propositionA = new Proposition 'the proposition text'
+      propositionB = new Proposition 'different-text'
+      propositionA.equals(propositionB).should.equal false
+
   describe 'validate()', ->
     it 'should return true if the text is valid', () ->
       p = new Proposition 'the proposition text'

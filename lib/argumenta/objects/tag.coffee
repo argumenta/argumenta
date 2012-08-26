@@ -101,6 +101,17 @@ class Tag
   sha1: () ->
     return Utils.SHA1 @objectRecord()
 
+  # Checks for equality with another tag.
+  #
+  #   isEqual = tag1.equals( tag2 )
+  #
+  # @api public
+  # @param [Tag] tag The other tag.
+  # @return [Boolean] The equality result.
+  equals: (tag) ->
+    return tag instanceof Tag and
+      @objectRecord() == tag.objectRecord()
+
   #### Validation ####
 
   # Validates the tag instance.
