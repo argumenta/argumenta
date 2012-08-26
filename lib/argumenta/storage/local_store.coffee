@@ -13,6 +13,7 @@ class LocalStore extends Base
     @arguments = { bySha1: {} }
     @propositions = { bySha1: {} }
     @commits = { bySha1: {} }
+    @tags = { bySha1: {} }
 
   # Store a User in memory.
   addUser: (user, cb) ->
@@ -76,7 +77,7 @@ class LocalStore extends Base
     results = []
     for hash in hashes
       a = @arguments.bySha1[hash]
-      results.push a
+      results.push a if a?
 
     return cb null, results
 
@@ -94,7 +95,7 @@ class LocalStore extends Base
     results = []
     for hash in hashes
       p = @propositions.bySha1[hash]
-      results.push p
+      results.push p if p?
 
     return cb null, results
 
@@ -110,7 +111,23 @@ class LocalStore extends Base
     results = []
     for hash in hashes
       c = @commits.bySha1[hash]
-      results.push c
+      results.push c if c?
+
+    return cb null, results
+
+  # Add a tag to the store
+  addTag: (tag, cb) ->
+    hash = tag.sha1()
+    @tags.bySha1[ hash ] = tag
+
+    return cb null
+
+  # Get tags from the store by hashes.
+  getTags: (hashes, cb) ->
+    results = []
+    for hash in hashes
+      t = @tags.bySha1[hash]
+      results.push t if t?
 
     return cb null, results
 

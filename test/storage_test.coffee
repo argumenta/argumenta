@@ -3,6 +3,8 @@ User        = require '../lib/argumenta/user'
 Argument    = require '../lib/argumenta/objects/argument'
 Proposition = require '../lib/argumenta/objects/proposition'
 Commit      = require '../lib/argumenta/objects/commit'
+Tag         = require '../lib/argumenta/objects/tag'
+fixtures    = require '../test/fixtures'
 should      = require 'should'
 
 getStorage = (type) ->
@@ -19,6 +21,12 @@ storageTypes = ['local']
 for type in storageTypes
   storage = getStorage type
   describe "Storage with #{type} store", ->
+
+    # Cleanup helper
+    clearStorage = (done) ->
+      storage.clearAll (err) ->
+        should.not.exist err
+        done()
 
     #### Users ####
 
@@ -111,11 +119,67 @@ for type in storageTypes
             should.not.exist err
             commits.length.should.equal 1
             commitB = commits[0]
-            commitB.should.be.an.instanceOf Commit
-            commitB.objectRecord().should.equal commitA.objectRecord()
-            commitB.sha1().should.equal 'c757c63182236eaddf12942ecd284bf0d678c040'
-            commitB.validate().should.equal true
+            commitB.equals( commitA ).should.equal true
             done()
+
+    #### Tags ####
+
+    describe 'addTag( tag, callback )', ->
+      afterEach clearStorage
+
+      it 'should store a valid tag successfully', (done) ->
+        validTag = fixtures.validTag()
+        storage.addTag validTag, (err) ->
+          should.not.exist err
+          storage.getTags [validTag.sha1()], (err, tags) ->
+            should.not.exist err
+            tags.length.should.equal 1
+            tag = tags[0]
+            should.ok tag.equals validTag
+            done()
+
+      it 'should not store an invalid tag', (done) ->
+        badTag = fixtures.invalidTag()
+        storage.addTag badTag, (err) ->
+          should.exist err
+          err.should.be.an.instanceOf Storage.InputError
+          storage.getTags [badTag.sha1()], (err, retrievedTags) ->
+            should.not.exist err
+            retrievedTags.length.should.equal 0
+            done()
+
+    describe 'getTags( hashes, callback )', ->
+      it 'should retrieve stored support & dispute tags', (done) ->
+        tagA = fixtures.validSupportTag()
+        tagB = fixtures.validDisputeTag()
+        storage.addTag tagA, (err) ->
+          should.not.exist err
+          storage.addTag tagB, (err) ->
+            should.not.exist err
+            storage.getTags [tagA.sha1(), tagB.sha1()], (err, tags) ->
+              should.not.exist err
+              tags.length.should.equal 2
+              tag1 = tags[0]
+              tag2 = tags[1]
+              should.ok tag1.equals tagA
+              should.ok tag2.equals tagB
+              done()
+
+      it 'should retrieve stored citation & commentary tags', (done) ->
+        tagA = fixtures.validCitationTag()
+        tagB = fixtures.validCommentaryTag()
+        storage.addTag tagA, (err) ->
+          should.not.exist err
+          storage.addTag tagB, (err) ->
+            should.not.exist err
+            storage.getTags [tagA.sha1(), tagB.sha1()], (err, tags) ->
+              should.not.exist err
+              tags.length.should.equal 2
+              tag1 = tags[0]
+              tag2 = tags[1]
+              should.ok tag1.equals tagA
+              should.ok tag2.equals tagB
+              done()
 
     #### Propositions ####
 

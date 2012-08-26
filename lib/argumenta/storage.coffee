@@ -3,6 +3,7 @@ User        = require '../argumenta/user'
 Argument    = require '../argumenta/objects/argument'
 Proposition = require '../argumenta/objects/proposition'
 Commit      = require '../argumenta/objects/commit'
+Tag         = require '../argumenta/objects/tag'
 
 # Storage persists users and objects to a backend store.
 
@@ -190,5 +191,29 @@ class Storage extends Base
     @store.getCommits hashes, (err, commits) ->
       return cb new @RetrievalError "Failed getting commits from the store." if err
       return cb null, commits
+
+  # Add a tag to the store.
+  #
+  # @param [Tag] tag The tag to store.
+  # @param [Function] cb(err) Called on completion or error.
+  # @param [StorageError] err Any error.
+  addTag: (tag, cb) ->
+    unless tag instanceof Tag
+      return cb new @InputError "Tag instance required to store tag."
+    unless tag.validate()
+      return cb new @InputError "Tag to store must be valid."
+
+    @store.addTag tag, cb
+
+  # Get tags from the store by hashes.
+  #
+  # @param [Array<String>] hashes Hash ids of the tags to retrieve.
+  # @param [Function]      cb(err, tags) Called on completion or error.
+  # @param [StorageError]  err Any error.
+  # @param [Array<Tag>] tags The retrieved tags.
+  getTags: (hashes, cb) ->
+    @store.getTags hashes, (err, tags) ->
+      return cb new @RetrievalError "Failed getting tags from the store." if err
+      return cb null, tags
 
 module.exports = Storage
