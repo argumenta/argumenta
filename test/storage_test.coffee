@@ -28,28 +28,26 @@ for type in storageTypes
         should.not.exist err
         done()
 
-    #### Users ####
+    afterEach clearStorage
 
-    username = 'tester'
-    password_hash = '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
-    email = 'tester@xyz.com'
+    #### Users ####
 
     describe 'addUser( user, callback )', ->
       it 'should add a user successfully', (done) ->
-        tester = new User
-          username: username
-          password_hash: password_hash
-          email: email
+        tester = fixtures.validUser()
         storage.addUser tester, (err) ->
           should.not.exist err
           done()
 
     describe 'getUser( username, callback )', ->
       it 'should get a stored user', (done) ->
-        storage.getUser 'tester', (err, user) ->
+        tester = fixtures.validUser()
+        storage.addUser tester, (err) ->
           should.not.exist err
-          user.username.should.equal 'tester'
-          done()
+          storage.getUser tester.username, (err, user) ->
+            should.not.exist err
+            user.username.should.equal tester.username
+            done()
 
     describe 'clearAll( callback )', ->
       it 'should delete all stored users', (done) ->
@@ -90,26 +88,20 @@ for type in storageTypes
 
     #### Arguments ####
 
-    title = 'The Argument Title'
-    premises = [ 'The first premise.', 'The second premise.' ]
-    conclusion = 'The conclusion.'
-
     describe 'addArgument( argument, callback )', ->
       it 'should store a valid argument', (done) ->
-        argument = new Argument title, premises, conclusion
+        argument = fixtures.validArgument()
         storage.addArgument argument, (err) ->
           should.not.exist err
           storage.getArguments [argument.sha1()], (err, args) ->
             should.not.exist err
             args.length.should.equal 1
             arg = args[0]
-            arg.title.should.equal 'The Argument Title'
-            arg.sha1().should.equal '7077e1ce31bc8e9d2a88479aa2d159f2f9de4856'
-            arg.should.eql argument
+            arg.equals(argument).should.equal true
             done()
 
       it 'should not store an invalid argument', (done) ->
-        badArgument = new Argument '', [''], ''
+        badArgument = fixtures.invalidArgument()
         storage.addArgument badArgument, (err) ->
           should.exist err
           err.should.be.an.instanceOf Storage.InputError
@@ -117,21 +109,15 @@ for type in storageTypes
 
     #### Commits ####
 
-    targetType = 'argument'
-    targetSha1 = '39cb3925a38f954cf4ca12985f5f948177f6da5e'
-    committer = 'tester'
-    commitDate = '1970-01-01T00:00:00Z'
-    parentSha1 = '0123456789abcdef000000000000000000000000'
-
     describe 'addCommit( commit, callback )', ->
       it 'should store a valid commit', (done) ->
-        commit = new Commit targetType, targetSha1, committer, commitDate, [parentSha1]
+        commit = fixtures.validCommit()
         storage.addCommit commit, (err) ->
           should.not.exist err
           done()
 
       it 'should not store an invalid commit', (done) ->
-        badCommit = new Commit '', '', '', '', ''
+        badCommit = fixtures.invalidCommit()
         storage.addCommit badCommit, (err) ->
           should.exist err
           err.should.be.an.instanceOf Storage.InputError
@@ -139,7 +125,7 @@ for type in storageTypes
 
     describe 'getCommits( hashes, callback )', ->
       it 'should retrieve a stored commit', (done) ->
-        commitA = new Commit targetType, targetSha1, committer, commitDate, [parentSha1]
+        commitA = fixtures.validCommit()
         storage.addCommit commitA, (err) ->
           should.not.exist err
           storage.getCommits [commitA.sha1()], (err, commits) ->
@@ -213,45 +199,37 @@ for type in storageTypes
     describe 'addPropositions( propositions, callback )', ->
       it 'should add valid propositions successfully', (done) ->
         props = [
-          new Proposition('first proposition')
-          new Proposition('second proposition')
-          new Proposition('third proposition')
+          fixtures.uniqueProposition()
+          fixtures.uniqueProposition()
+          fixtures.uniqueProposition()
         ]
         storage.addPropositions props, (err) ->
           should.not.exist err
           done()
 
       it 'should refuse to add anything but propositions', (done) ->
-        props = [
-          "Just a string"
-        ]
+        props = [ 'Just a string' ]
         storage.addPropositions props, (err) ->
           should.exist err
           done()
 
       it 'should refuse to add invalid propositions', (done) ->
-        props = [
-          new Proposition """
-            This text is too long for a proposition. This text is too long for a proposition.
-            This text is too long for a proposition. This text is too long for a proposition.
-            This text is too long for a proposition. This text is too long for a proposition.
-            """
-        ]
+        props = [ fixtures.invalidProposition() ]
         storage.addPropositions props, (err) ->
           should.exist err
           done()
 
     describe 'getPropositions( hashes, callback )', ->
       it 'should get stored propositions', (done) ->
-        hashes = [
-          '4d2c438035e176dbfa4fe395bdba128a11dff8f8'
-          'd7439bc3b3fab3712280da6bdf3a3940f23a9c1f'
-          '16b0169ed8d54062ca81f26bc441f16d32b3be00'
-        ]
-        storage.getPropositions hashes, (err, propositions) ->
+        propA = fixtures.uniqueProposition()
+        propB = fixtures.uniqueProposition()
+        props = [ propA, propB ]
+        hashes = [ propA.sha1(), propB.sha1() ]
+        storage.addPropositions props, (err) ->
           should.not.exist err
-          propositions.length.should.equal 3
-          propositions[0].text.should.equal 'first proposition'
-          propositions[1].text.should.equal 'second proposition'
-          propositions[2].text.should.equal 'third proposition'
-          done()
+          storage.getPropositions hashes, (err, propositions) ->
+            should.not.exist err
+            propositions.length.should.equal 2
+            should.ok propositions[0].equals propA
+            should.ok propositions[1].equals propB
+            done()
