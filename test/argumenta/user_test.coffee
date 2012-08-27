@@ -5,37 +5,39 @@ should = require 'should'
 
 describe 'User', ->
 
-  describe 'new User', ->
-    it 'should create a user instance from storable attributes', ->
+  describe 'new User( username, email, password_hash )', ->
+    it 'should create a new user instance', ->
+      username = fixtures.validUsername()
+      email = fixtures.validEmail()
+      hash = fixtures.validPasswordHash()
 
-      # Storable fields includes password hash
-      params =
-        username:      'tester'
-        email:         'tester@xyz.com'
-        password_hash: '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
+      user = new User username, email, hash
+      user.should.be.an.instanceOf User
+      user.username.should.equal username
+      user.email.should.equal email
+      user.password_hash.should.equal hash
+      user.validate().should.equal true
 
-      # Create user syncronously
-      user = new User params
-
-      # Test values
-      user.should.be.an.instanceof     User
-      user.username.should.equal      'tester'
-      user.email.should.equal         'tester@xyz.com'
-      user.password_hash.should.equal '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
-      should.not.exist user.password
-
-      # Validate user
-      should.ok user.validate()
-
-      # Verify password
-      should.ok bcrypt.compareSync 'tester12', user.password_hash
+  describe 'new User( params )', ->
+    it 'should create a new user instance', ->
+      username = fixtures.validUsername()
+      email = fixtures.validEmail()
+      hash = fixtures.validPasswordHash()
+      params = username: username, email: email, password_hash: hash
+      user1 = new User params
+      user2 = new User username, email, hash
+      should.ok user1.equals( user2 )
 
   describe 'User.validatePassword()', ->
-    it 'should fail if password is less than 6 characters', ->
-      validatorFor = (pass) ->
-        return -> User.validatePassword( pass )
-      validatorFor('12345').should.throw
+    validatorFor = (pass) ->
+      return -> User.validatePassword( pass )
+
+    it 'should return true if password is 6 characters or more', ->
       validatorFor('123456').should.not.throw
+      should.ok User.validatePassword( '123456' )
+
+    it 'should throw if password is less than 6 characters', ->
+      validatorFor('12345').should.throw
 
   describe 'equals( user )', ->
     it 'should return true for an identical user', ->
@@ -43,15 +45,15 @@ describe 'User', ->
       userB = fixtures.validUser()
       userA.equals( userB ).should.equal true
 
-    it 'should return false for a different usr', ->
+    it 'should return false for a different user', ->
       userA = fixtures.uniqueUser()
       userB = fixtures.uniqueUser()
       userA.equals( userB ).should.equal false
 
   describe 'validate()', ->
-    username = 'tester'
-    password_hash = '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
-    email = 'tester@xyz.com'
+    username      = fixtures.validUsername()
+    password_hash = fixtures.validPasswordHash()
+    email         = fixtures.validEmail()
 
     it 'should return true if the user is valid', ->
       user = new User {username, password_hash, email}
