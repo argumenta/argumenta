@@ -18,9 +18,9 @@ class Fixtures
   uniqueUserCount = 0
 
   @uniqueUser: () ->
-    return new User
-      "unique_user_#{++uniqueUserCount}",
-      "user_#{uniqueUserCount}@xyz.com", @validPasswordHash()
+    return new User( "user#{++uniqueUserCount}",
+                     "user#{uniqueUserCount}@xyz.com",
+                     @validPasswordHash() )
 
   @validUsername: () ->
     return 'tester'
