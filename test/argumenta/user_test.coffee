@@ -1,4 +1,5 @@
-User   = require '../../lib/argumenta/user'
+User     = require '../../lib/argumenta/user'
+fixtures = require '../../test/fixtures'
 bcrypt = require 'bcrypt'
 should = require 'should'
 
@@ -35,6 +36,17 @@ describe 'User', ->
         return -> User.validatePassword( pass )
       validatorFor('12345').should.throw
       validatorFor('123456').should.not.throw
+
+  describe 'equals( user )', ->
+    it 'should return true for an identical user', ->
+      userA = fixtures.validUser()
+      userB = fixtures.validUser()
+      userA.equals( userB ).should.equal true
+
+    it 'should return false for a different usr', ->
+      userA = fixtures.uniqueUser()
+      userB = fixtures.uniqueUser()
+      userA.equals( userB ).should.equal false
 
   describe 'validate()', ->
     username = 'tester'

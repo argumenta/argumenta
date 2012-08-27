@@ -35,6 +35,19 @@ class User extends Base
 
   ### Instance Methods ###
 
+  # Checks for equality with another user instance.
+  #
+  #     isEqual = user1.equals( user2 )
+  #
+  # @api public
+  # @param [User] user The other user.
+  # @return [Boolean] The equality result.
+  equals: (user) ->
+    return user instanceof User and
+      user.username == @username and
+      user.email == @email and
+      user.passwordHash == @passwordHash
+
   #### Validation ####
 
   # Validates a user instance.
