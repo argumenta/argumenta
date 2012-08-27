@@ -26,10 +26,12 @@ class User extends Base
   # @param [String] params.username The user's login name.
   # @param [String] params.email    The user's email adress.
   # @param [String] params.password_hash The user's password hash.
-  constructor: (params) ->
-    @username      = params.username
-    @email         = params.email
-    @password_hash = params.password_hash
+  constructor: (@username, @email, @password_hash) ->
+    if arguments.length == 1
+      params = arguments[0]
+      @username      = params.username
+      @email         = params.email
+      @password_hash = params.password_hash
 
   ### Instance Methods ###
 
