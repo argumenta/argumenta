@@ -1,11 +1,10 @@
 Storage     = require '../lib/argumenta/storage'
 User        = require '../lib/argumenta/user'
-Argument    = require '../lib/argumenta/objects/argument'
-Proposition = require '../lib/argumenta/objects/proposition'
-Commit      = require '../lib/argumenta/objects/commit'
-Tag         = require '../lib/argumenta/objects/tag'
+Objects     = require '../lib/argumenta/objects'
 fixtures    = require '../test/fixtures'
 should      = require 'should'
+
+{Argument, Proposition, Commit, Tag} = Objects
 
 getStorage = (type) ->
   switch type
