@@ -13,7 +13,6 @@
     "express": "3.0.0alpha2",
     "jade": "*",
     "stylus": "*",
-    "sweeten-docco": ">=0.3.1",
     "underscore": "1.3.x"
   },
   "devDependencies": {
@@ -21,6 +20,7 @@
     "mocha": "1.0.x",
     "request": "~2.9.202",
     "should": "0.6.x",
-    "superagent": "~0.8.1"
+    "superagent": "~0.8.1",
+    "sweeten-docco": ">=0.3.1"
   }
 }
