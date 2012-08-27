@@ -14,6 +14,7 @@ class Errors
   @LocalStore:       class LocalStoreError extends StorageError
 
   @User:             class UserError extends BaseError
+  @PublicUser:       class PublicUserError extends UserError
   @Users:            class UsersError extends BaseError
 
   @Validation:       class ValidationError extends BaseError

@@ -1,6 +1,7 @@
 
-User    = require '../../lib/argumenta/user'
-Objects = require '../../lib/argumenta/objects'
+User       = require '../../lib/argumenta/user'
+PublicUser = require '../../lib/argumenta/public_user'
+Objects    = require '../../lib/argumenta/objects'
 
 {Argument, Proposition, Commit, Tags} = Objects
 {SupportTag, DisputeTag, CitationTag, CommentaryTag} = Tags
@@ -30,6 +31,16 @@ class Fixtures
 
   @validPasswordHash: () ->
     return '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
+
+  #### Public Users ####
+
+  @validPublicUser: () ->
+    return new PublicUser @validUsername()
+
+  uniquePublicUserCount = 0
+
+  @uniquePublicUser: () ->
+    return new PublicUser "publicUser#{++uniquePublicUserCount}"
 
   #### Arguments ####
 
