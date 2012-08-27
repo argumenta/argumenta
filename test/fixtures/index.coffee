@@ -1,4 +1,5 @@
 
+User    = require '../../lib/argumenta/user'
 Objects = require '../../lib/argumenta/objects'
 
 {Argument, Proposition, Commit, Tags} = Objects
@@ -8,6 +9,27 @@ Objects = require '../../lib/argumenta/objects'
 # Fixtures contains Argumenta objects and components for tests.
 #
 class Fixtures
+
+  #### Users ####
+
+  @validUser: () ->
+    return new User @validUsername(), @validEmail(), @validPasswordHash()
+
+  uniqueUserCount = 0
+
+  @uniqueUser: () ->
+    return new User
+      "unique_user_#{++uniqueUserCount}",
+      "user_#{uniqueUserCount}@xyz.com", @validPasswordHash()
+
+  @validUsername: () ->
+    return 'tester'
+
+  @validEmail: () ->
+    return 'tester@xyz.com'
+
+  @validPasswordHash: () ->
+    return '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
 
   #### Arguments ####
 
@@ -33,6 +55,11 @@ class Fixtures
 
   @invalidProposition: () ->
     return new Proposition ''
+
+  uniquePropositionCount = 0
+
+  @uniqueProposition: () ->
+    return new Proposition "Unique proposition text number #{++uniquePropositionCount}."
 
   @validPropositionText: () ->
     return 'The proposition text.'
