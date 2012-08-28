@@ -1,5 +1,6 @@
-Auth   = require '../../lib/argumenta/auth'
-User   = require '../../lib/argumenta/user'
+Argumenta = require '../../lib/argumenta'
+Auth      = require '../../lib/argumenta/auth'
+User      = require '../../lib/argumenta/user'
 should = require 'should'
 
 describe 'Auth', ->
@@ -16,7 +17,6 @@ describe 'Auth', ->
 
   describe 'Auth.verifyPassword()', ->
 
-    # TODO
     it 'should verify a password successfully', (done) ->
       hash = '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
       password = 'tester12'
@@ -37,9 +37,7 @@ describe 'Auth', ->
 
   describe 'auth.verifyLogin()', ->
 
-    Argumenta = require '../../lib/argumenta'
-    argumenta = new Argumenta
-      storageType: 'local', logLevel: 'fatal'
+    argumenta = new Argumenta storageType: 'local'
 
     before (done) ->
       username = 'tester'
