@@ -37,15 +37,15 @@ describe 'App', () ->
       should.not.exist err
       done()
 
-  describe '/index', () ->
-    it 'should respond with index and links to log in', (done) ->
-      get '/', (res) ->
-        res.status.should.equal 200
-        res.text.should.match /Argumenta/
-        res.text.should.match /Sign in.*or.*Join now!/
-        done()
+  describe '/', () ->
+    describe 'GET /', ->
+      it 'should respond with index and links to log in', (done) ->
+        get '/', (res) ->
+          res.status.should.equal 200
+          res.text.should.match /Argumenta/
+          res.text.should.match /Sign in.*or.*Join now!/
+          done()
 
-  # TODO: Users (GET /users, GET /user/:name.json)
   describe '/users', () ->
 
     describe 'POST /users', (done) ->
@@ -159,31 +159,31 @@ describe 'App', () ->
             res.body.should.match /Invalid username and password combination./
             done()
 
-    describe '/logout', ->
-      describe 'GET logout', ->
-        it 'should clear session cookie and redirect to index', (done) ->
-          get '/logout', (err, res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql(['http://localhost:3000/'])
-            res.text.should.match /Sign in.*or.*Join now!/
-            done()
+  describe '/logout', ->
+    describe 'GET logout', ->
+      it 'should clear session cookie and redirect to index', (done) ->
+        get '/logout', (err, res) ->
+          res.status.should.equal 200
+          res.redirects.should.eql(['http://localhost:3000/'])
+          res.text.should.match /Sign in.*or.*Join now!/
+          done()
 
-    describe '/:name.:format?', ->
+  describe '/:name.:format?', ->
 
-      describe 'GET /:name', ->
-        it 'should be an alias for /users/:name', (done) ->
-          get '/tester', (err, res)->
-            res.status.should.equal 200
-            res.text.should.match /tester/
-            res.text.should.not.match /error/i
-            done()
+    describe 'GET /:name', ->
+      it 'should be an alias for /users/:name', (done) ->
+        get '/tester', (err, res)->
+          res.status.should.equal 200
+          res.text.should.match /tester/
+          res.text.should.not.match /error/i
+          done()
 
-      describe 'GET /:name.json', ->
-        it 'should be an alias for /users/:name.json', (done) ->
-          get '/tester.json', (err, res) ->
-            res.status.should.equal 200
-            res.type.should.equal 'application/json'
-            res.body.should.be.an.instanceof Object
-            res.body.user.should.eql { username: 'tester' }
-            should.not.exist res.body.error
-            done()
+    describe 'GET /:name.json', ->
+      it 'should be an alias for /users/:name.json', (done) ->
+        get '/tester.json', (err, res) ->
+          res.status.should.equal 200
+          res.type.should.equal 'application/json'
+          res.body.should.be.an.instanceof Object
+          res.body.user.should.eql { username: 'tester' }
+          should.not.exist res.body.error
+          done()
