@@ -16,6 +16,7 @@ class Errors
 
   @User:             class UserError extends BaseError
   @PublicUser:       class PublicUserError extends UserError
+  @Arguments:        class ArgumentsError extends BaseError
   @Users:            class UsersError extends BaseError
 
   @Validation:       class ValidationError extends BaseError

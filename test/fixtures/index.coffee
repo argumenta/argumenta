@@ -11,6 +11,21 @@ Objects    = require '../../lib/argumenta/objects'
 #
 class Fixtures
 
+  #### Data ####
+
+  @validArgumentData: () ->
+    return @validArgument().data()
+
+  @uniqueArgumentData: () ->
+    return @uniqueArgument().data()
+
+  @validUserData: () ->
+    return {
+      username: @validUsername()
+      email: @validEmail()
+      password: @validPassword()
+    }
+
   #### Users ####
 
   @validUser: () ->
@@ -28,6 +43,9 @@ class Fixtures
 
   @validEmail: () ->
     return 'tester@xyz.com'
+
+  @validPassword: () ->
+    return 'tester12'
 
   @validPasswordHash: () ->
     return '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
