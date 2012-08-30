@@ -82,3 +82,20 @@ describe 'Argument', ->
     it 'should return false if missing conclusion', ->
       argument = new Argument title, premises, ''
       argument.validate().should.equal false
+
+  describe 'repo()', ->
+    it 'should return the default repo name (slugified title)', ->
+      argument = new Argument title, premises, conclusion
+      argument.repo().should.equal 'the-argument-title'
+
+  describe 'data()', ->
+    it 'should return a plain object with argument data', ->
+      argument = new Argument title, premises, conclusion
+      data = argument.data()
+      data.should.eql {
+        title: title
+        premises: premises
+        conclusion: conclusion
+        sha1: argument.sha1()
+        repo: argument.repo()
+      }

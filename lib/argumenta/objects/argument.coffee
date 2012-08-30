@@ -98,6 +98,26 @@ class Argument
     return argument instanceof Argument and
       @objectRecord() == argument.objectRecord()
 
+  # Gets the default (title-based) repo name.
+  #
+  # @api public
+  # @return [String] The default repo name.
+  repo: () ->
+    return Argument.slugify @title
+
+  # Gets a plain object with argument data.
+  #
+  # @api public
+  # @return [Object] The argument data.
+  data: () ->
+    return {
+      title: @title
+      premises: _.map @premises, (prop) -> prop.text
+      conclusion: @conclusion.text
+      repo: @repo()
+      sha1: @sha1()
+    }
+
   ### Validation ###
 
   # Validates the argument instance.
@@ -167,6 +187,16 @@ class Argument
   @sanitizeTitle: (text) ->
     text = '' unless _.isString text
     return text.split('\n').join(' ')
+
+  # Slugify a text string.  
+  # Lowercases text, and replaces spaces with '-'.
+  #
+  # @api private
+  # @see Argument#repo()
+  # @param [String] text The text to slugify.
+  # @return [String] The slugified text.
+  @slugify: (text) ->
+    text.toLowerCase().replace(new RegExp(' ', 'g'), '-')
 
   # Validates title text.
   #
