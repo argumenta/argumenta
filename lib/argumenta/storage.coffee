@@ -45,6 +45,9 @@ class Storage extends Base
   # A custom error class for general storage errors.
   Error: @Error = @Errors.Storage
 
+  # Indicates requested resource was not found.
+  NotFoundError: @NotFoundError = @Errors.NotFound
+
   # A storage error indicating a resource conflict,
   # ie, attempts to overwrite existing users or objects.
   ConflictError: @ConflictError = @Errors.StorageConflict
@@ -130,6 +133,18 @@ class Storage extends Base
 
     @store.addArgument argument, cb
 
+  # Get an argument from the store by hash.
+  #
+  # @param [String] hash Hash id of the argument to retrieve.
+  # @param [Function] cb(err, args) Called on completion or error.
+  # @param [StorageError] err Any error.
+  # @param [Argument] arg The retrieved argument.
+  getArgument: (hash, cb) ->
+    @store.getArguments [hash], (err, args) =>
+      return cb new @RetrievalError "Failed getting arguments from the store." if err
+      return cb new @NotFoundError "Argument '#{hash}' not found." unless args.length > 0
+      return cb null, args[0]
+
   # Get arguments from the store by hashes.
   #
   # @param [Array<String>] hashes Hash ids of the arguments to retrieve.
@@ -137,7 +152,7 @@ class Storage extends Base
   # @param [StorageError]  err Any error.
   # @param [Array<Argument>] args The retrieved arguments.
   getArguments: (hashes, cb) ->
-    @store.getArguments hashes, (err, args) ->
+    @store.getArguments hashes, (err, args) =>
       return cb new @RetrievalError "Failed getting arguments from the store." if err
       return cb null, args
 
@@ -156,6 +171,18 @@ class Storage extends Base
     @store.addPropositions propositions, (err) ->
       return cb new @Error "Failed adding propositions to the store." if err
       return cb null
+
+  # Get a proposition from the store by hash.
+  #
+  # @param [String] hash Hash id of the proposition to retrieve.
+  # @param [Function] cb(err, proposition) Called on completion or error.
+  # @param [StorageError] err Any error.
+  # @param [Proposition] proposition The retrieved proposition.
+  getProposition: (hash, cb) ->
+    @store.getPropositions [hash], (err, propositions) =>
+      return cb new @RetrievalError "Failed getting proposition from the store." if err
+      return cb new @NotFoundError "Proposition '#{hash}' not found." unless propositions.length > 0
+      return cb null, propositions[0]
 
   # Get propositions from the store by hashes.
   #
@@ -181,6 +208,18 @@ class Storage extends Base
 
     @store.addCommit commit, cb
 
+  # Get a commit from the store by hash.
+  #
+  # @param [String] hash Hash id of the commit to retrieve.
+  # @param [Function] cb(err, commit) Called on completion or error.
+  # @param [StorageError] err Any error.
+  # @param [Commit] commit The retrieved commit.
+  getCommit: (hash, cb) ->
+    @store.getCommits [hash], (err, commits) =>
+      return cb new @RetrievalError "Failed getting commit from the store." if err
+      return cb new @NotFoundError "Commit '#{hash}' not found." unless commits.length > 0
+      return cb null, commits[0]
+
   # Get commits from the store by hashes.
   #
   # @param [Array<String>] hashes Hash ids of the commits to retrieve.
@@ -204,6 +243,18 @@ class Storage extends Base
       return cb new @InputError "Tag to store must be valid."
 
     @store.addTag tag, cb
+
+  # Get a tag from the store by hash.
+  #
+  # @param [String] hash Hash id of the tag to retrieve.
+  # @param [Function] cb(err, tag) Called on completion or error.
+  # @param [StorageError] err Any error.
+  # @param [Tag] tag The retrieved tag.
+  getTag: (hash, cb) ->
+    @store.getTags [hash], (err, tags) =>
+      return cb new @RetrievalError "Failed getting tag from the store." if err
+      return cb new @NotFoundError "Tag '#{hash}' not found." unless tags.length > 0
+      return cb null, tags[0]
 
   # Get tags from the store by hashes.
   #

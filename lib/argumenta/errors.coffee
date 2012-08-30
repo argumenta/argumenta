@@ -8,6 +8,7 @@ class Errors
   @Auth:             class AuthError extends BaseError
 
   @Storage:          class StorageError extends BaseError
+  @NotFound:         class NotFoundError extends StorageError
   @StorageConflict:  class ConflictError extends StorageError
   @StorageInput:     class StorageInputError extends StorageError
   @StorageRetrieval: class StorageRetrievalError extends StorageError
@@ -25,6 +26,7 @@ class Errors
     'BaseError'             : 500
     'AuthError'             : 500
     'StorageError'          : 500
+    'NotFoundError'         : 404
     'ConflictError'         : 409
     'StorageInputError'     : 400
     'StorageRetrievalError' : 500

@@ -106,6 +106,16 @@ for type in storageTypes
           err.should.be.an.instanceOf Storage.InputError
           done()
 
+    describe 'getArgument( hash, callback )', ->
+      it 'should retrieve a stored argument', (done) ->
+        argument = fixtures.validArgument()
+        storage.addArgument argument, (err) ->
+          should.not.exist err
+          storage.getArgument [argument.sha1()], (err, arg) ->
+            should.not.exist err
+            arg.equals(argument).should.equal true
+            done()
+
     #### Commits ####
 
     describe 'addCommit( commit, callback )', ->
@@ -121,6 +131,16 @@ for type in storageTypes
           should.exist err
           err.should.be.an.instanceOf Storage.InputError
           done()
+
+    describe 'getCommit( hash, callback )', ->
+      it 'should retrieve a stored commit', (done) ->
+        commit = fixtures.validCommit()
+        storage.addCommit commit, (err) ->
+          should.not.exist err
+          storage.getCommit [commit.sha1()], (err, retrievedCommit) ->
+            should.not.exist err
+            retrievedCommit.equals(commit).should.equal true
+            done()
 
     describe 'getCommits( hashes, callback )', ->
       it 'should retrieve a stored commit', (done) ->
@@ -158,6 +178,16 @@ for type in storageTypes
           storage.getTags [badTag.sha1()], (err, retrievedTags) ->
             should.not.exist err
             retrievedTags.length.should.equal 0
+            done()
+
+    describe 'getTag( hash, callback )', ->
+      it 'should retrieve a stored tag', (done) ->
+        tag = fixtures.validTag()
+        storage.addTag tag, (err) ->
+          should.not.exist err
+          storage.getTag [tag.sha1()], (err, retrievedTag) ->
+            should.not.exist err
+            retrievedTag.equals(tag).should.equal true
             done()
 
     describe 'getTags( hashes, callback )', ->
@@ -217,6 +247,16 @@ for type in storageTypes
         storage.addPropositions props, (err) ->
           should.exist err
           done()
+
+    describe 'getProposition( hash, callback )', ->
+      it 'should retrieve a stored proposition', (done) ->
+        proposition = fixtures.validProposition()
+        storage.addPropositions [proposition], (err) ->
+          should.not.exist err
+          storage.getProposition [proposition.sha1()], (err, retrievedProposition) ->
+            should.not.exist err
+            retrievedProposition.equals(proposition).should.equal true
+            done()
 
     describe 'getPropositions( hashes, callback )', ->
       it 'should get stored propositions', (done) ->
