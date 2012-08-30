@@ -118,6 +118,36 @@ class Storage extends Base
       return cb new @Error "Failed getting all users from store." if err
       return cb null, users
 
+  #### Repos ####
+
+  # Add a user repo for a given commit hash.
+  #
+  # @param [String] username The user's name.
+  # @param [String] repo     The repo's name.
+  # @param [Function] callback Called on success or error.
+  # @param [Error] err Any error.
+  # @param [String] commit   The commit's hash.
+  addRepo: (username, repo, commit, callback) ->
+    @getUser username, (err, user) =>
+      if err or not user
+        return callback new @NotFoundError "User required to create repo. Got: #{user}"
+      @store.addRepo username, repo, commit, (err) ->
+        return callback err
+
+  # Get the commit hash for a given user repo.
+  #
+  #     storage.getRepoHash username, repo, (err, hash) ->
+  #       console.log "This repo points to commit: #{hash}!"
+  #
+  # @param [String] username The user's name.
+  # @param [String] repo     The repo's name.
+  # @param [Function] callback Called on success or error.
+  # @param [Error] err Any error.
+  # @param [String] commit This repo's commit hash.
+  getRepoHash: (username, repo, callback) ->
+    @store.getRepoHash username, repo, (err, hash) ->
+      return callback null, hash
+
   #### Objects ####
 
   # Add an argument to the store.

@@ -64,6 +64,19 @@ class LocalStore extends Base
     # Success
     return cb null, publicUsers
 
+  #### Repos ####
+
+  # Add a user repo for a given commit hash.
+  addRepo: (username, repo, commit, callback) ->
+    @users[username].repos ?= {}
+    @users[username].repos[repo] = commit
+    return callback null
+
+  # Get the commit hash for a given user repo.
+  getRepoHash: (username, repo, callback) ->
+    hash = @users[username].repos?[repo]
+    return callback null, hash
+
   #### Objects ####
 
   # Add an argument to the store

@@ -42,6 +42,11 @@ class Fixtures
   @uniquePublicUser: () ->
     return new PublicUser "publicUser#{++uniquePublicUserCount}"
 
+  #### Repos ####
+
+  @validRepoName: () ->
+    return 'the-argument-title'
+
   #### Arguments ####
 
   @validArgument: () ->

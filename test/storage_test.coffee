@@ -85,6 +85,41 @@ for type in storageTypes
                   commits.length.should.equal 0
                   done()
 
+    #### Repos ####
+
+    describe 'addRepo( username, repo, commit, callback )', ->
+      it 'should store a repo for a valid user and commit', (done) ->
+        user = fixtures.validUser()
+        commit = fixtures.validCommit()
+        repo = fixtures.validRepoName()
+        storage.addUser user, (er1) ->
+          storage.addCommit commit, (er2) ->
+            storage.addRepo user.username, repo, commit.sha1(), (er3) ->
+              [er1, er2, er3].should.eql [1..3].map -> null
+              done()
+
+      it 'should fail if no such user exists', (done) ->
+        commit = fixtures.validCommit()
+        repo = fixtures.validRepoName()
+        storage.addCommit commit, (er1) ->
+          storage.addRepo 'nobody', repo, commit.sha1(), (er2) ->
+            should.not.exist er1
+            er2.should.be.an.instanceOf Storage.NotFoundError
+            done()
+
+    describe 'getRepoHash( username, repo, callback )', ->
+      it 'should retrieve a commit hash for a stored repo', (done) ->
+        user = fixtures.validUser()
+        commit = fixtures.validCommit()
+        repo = fixtures.validRepoName()
+        storage.addUser user, (er1) ->
+          storage.addCommit commit, (er2) ->
+            storage.addRepo user.username, repo, commit.sha1(), (er3) ->
+              storage.getRepoHash user.username, repo, (er4, hash) ->
+                [er1, er2, er3, er4].should.eql [1..4].map -> null
+                hash.should.equal commit.sha1()
+                done()
+
     #### Arguments ####
 
     describe 'addArgument( argument, callback )', ->
