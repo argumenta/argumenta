@@ -148,6 +148,26 @@ class Storage extends Base
     @store.getRepoHash username, repo, (err, hash) ->
       return callback null, hash
 
+  # Get the commit and target for a given user repo.
+  #
+  #     storage.getRepoTarget name, repo, (err, commit, target) ->
+  #       console.log "This repo points to commit: #{commit.sha1()}\n"
+  #                   "with target: #{target.sha1()}"
+  #
+  # @param [String] username The user's name.
+  # @param [String] repo     The repo's name.
+  # @param [Function] cb(err, commit, target) Called on success or error.
+  # @param [Error] err Any error.
+  # @param [Commit] commit The target commit.
+  # @param [Argument] target The target object.
+  getRepoTarget: (username, repo, cb) ->
+    @getRepoHash username, repo, (er1, hash) =>
+      @getCommit hash, (er2, commit) =>
+        @getArgument commit.targetSha1, (er3, argument) =>
+          err = er1 or er2 or er3
+          return cb err if err
+          return cb null, commit, argument
+
   #### Objects ####
 
   # Add an argument to the store.

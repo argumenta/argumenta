@@ -120,6 +120,40 @@ for type in storageTypes
                 hash.should.equal commit.sha1()
                 done()
 
+    # WithUser Helper
+    withUser = (callback) ->
+      user = fixtures.validUser()
+      storage.addUser user, (err) ->
+        should.not.exist err
+        callback user
+
+    # WithArgument Helper
+    withArgument = (callback) ->
+      withUser (user) ->
+        argument = fixtures.validArgument()
+        commit = new Commit 'argument', argument.sha1(), fixtures.validCommitter()
+        storage.addCommit commit, (er1) ->
+          storage.addArgument argument, (er2) ->
+            [er1, er2].should.eql [1..2].map -> null
+            callback user, commit, argument
+
+    # WithArgumentRepo Helper
+    withArgumentRepo = (callback) ->
+      withArgument (user, commit, argument) ->
+        repo = argument.repo()
+        storage.addRepo user.username, repo, commit.sha1(), (err) ->
+          should.not.exist err
+          callback user, repo, commit, argument
+
+    describe 'getRepoTarget( username, repo, callback )', ->
+      it 'should retrieve the commit and target object', (done) ->
+        withArgumentRepo (user, repo, commit, argument) ->
+          storage.getRepoTarget user.username, repo, (err, retrievedCommit, retrievedTarget) ->
+            should.not.exist err
+            retrievedCommit.equals( commit ).should.equal true
+            retrievedTarget.equals( argument ).should.equal true
+            done()
+
     #### Arguments ####
 
     describe 'addArgument( argument, callback )', ->
