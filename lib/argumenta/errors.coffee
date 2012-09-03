@@ -1,9 +1,14 @@
-BaseError = require '../argumenta/base_error'
-ObjectErrors = require '../argumenta/objects/object_errors'
+BaseError     = require '../argumenta/base_error'
+ObjectErrors  = require '../argumenta/objects/object_errors'
+User          = require '../argumenta/user'
+PublicUser    = require '../argumenta/public_user'
 
 class Errors
 
   @Base:             BaseError
+
+  @User:             UserError = User.Error
+  @PublicUser:       PublicUserError = PublicUser.Error
 
   @Auth:             class AuthError extends BaseError
 
@@ -14,8 +19,6 @@ class Errors
   @StorageRetrieval: class StorageRetrievalError extends StorageError
   @LocalStore:       class LocalStoreError extends StorageError
 
-  @User:             class UserError extends BaseError
-  @PublicUser:       class PublicUserError extends UserError
   @Arguments:        class ArgumentsError extends BaseError
   @Users:            class UsersError extends BaseError
 

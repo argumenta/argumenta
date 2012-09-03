@@ -1,15 +1,14 @@
-Base = require '../argumenta/base'
-Auth = require '../argumenta/auth'
+BaseError = require '../argumenta/base_error'
 
 #
 # User models a user account.
 #
-class User extends Base
+class User
 
   ### Errors ###
 
-  Error: @Error = @Errors.User
-  ValidationError: @ValidationError = @Errors.Validation
+  Error: @Error = class UserError extends BaseError
+  ValidationError: @ValidationError = class ValidationError extends BaseError
 
   ### Constructor ###
 

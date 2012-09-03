@@ -8,8 +8,8 @@ class PublicUser extends User
 
   ### Errors ###
 
-  Error: @Error = @Errors.PublicUser
-  ValidationError: @ValidationError = @Errors.Validation
+  Error: @Error = class PublicUserError extends User.Error
+  ValidationError: @ValidationError = User.ValidationError
 
   ### Constructor ###
 
