@@ -99,3 +99,22 @@ describe 'Argument', ->
         sha1: argument.sha1()
         repo: argument.repo()
       }
+
+  describe 'Argument.sanitizeTitle( text )', ->
+    it 'should replace newlines with spaces', ->
+      text = '\ntitle:\n\nsubtitle\n'
+      result = Argument.sanitizeTitle text
+      result.should.equal 'title: subtitle'
+
+    it 'should trim leading and trailing spaces', ->
+      text = '  title: subtitle  '
+      result = Argument.sanitizeTitle text
+      result.should.equal 'title: subtitle'
+
+    it 'should trim leading or trailing spaces', ->
+      text1 = '  title: subtitle'
+      text2 = 'title: subtitle  '
+      result1 = Argument.sanitizeTitle text1
+      result2 = Argument.sanitizeTitle text2
+      result1.should.equal 'title: subtitle'
+      result2.should.equal 'title: subtitle'

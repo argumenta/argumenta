@@ -178,15 +178,20 @@ class Argument
 
   ### Static Methods ###
 
-  # Sanitizes title text.  
-  # Strips newlines because titles are included in argument object records.
+  # Sanitizes title text.
+  #
+  # Replaces newlines because titles are included in argument object records.
+  # Removes leading and trailing spaces for convenience.
   #
   # @api private
   # @param [String] text The untrusted title text.
   # @return [String] The safe title text.
   @sanitizeTitle: (text) ->
     text = '' unless _.isString text
-    return text.split('\n').join(' ')
+    return text
+      .replace(/[\r\n]+/g, ' ')
+      .replace(/^\s+/, '')
+      .replace(/\s+$/, '')
 
   # Slugify a text string.  
   # Lowercases text, and replaces spaces with '-'.
