@@ -10,7 +10,7 @@ class Auth extends Base
   Error: @Error = @Errors.Auth
 
   # The bcrypt cost; log_2 of the number of rounds performed.
-  @bcryptCost = 10
+  @bcryptCost = parseInt(process.env.BCRYPT_COST, 10) or 10
 
   # Constructor
   # -----------
