@@ -16,6 +16,13 @@ respond = ( view, opts, req, res ) ->
   # Set any headers
   res.set key, val for key, val of headers if headers
 
+  # Creates json object from opts, without the http info
+  jsonFor = (opts) ->
+    json = _.extend {}, opts, {error}
+    delete json.headers
+    delete json.status
+    return json
+
   switch format
     when 'html'
       # Prepare any messages or errors
@@ -27,11 +34,13 @@ respond = ( view, opts, req, res ) ->
       viewOpts = _.extend {}, opts, {errors, messages, headers}
       res.render view, viewOpts
     when 'json'
-      # Create json object from opts, without the http info
-      json = _.extend {}, opts, {error}
-      delete json.headers
-      delete json.status
-      # Serve json
-      res.json json
+      res.set 'Content-Type', 'application/json'
+      res.json jsonFor opts
+    when 'jsonp'
+      json = jsonFor opts
+      cb = req.query.callback or 'jsonpCallback'
+      jsonp = cb + '(' + JSON.stringify( json, null, '  ' ) + ');'
+      res.set 'Content-Type', 'text/javascript'
+      res.send jsonp
 
 module.exports = respond
