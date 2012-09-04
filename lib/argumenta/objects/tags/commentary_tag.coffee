@@ -71,7 +71,7 @@ class CommentaryTag extends Tag
 
   validateTarget: () ->
     unless @targetType is 'argument'
-      throw @Errors.ObjectValidation "Commentary target type must be 'argument'."
+      throw new @Errors.ObjectValidation "Commentary target type must be 'argument'."
 
     return super()
 
