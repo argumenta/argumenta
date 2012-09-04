@@ -1,3 +1,4 @@
+BaseError = require '../../../lib/argumenta/base_error'
 
 #
 # `ObjectErrors` contains errors related to Argumenta objects.
@@ -13,7 +14,7 @@
 #
 class ObjectErrors
 
-  @Object = class ObjectError extends Error
+  @Object = class ObjectError extends BaseError
   @ObjectValidation = class ObjectValidationError extends ObjectError
 
 module.exports = ObjectErrors
