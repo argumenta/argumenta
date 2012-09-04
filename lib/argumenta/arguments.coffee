@@ -41,7 +41,8 @@ class Arguments extends Base
   # @param [Commit] commit The new commit instance.
   commit: (username, argument, callback) ->
     unless argument instanceof Argument and argument.validate()
-      err = new @Error "Valid argument required to create commit.\nGot: #{inspect argument}"
+      err = argument?.validationError or
+        new @Error "Valid argument required to create commit.\nGot: #{inspect argument}"
       return callback err, null
 
     @storage.getRepoHash username, argument.repo(), (err, hash) =>
