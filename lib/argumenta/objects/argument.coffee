@@ -40,7 +40,14 @@ class Argument
   # @param [Array<String>] premises The premise texts.
   # @param [String]        conclusion The conclusion text.
   constructor: (title, premises, conclusion) ->
-    @title = Argument.sanitizeTitle title
+    if arguments.length is 1
+      params = arguments[0]
+      return new Argument( params.title, params.premises, params.conclusion )
+
+    title = Argument.sanitizeTitle title
+    premises = Argument.sanitizePremises premises
+
+    @title = title
     @premises = []
     @premises.push new Proposition p for p in premises
     @conclusion = new Proposition conclusion
@@ -192,6 +199,18 @@ class Argument
       .replace(/[\r\n]+/g, ' ')
       .replace(/^\s+/, '')
       .replace(/\s+$/, '')
+
+  # Sanitizes premise texts.
+  #
+  # If only one premise is given, this ensures it is array-wrapped.
+  #
+  # @api private
+  # @param [Array<String>] premises The premise texts.
+  # @return [Array<String>] The sanitized premise text.
+  @sanitizePremises: (premises) ->
+    if typeof premises is 'string'
+      premises = [premises]
+    return premises
 
   # Slugify a text string.  
   # Lowercases text, and replaces spaces with '-'.

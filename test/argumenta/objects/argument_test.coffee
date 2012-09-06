@@ -27,6 +27,12 @@ describe 'Argument', ->
       argument.conclusion.should.be.an.instanceOf Proposition
       argument.conclusion.text.should.equal 'The conclusion.'
 
+  describe 'new Argument( params )', ->
+    it 'should create a new, equivalent instance', ->
+      argument = new Argument title: title, premises: premises, conclusion: conclusion
+      expected = new Argument title, premises, conclusion
+      should.ok argument.equals expected
+
   describe 'children()', ->
     it 'should return an array with premises and conclusion', ->
       argument = new Argument title, premises, conclusion
@@ -118,3 +124,10 @@ describe 'Argument', ->
       result2 = Argument.sanitizeTitle text2
       result1.should.equal 'title: subtitle'
       result2.should.equal 'title: subtitle'
+
+  describe 'Argument.sanitizePremises( premises )', ->
+    it 'should array wrap a single premise string', ->
+      unwrapped = 'the premise text'
+      premises = Argument.sanitizePremises( unwrapped )
+      premises.length.should.equal 1
+      premises[0].should.equal unwrapped
