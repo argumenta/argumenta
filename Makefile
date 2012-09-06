@@ -2,6 +2,8 @@ COFFEE_PATHS := app config lib routes test
 DOC_SOURCES := lib
 TEST_PATHS := test
 TESTS := $(shell find $(TEST_PATHS) -name '*.coffee' | sed 's/coffee$$/js/')
+REPORTER ?= spec
+BCRYPT_COST ?= 1
 
 all: build docs
 
@@ -11,7 +13,7 @@ coffee:
 	coffee -c $(COFFEE_PATHS)
 
 coffee_forever:
-	coffee -c -w $(COFFEE_PATHS) &
+	@coffee -c -w $(COFFEE_PATHS) &
 
 docs: docco sweeten-docco
 
@@ -24,8 +26,11 @@ sweeten-docco:
 test: coffee
 	NODE_ENV=testing ./node_modules/.bin/mocha $(TESTS)
 
-test_forever:
-	NODE_ENV=testing ./node_modules/.bin/mocha -w $(TESTS) &
+test_forever: coffee_forever
+	@while inotifywait -e close_write -r $(COFFEE_PATHS); do sleep 1; \
+		NODE_ENV=testing BCRYPT_COST=$(BCRYPT_COST) \
+			./node_modules/.bin/mocha $(TESTS) -R $(REPORTER); \
+	done
 
 clean: clean_coffee clean_docs
 
