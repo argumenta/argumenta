@@ -3,6 +3,7 @@ flash   = require 'connect-flash'
 http    = require 'http'
 routes  = require '../routes'
 config  = require '../config'
+Objects = require '../lib/argumenta/objects'
 
 # Express Instance
 app = module.exports = express()
@@ -19,7 +20,7 @@ respond = require '../routes/helpers/respond'
 reply = ( processor ) ->
   replyFunc = (req, res, next) ->
     res.reply = ( view, opts ) ->
-      opts = processor( opts ) if processor
+      opts = processor( opts, req ) if processor
       respond( view, opts, req, res )
     next()
 
@@ -44,7 +45,15 @@ configure = () ->
         errors: errors
         messages: messages
         username: req.session.username or ''
-    app.use reply()
+    app.locals.pretty = true
+    app.use reply (opts, req) ->
+      format = req.param 'format'
+      # Send argumenta object instances as plain object data
+      if format is 'json' or format is 'jsonp'
+        for key, val of opts
+          if val instanceof Objects.Argument
+            opts[key] = val.data()
+      return opts
     app.use app.router
 
 app.configure 'production', ->
