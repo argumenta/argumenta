@@ -1,6 +1,61 @@
+
+// Backgrounds
+
+bgLinearGradient()
+  background-image: -webkit-linear-gradient(arguments)
+  background-image:    -moz-linear-gradient(arguments)
+  background-image:     -ms-linear-gradient(arguments)
+  background-image:      -o-linear-gradient(arguments)
+  background-image:         linear-gradient(arguments)
+
+bgRadialGradient()
+  background-image: -webkit-radial-gradient(arguments)
+  background-image:    -moz-radial-gradient(arguments)
+  background-image:     -ms-radial-gradient(arguments)
+  background-image:      -o-radial-gradient(arguments)
+  background-image:         radial-gradient(arguments)
+
+bgStripedGradient()
+  // Fallback
+  background-image: url('/images/horiz-grad-bluegreen.png');
+
+  // Gradient + Pattern
+  background-image: -webkit-linear-gradient(arguments), url("/images/dark-stripes.svg")
+  background-image:    -moz-linear-gradient(arguments), url("/images/dark-stripes.svg")
+  background-image:     -ms-linear-gradient(arguments), url("/images/dark-stripes.svg")
+  background-image:      -o-linear-gradient(arguments), url("/images/dark-stripes.svg")
+  background-image:         linear-gradient(arguments), url("/images/dark-stripes.svg")
+
+
+// Html
+
+html
+  height: 100%
+
+
+// Body
+
+body.argumenta
+  margin: 0px
+  padding: 0px
+  height: 100%
+  background-color: #000
+  background-repeat: no-repeat
+  bgRadialGradient top, hsl(200, 30%, 60%), #000
+
+  .wrapper
+    height: auto
+    min-height: 100%
+    min-width: 900px
+    max-width: 950px
+    margin: 0px auto
+    bgStripedGradient left, rgba(135, 251, 234, 0.5), rgba(61, 116, 194, 0.5)
+
+
 // Argumenta Namespace
 
 *.argumenta
+
 
   // Simple css reset
 
@@ -9,10 +64,27 @@
     padding: 0px
     border: 0px
 
+  *
+    box-sizing: border-box
+
+
+  // Colors
+
+  jade = #0c3
+  ruby = #d06
+  aluminum = #eee
+
+
+  // Gradients
+
+  ivoryGradient()
+    bgLinearGradient top, #fff, #fff, #ddd
+
+  ebonyGradient()
+    bgLinearGradient top, #888, #000, #000
+
 
   // Mixins
-
-  aluminum = #eee
 
   bg(color)
     background-color: color
@@ -23,10 +95,17 @@
   rounded(r=5px)
     border-radius: r
 
-  shadow(offset=3px, blur=2px, color=#aaa)
+  darkGlass(alpha=0.5)
+    background: rgba(0, 0, 0, alpha)
+    color: #fff
+
+  lightGlass(alpha=0.3)
+    background: rgba(255, 255, 255, alpha)
+
+  shadow(offset=2px, blur=2px, color=#aaa)
     box-shadow: offset offset blur color
 
-  text-shadow(offset=1px, blur=0px, color=#aaa)
+  textShadow(offset=1px, blur=0px, color=#aaa)
     text-shadow: offset offset blur color
 
 
@@ -36,7 +115,7 @@
     bg(aluminum)
     frame(10px, #fff)
     rounded(5px)
-    shadow(3px, 2px, #aaa)
+    shadow(2px, 2px, #444)
 
   light-input()
     shadow(1px, 1px, #ccc)
@@ -51,13 +130,23 @@
     button()
     bg(#06d)
 
+  ruby-button()
+    button()
+    bg(ruby)
+
   ebony-button()
     button()
     bg(#222)
 
+  ivory-button()
+    button()
+    bg(#f6f6f6)
+    color: #222
+
   form-style = light-form
   input-style = light-input
   button-style = ebony-button
+
 
   // Elements
 
@@ -66,13 +155,13 @@
     margin: 10px
     padding: 10px
 
-  input
+  input, textarea
     input-style()
     margin: 5px
     padding: 3px
     border: 1px solid #fff
 
-  input:focus
+  input:focus, textarea:focus
     outline: none
     border: 1px solid #2af
     shadow(0px, 3px, #08f)
@@ -82,14 +171,73 @@
 
   button
     button-style()
+    font-weight: bold
     margin: 5px
     padding: 5px
 
   button:hover
-    text-shadow(0px, 4px, #fff)
+    textShadow(0px, 4px, #fff)
 
   ul
     list-style: none
+
+
+  // Classes
+
+  .button
+    button-style()
+    shadow(1px, 2px, #333)
+    line-height: 2.2em
+    margin: 5px
+    padding: 5px
+
+  .button:hover
+    textShadow(0px, 4px, #fff)
+
+  .toolbar
+    lightGlass()
+    padding: 5px
+
+  .notifications
+    margin: 5px
+
+  notifyMessage()
+    border: 2px solid rgba(255, 255, 255, 0.5)
+    bg(rgba(255, 143, 162, 0.8))
+    text-align: center
+    font-weight: bold
+    margin: auto
+    padding: 5px
+    color: #fff
+    width: 50%
+    rounded()
+
+  .error
+    notifyMessage()
+    bg(rgba(255, 143, 162, 0.8))
+
+  .info
+    notifyMessage()
+    bg(rgba(0, 189, 179, 0.8))
+
+  .column
+    width: 49.5%
+
+  pane()
+    rounded(5px)
+    margin: 5px
+    padding: 5px
+
+  .title-pane
+    darkGlass(0.6)
+    pane()
+
+    a
+      color: #5af
+
+  .content-pane
+    lightGlass()
+    pane()
 
 
   // Typography
@@ -105,7 +253,8 @@
     text-decoration: none
 
   h1, h2, h3, h4, h5, h6
-    font-weight: bold
+    font-weight: normal
+    margin: 5px 0
 
   h1
     font-size: 1.8em
@@ -120,7 +269,12 @@
   h6
     font-size: 1.1em
 
+
   // Header
+
+  .header
+    background-color: white
+    padding: 2px 5px
 
   .header-logo
     font-family: sans-serif
@@ -128,11 +282,20 @@
     text-decoration: underline
     color: #333
 
+  .wrapper
+
+    > h1, > h2, > h3, > h4, > h5, > h6
+      darkGlass()
+      pane()
+      padding: 0.3em
+
+
   // Nav
 
   .nav-login, .nav-logout
     float: right
     color: #999
+
 
   // Join
 
@@ -142,6 +305,7 @@
 
     li
       text-align: right
+
 
   // Login
 
@@ -156,3 +320,70 @@
     label
       display: inline-block
       width: 70px
+
+
+  // New Argument
+
+  .new-argument
+    min-width: 450px
+    max-width: 600px
+    width: 100%
+
+  form.edit
+    border: 5px solid #fff
+    color: #333
+    margin: 5px
+    padding: 0px
+    text-align: center
+
+    .premise, .title, .conclusion
+      text-align: left
+
+      label
+        display: inline-block
+        margin: 0px
+        width: 75px
+        text-align: right
+        vertical-align: middle
+
+      textarea
+        vertical-align: middle
+        width: 295px
+        min-height: 3em
+        resize: none !important
+
+      .counter
+        color: #aaa
+        color: rgba(0, 0, 0, 0.3)
+        margin-left: -2em
+        margin-right: 10px
+        vertical-align: bottom
+        padding-bottom: 5px
+        font-weight: bold
+        font-size: 20px
+        width: 2em
+
+      .warning
+        color: #333
+        color: rgba(0, 0, 0, 0.6)
+
+      .exceeded
+        color: #d06
+
+      .buttons
+        margin: 0px -7px
+        display: inline-block
+
+      .addPremise, .removePremise
+        rounded(5)
+        color: #fff
+        font-weight: bold
+        margin: 0px
+        padding: 5px 0px
+        width: 1.3em
+
+      .addPremise
+        background: #08f
+
+      .removePremise
+        background: #f06

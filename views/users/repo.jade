@@ -1,0 +1,12 @@
+extends ../index
+
+block content
+  .column
+    h2.title-pane
+      b Argument Repo
+      br
+      a(href="/#{user.username}", title="User") #{user.username}
+      |  / 
+      a(href="/#{user.username}/#{repo}", title="Repo") #{repo}
+    .content-pane
+      include ../partials/argument

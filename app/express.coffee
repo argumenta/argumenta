@@ -74,19 +74,23 @@ unless config.appMode.match /production|testing|development/
   configure()
 
 # Routes
-app.get  '/',                     routes.main.index
-app.get  '/users',                routes.users.index
-app.post '/users',                routes.users.create
-app.get  '/users/:name.:format?', routes.users.show
+app.get  '/',                         routes.main.index
+app.get  '/users',                    routes.users.index
+app.post '/users',                    routes.users.create
+app.get  '/users/:name.:format?',     routes.users.show
 
-app.get  '/join',                 routes.join.index
+app.get  '/join',                     routes.join.index
 
-app.get  '/login',                routes.login.index
-app.post '/login',                routes.login.verify
+app.get  '/login',                    routes.login.index
+app.post '/login',                    routes.login.verify
+app.get  '/logout',                   routes.logout.index
 
-app.get  '/logout',               routes.logout.index
+app.get  '/arguments/new',            routes.arguments.new
+app.post '/arguments',                routes.arguments.create
+app.get  '/arguments/:hash.:format?', routes.arguments.show
 
-app.get  '/:name.:format?',       routes.users.show
+app.get  '/:name.:format?',           routes.users.show
+app.get  '/:name/:repo.:format?',     routes.repos.show
 
 # Http
 http.createServer(app).listen(3000)

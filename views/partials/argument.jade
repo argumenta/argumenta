@@ -1,0 +1,11 @@
+.argument
+  h2.title(title="Title") #{argument.title}
+  .premises
+    each premise, num in argument.premises
+      .proposition
+        span.index #{num + 1}.
+        span.text(title="Premise") #{premise.text}
+  .conclusion
+    .proposition
+      span.index C.
+      span.text(title="Conclusion") #{argument.conclusion.text}

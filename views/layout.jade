@@ -4,24 +4,29 @@ html
     meta(charset="utf-8")
     title #{title ? title + ' | ' + siteName : siteName}
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='http://code.jquery.com/jquery-1.8.1.js')
   body.argumenta
-    div.header
-      a.header-logo(href="/")= siteName
-      - if (username)
-        ul.nav-logout
-          li Logged in as 
-              a(href="/#{username}") #{username}
-              |  (
-              a(href="/logout") Sign out
-              | )
-      - else
-        ul.nav-login
-          li
-            a(href="/login") Sign in
-            |  or 
-            a(href="/join") Join now!
-    each message in messages
-      div= "Message: " + message
-    each error in errors
-      div= "Error: " + error
-    block content
+    div.wrapper
+      div.header
+        a.header-logo(href="/")= siteName
+        - if (username)
+          ul.nav-logout
+            li Logged in as 
+                a(href="/#{username}") #{username}
+                |  (
+                a(href="/logout") Sign out
+                | )
+        - else
+          ul.nav-login
+            li
+              a(href="/login") Sign in
+              |  or 
+              a(href="/join") Join now!
+      div.toolbar
+        a.button(href="/arguments/new") New Argument
+      div.notifications
+        each message in messages
+          div.info= "Info: " + message
+        each error in errors
+          div.error= "Error: " + error
+      block content

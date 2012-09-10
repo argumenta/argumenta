@@ -1,3 +1,31 @@
+html {
+  height: 100%;
+}
+body.argumenta {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-image: -webkit-radial-gradient(top, #7aa3b8, #000);
+  background-image: -moz-radial-gradient(top, #7aa3b8, #000);
+  background-image: -ms-radial-gradient(top, #7aa3b8, #000);
+  background-image: -o-radial-gradient(top, #7aa3b8, #000);
+  background-image: radial-gradient(top, #7aa3b8, #000);
+}
+body.argumenta .wrapper {
+  height: auto;
+  min-height: 100%;
+  min-width: 900px;
+  max-width: 950px;
+  margin: 0px auto;
+  background-image: url("/images/horiz-grad-bluegreen.png");
+  background-image: -webkit-linear-gradient(left, rgba(135,251,234,0.5), rgba(61,116,194,0.5)), url("/images/dark-stripes.svg");
+  background-image: -moz-linear-gradient(left, rgba(135,251,234,0.5), rgba(61,116,194,0.5)), url("/images/dark-stripes.svg");
+  background-image: -ms-linear-gradient(left, rgba(135,251,234,0.5), rgba(61,116,194,0.5)), url("/images/dark-stripes.svg");
+  background-image: -o-linear-gradient(left, rgba(135,251,234,0.5), rgba(61,116,194,0.5)), url("/images/dark-stripes.svg");
+  background-image: linear-gradient(left, rgba(135,251,234,0.5), rgba(61,116,194,0.5)), url("/images/dark-stripes.svg");
+}
 *.argumenta {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -6,22 +34,27 @@
   padding: 0px;
   border: 0px;
 }
+*.argumenta * {
+  box-sizing: border-box;
+}
 *.argumenta form {
   background-color: #eee;
   border: 10px solid #fff;
   border-radius: 5px;
-  box-shadow: 3px 3px 2px #aaa;
+  box-shadow: 2px 2px 2px #444;
   margin: 10px;
   padding: 10px;
 }
-*.argumenta input {
+*.argumenta input,
+*.argumenta textarea {
   box-shadow: 1px 1px 1px #ccc;
   border-radius: 2px;
   margin: 5px;
   padding: 3px;
   border: 1px solid #fff;
 }
-*.argumenta input:focus {
+*.argumenta input:focus,
+*.argumenta textarea:focus {
   outline: none;
   border: 1px solid #2af;
   box-shadow: 0px 0px 3px #08f;
@@ -34,6 +67,7 @@
   box-shadow: 1px 1px 2px #aaa;
   color: #fff;
   background-color: #222;
+  font-weight: bold;
   margin: 5px;
   padding: 5px;
 }
@@ -42,6 +76,69 @@
 }
 *.argumenta ul {
   list-style: none;
+}
+*.argumenta .button {
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px #aaa;
+  color: #fff;
+  background-color: #222;
+  box-shadow: 1px 1px 2px #333;
+  line-height: 2.2em;
+  margin: 5px;
+  padding: 5px;
+}
+*.argumenta .button:hover {
+  text-shadow: 0px 0px 4px #fff;
+}
+*.argumenta .toolbar {
+  background: rgba(255,255,255,0.3);
+  padding: 5px;
+}
+*.argumenta .notifications {
+  margin: 5px;
+}
+*.argumenta .error {
+  border: 2px solid rgba(255,255,255,0.5);
+  background-color: rgba(255,143,162,0.8);
+  text-align: center;
+  font-weight: bold;
+  margin: auto;
+  padding: 5px;
+  color: #fff;
+  width: 50%;
+  border-radius: 5px;
+  background-color: rgba(255,143,162,0.8);
+}
+*.argumenta .info {
+  border: 2px solid rgba(255,255,255,0.5);
+  background-color: rgba(255,143,162,0.8);
+  text-align: center;
+  font-weight: bold;
+  margin: auto;
+  padding: 5px;
+  color: #fff;
+  width: 50%;
+  border-radius: 5px;
+  background-color: rgba(0,189,179,0.8);
+}
+*.argumenta .column {
+  width: 49.5%;
+}
+*.argumenta .title-pane {
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+*.argumenta .title-pane a {
+  color: #5af;
+}
+*.argumenta .content-pane {
+  background: rgba(255,255,255,0.3);
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
 }
 *.argumenta button,
 *.argumenta input,
@@ -59,7 +156,8 @@
 *.argumenta h4,
 *.argumenta h5,
 *.argumenta h6 {
-  font-weight: bold;
+  font-weight: normal;
+  margin: 5px 0;
 }
 *.argumenta h1 {
   font-size: 1.8em;
@@ -79,11 +177,28 @@
 *.argumenta h6 {
   font-size: 1.1em;
 }
+*.argumenta .header {
+  background-color: #fff;
+  padding: 2px 5px;
+}
 *.argumenta .header-logo {
   font-family: sans-serif;
   font-size: 2em;
   text-decoration: underline;
   color: #333;
+}
+*.argumenta .wrapper > h1,
+*.argumenta .wrapper > h2,
+*.argumenta .wrapper > h3,
+*.argumenta .wrapper > h4,
+*.argumenta .wrapper > h5,
+*.argumenta .wrapper > h6 {
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  padding: 0.3em;
 }
 *.argumenta .nav-login,
 *.argumenta .nav-logout {
@@ -108,4 +223,91 @@
 *.argumenta form.login label {
   display: inline-block;
   width: 70px;
+}
+*.argumenta .new-argument {
+  min-width: 450px;
+  max-width: 600px;
+  width: 100%;
+}
+*.argumenta form.edit {
+  border: 5px solid #fff;
+  color: #333;
+  margin: 5px;
+  padding: 0px;
+  text-align: center;
+}
+*.argumenta form.edit .premise,
+*.argumenta form.edit .title,
+*.argumenta form.edit .conclusion {
+  text-align: left;
+}
+*.argumenta form.edit .premise label,
+*.argumenta form.edit .title label,
+*.argumenta form.edit .conclusion label {
+  display: inline-block;
+  margin: 0px;
+  width: 75px;
+  text-align: right;
+  vertical-align: middle;
+}
+*.argumenta form.edit .premise textarea,
+*.argumenta form.edit .title textarea,
+*.argumenta form.edit .conclusion textarea {
+  vertical-align: middle;
+  width: 295px;
+  min-height: 3em;
+  resize: none !important;
+}
+*.argumenta form.edit .premise .counter,
+*.argumenta form.edit .title .counter,
+*.argumenta form.edit .conclusion .counter {
+  color: #aaa;
+  color: rgba(0,0,0,0.3);
+  margin-left: -2em;
+  margin-right: 10px;
+  vertical-align: bottom;
+  padding-bottom: 5px;
+  font-weight: bold;
+  font-size: 20px;
+  width: 2em;
+}
+*.argumenta form.edit .premise .warning,
+*.argumenta form.edit .title .warning,
+*.argumenta form.edit .conclusion .warning {
+  color: #333;
+  color: rgba(0,0,0,0.6);
+}
+*.argumenta form.edit .premise .exceeded,
+*.argumenta form.edit .title .exceeded,
+*.argumenta form.edit .conclusion .exceeded {
+  color: #d06;
+}
+*.argumenta form.edit .premise .buttons,
+*.argumenta form.edit .title .buttons,
+*.argumenta form.edit .conclusion .buttons {
+  margin: 0px -7px;
+  display: inline-block;
+}
+*.argumenta form.edit .premise .addPremise,
+*.argumenta form.edit .title .addPremise,
+*.argumenta form.edit .conclusion .addPremise,
+*.argumenta form.edit .premise .removePremise,
+*.argumenta form.edit .title .removePremise,
+*.argumenta form.edit .conclusion .removePremise {
+  border-radius: 5;
+  color: #fff;
+  font-weight: bold;
+  margin: 0px;
+  padding: 5px 0px;
+  width: 1.3em;
+}
+*.argumenta form.edit .premise .addPremise,
+*.argumenta form.edit .title .addPremise,
+*.argumenta form.edit .conclusion .addPremise {
+  background: #08f;
+}
+*.argumenta form.edit .premise .removePremise,
+*.argumenta form.edit .title .removePremise,
+*.argumenta form.edit .conclusion .removePremise {
+  background: #f06;
 }

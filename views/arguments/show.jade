@@ -1,0 +1,14 @@
+extends ../index
+
+block content
+  .column
+    .title-pane
+      h2
+        b Argument
+      p
+        a(href="/arguments", title="Argument Objects") arguments
+        |  / 
+        hash = argument.sha1()
+        a(href=hash, title="SHA-1") #{hash}
+    .content-pane
+      include ../partials/argument

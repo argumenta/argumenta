@@ -16,6 +16,9 @@ class Fixtures
   @validArgumentData: () ->
     return @validArgument().data()
 
+  @invalidArgumentData: () ->
+    return @invalidArgument().data()
+
   @uniqueArgumentData: () ->
     return @uniqueArgument().data()
 
@@ -24,6 +27,16 @@ class Fixtures
       username: @validUsername()
       email: @validEmail()
       password: @validPassword()
+      password_hash: @validPasswordHash()
+    }
+
+  @uniqueUserData: () ->
+    user = @uniqueUser()
+    return {
+      username: user.username
+      email: user.email
+      password: @validPassword()
+      password_hash: @validPasswordHash()
     }
 
   #### Users ####
@@ -69,6 +82,12 @@ class Fixtures
 
   @validArgument: () ->
     return new Argument @validTitle(), @validPremises(), @validConclusion()
+
+  uniqueArgumentCount = 0
+
+  @uniqueArgument: () ->
+    return new Argument "Title #{++uniqueArgumentCount}",
+                        @validPremises(), @validConclusion()
 
   @invalidArgument: () ->
     return new Argument 'invalid-argument', [ '' ], ''
