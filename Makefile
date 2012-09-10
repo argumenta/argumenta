@@ -39,6 +39,14 @@ test_forever: coffee_forever
 			./node_modules/.bin/mocha $(TESTS) -R $(REPORTER); \
 	done
 
+archive:
+	PROJ=`basename $$(pwd)` DATE=`date +%Y.%m.%d` ; \
+	cd .. ; \
+	tar cvJf "$${PROJ}-$${DATE}.tar.xz" \
+		--exclude=node_modules \
+		--transform "s#^#$${PROJ}-$${DATE}/#" \
+		"$$PROJ"
+
 clean: clean_build clean_coffee clean_docs
 
 clean_build:
