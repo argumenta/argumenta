@@ -7,13 +7,20 @@ BCRYPT_COST ?= 1
 
 all: build docs
 
-build: coffee
+build: server client
+
+server: coffee
 
 coffee:
 	coffee -c $(COFFEE_PATHS)
 
 coffee_forever:
 	@coffee -c -w $(COFFEE_PATHS) &
+
+client:
+	mkdir -p build/client
+	./node_modules/.bin/browserify lib/argumenta/objects/index.coffee \
+		--debug --exports require -o build/client/objects.js
 
 docs: docco sweeten-docco
 
@@ -32,7 +39,10 @@ test_forever: coffee_forever
 			./node_modules/.bin/mocha $(TESTS) -R $(REPORTER); \
 	done
 
-clean: clean_coffee clean_docs
+clean: clean_build clean_coffee clean_docs
+
+clean_build:
+	-rm -rf build
 
 clean_coffee:
 	-find $(COFFEE_PATHS) -name '*.coffee' | sed 's/.coffee$$/.js/' | xargs rm
@@ -40,4 +50,4 @@ clean_coffee:
 clean_docs:
 	-rm -rf docs
 
-.PHONY: all build coffee coffee_forever test test_forever clean clean_coffee clean_docs
+.PHONY: all build server client coffee coffee_forever test test_forever clean clean_build clean_coffee clean_docs
