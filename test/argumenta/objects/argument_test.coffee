@@ -102,6 +102,7 @@ describe 'Argument', ->
         title: title
         premises: premises
         conclusion: conclusion
+        object_type: 'argument'
         sha1: argument.sha1()
         repo: argument.repo()
       }

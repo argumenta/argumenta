@@ -121,8 +121,9 @@ class Argument
       title: @title
       premises: _.map @premises, (prop) -> prop.text
       conclusion: @conclusion.text
-      repo: @repo()
+      object_type: 'argument'
       sha1: @sha1()
+      repo: @repo()
     }
 
   ### Validation ###

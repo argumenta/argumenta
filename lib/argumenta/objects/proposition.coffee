@@ -60,6 +60,7 @@ class Proposition
   data: () ->
     return {
       text: @text
+      object_type: 'proposition'
       sha1: @sha1()
     }
 

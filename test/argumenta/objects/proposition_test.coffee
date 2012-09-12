@@ -23,8 +23,11 @@ describe 'Proposition', ->
     it 'should return a plain object with proposition data', ->
       prop = new Proposition 'the proposition text'
       data = prop.data()
-      data.text.should.equal prop.text
-      data.sha1.should.equal prop.sha1()
+      data.should.eql {
+        text: prop.text
+        object_type: 'proposition'
+        sha1: prop.sha1()
+      }
 
   describe 'equals()', ->
     it 'should return true if propositions are equal', ->
