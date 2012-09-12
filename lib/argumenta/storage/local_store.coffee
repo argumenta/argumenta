@@ -84,7 +84,9 @@ class LocalStore extends Base
     hash = argument.sha1()
     @arguments.bySha1[ hash ] = argument
 
-    return cb null
+    @addPropositions argument.propositions, (err) ->
+      return cb err if err
+      return cb null
 
   # Get arguments from the store by hashes.
   getArguments: (hashes, cb) ->

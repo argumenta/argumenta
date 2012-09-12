@@ -168,6 +168,17 @@ for type in storageTypes
             arg.equals(argument).should.equal true
             done()
 
+      it 'should store propositions along with argument', (done) ->
+        withArgument (user, commit, argument) ->
+          hashes = argument.propositions.map (p) -> p.sha1()
+          storage.getPropositions hashes, (err, propositions) ->
+            should.not.exist err
+            propositions.should.exist
+            propositions.length.should.equal hashes.length
+            for prop, index in argument.propositions
+              propositions[index].equals( prop ).should.equal true
+            done()
+
       it 'should not store an invalid argument', (done) ->
         badArgument = fixtures.invalidArgument()
         storage.addArgument badArgument, (err) ->
