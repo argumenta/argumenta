@@ -19,6 +19,13 @@ describe 'Proposition', ->
       prop = new Proposition 'the proposition text'
       prop.sha1().should.equal '5d0f8723e110378563ba8d6e3cf336c0dcae4103'
 
+  describe 'data()', ->
+    it 'should return a plain object with proposition data', ->
+      prop = new Proposition 'the proposition text'
+      data = prop.data()
+      data.text.should.equal prop.text
+      data.sha1.should.equal prop.sha1()
+
   describe 'equals()', ->
     it 'should return true if propositions are equal', ->
       propositionA = new Proposition 'the proposition text'

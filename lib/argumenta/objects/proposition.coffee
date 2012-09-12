@@ -53,6 +53,16 @@ class Proposition
   sha1: () ->
     return Utils.SHA1 @objectRecord()
 
+  # Gets a plain object with proposition data.
+  #
+  # @api public
+  # @return [Object] The proposition data.
+  data: () ->
+    return {
+      text: @text
+      sha1: @sha1()
+    }
+
   # Checks for equality with another proposition.
   #
   #   isEqual = proposition1.equals( proposition2 )
