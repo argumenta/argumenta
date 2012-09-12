@@ -89,6 +89,8 @@ app.get  '/arguments/new',            routes.arguments.new
 app.post '/arguments',                routes.arguments.create
 app.get  '/arguments/:hash.:format?', routes.arguments.show
 
+app.get  '/arguments/:hash/propositions.:format?', routes.arguments.propositions
+
 app.get  '/:name.:format?',           routes.users.show
 app.get  '/:name/:repo.:format?',     routes.repos.show
 

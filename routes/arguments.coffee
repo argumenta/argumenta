@@ -59,3 +59,17 @@ exports.show = (req, res) ->
     else
       return res.reply 'arguments/show',
         argument: arg
+
+# Get an argument's propositions as html, json, or jsonp
+exports.propositions = (req, res) ->
+  hash = req.param 'hash'
+
+  argumenta.storage.getArgument hash, (err, argument) ->
+    return res.reply 'index', error: err.message, status: Errors.statusFor err if err
+    propHashes = argument.propositions.map (prop) -> prop.sha1()
+
+    argumenta.storage.getPropositions propHashes, (err, propositions) ->
+      return res.reply 'index', error: err.message, status: Errors.statusFor err if err
+      return res.reply 'arguments/propositions',
+        argument: argument
+        propositions: propositions.map (p) -> p.data()

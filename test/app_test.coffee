@@ -3,6 +3,8 @@ fixtures   = require '../test/fixtures'
 superagent = require 'superagent'
 request    = require 'request'
 should     = require 'should'
+Objects    = require '../lib/argumenta/objects'
+{Argument} = Objects
 
 base = 'http://localhost:3000'
 
@@ -277,6 +279,47 @@ describe 'App', () ->
               json.argument.should.eql argument
               done()
             eval jsonp
+
+    # Matches Propositions Data Helper - Checks array of proposition data.
+    matchesPropositionsData = (actual, expected) ->
+      actual.length.should.equal expected.length
+      for prop, index in expected
+        actual[index].should.include
+          sha1: prop.sha1
+          text: prop.text
+
+    # Verify JSONP Helper - Given a JSONP response, invokes callback with json.
+    verifyJSONP = (res, callback) ->
+      res.type.should.equal 'text/javascript'
+      res.text.should.exist
+      jsonp = res.text
+      jsonpCallback = (json) ->
+        callback(json)
+      eval jsonp
+
+    describe 'GET /arguments/:sha1/propositions.:format?', ->
+      it "should return argument propositions as json", (done) ->
+        sessionWithArgument (user, argument, get, post) ->
+          get '/arguments/' + argument.sha1 + '/propositions.json', (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            json = res.body
+            arg = new Argument(argument)
+            expectedData = arg.propositions.map (p) -> p.data()
+            matchesPropositionsData json.propositions, expectedData
+            done()
+
+      it "should return argument propositions as jsonp", (done) ->
+        sessionWithArgument (user, argument, get, post) ->
+          get '/arguments/' + argument.sha1 + '/propositions.jsonp', (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            verifyJSONP res, (json) ->
+              should.not.exist json.error
+              arg = new Argument argument
+              expectedData = arg.propositions.map (p) -> p.data()
+              matchesPropositionsData json.propositions, expectedData
+              done()
 
   describe '/logout', ->
     describe 'GET logout', ->
