@@ -26,16 +26,21 @@
       code.sha1(title=argument.objectRecord())= argument.sha1()
     button(type="submit") Create!
 
-script(src="/javascripts/objects.js")
-script(src="/javascripts/autosize/jquery.autosize.js")
-script(src="/javascripts/charcount/jquery.charcount.js")
 script
-  $(function() {
+  jquery(function() {
+
+    var $ = jquery;
+
+    // Use browserify's require().
+    window.require = window.browserify.require;
 
     // Argumenta modules.
     var Objects = require('/lib/argumenta/objects');
     var Argument = Objects.Argument;
     var Proposition = Objects.Proposition;
+
+    // Restore requirejs.
+    window.require = requirejs;
 
     // Jquery object containing the argument editor element.
     var element = $('.new-argument');
