@@ -8,6 +8,7 @@
     "test": "make test"
   },
   "dependencies": {
+    "argumenta-widgets": "~0.0.0",
     "bcrypt": "0.5.x",
     "connect-flash": "0.1.0",
     "express": "3.0.0alpha2",
