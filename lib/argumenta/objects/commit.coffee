@@ -80,6 +80,19 @@ class Commit
   sha1: () ->
     return Utils.SHA1 @objectRecord()
 
+  # Gets the commit as plain object data.
+  #
+  # @api public
+  # @return [Object] The commit data.
+  data: () ->
+    return {
+      target_type: @targetType
+      target_sha1: @targetSha1
+      committer:   @committer
+      commit_date: @commitDate
+      parent_sha1s: @parentSha1s
+    }
+
   # Checks for equality with another commit.
   #
   #   isEqual = commit1.equals( commit2 )

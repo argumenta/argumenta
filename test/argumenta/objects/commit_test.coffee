@@ -58,6 +58,18 @@ describe 'Commit', ->
       sha1 = commit.sha1()
       sha1.should.equal 'fa95fa7684ec4156c5616931d8e233a3397ba9e5'
 
+  describe 'data()', ->
+    it 'should return a plain object with commit data', ->
+      commit = new Commit( targetType, targetSha1, committer, commitDate )
+      data = commit.data()
+      data.should.eql {
+        target_type: commit.targetType
+        target_sha1: commit.targetSha1
+        committer: commit.committer
+        commit_date: commit.commitDate
+        parent_sha1s: commit.parentSha1s
+      }
+
   describe 'equals()', ->
     it 'should return true if commits are equal', ->
       commitA = new Commit targetType, targetSha1, committer, commitDate
