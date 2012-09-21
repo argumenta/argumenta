@@ -168,6 +168,26 @@ class Storage extends Base
           return cb err if err
           return cb null, commit, argument
 
+  # Get the repo for each [username, reponame] key pair.
+  #
+  #     key1 = [ 'user1', 'repo-a' ]
+  #     key2 = [ 'user2', 'repo-b' ]
+  #     key3 = [ 'user3', 'repo-c' ]
+  #
+  #     keys = [ key1, key2, key3 ]
+  #
+  #     storage.getRepos keys, (err, repos) ->
+  #       console.log "Got repos: ", repos
+  #
+  # @param [Array<Array<String>>] keys An array of [username, reponame] arrays.
+  # @param [Function] cb(err, repos) Called on completion or error.
+  # @param [StorageError] err Any error.
+  # @param [Array<Object>] repos The retrieved repos.
+  getRepos: (keys, cb) ->
+    @store.getRepos keys, (err, repos) ->
+      return cb err if err
+      return cb null, repos
+
   #### Objects ####
 
   # Add an argument to the store.

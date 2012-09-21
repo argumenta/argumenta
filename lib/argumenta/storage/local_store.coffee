@@ -1,4 +1,5 @@
-Base    = require '../../argumenta/base'
+Base       = require '../../argumenta/base'
+PublicUser = require '../../argumenta/public_user'
 
 class LocalStore extends Base
 
@@ -41,7 +42,9 @@ class LocalStore extends Base
     unless u
       return cb new @Error("No user for username: " + username), null
 
-    publicUser = {username: u.username}
+    publicUser = new PublicUser
+      username: u.username,
+      repos:    u.repos
 
     return cb null, publicUser
 
@@ -76,6 +79,25 @@ class LocalStore extends Base
   getRepoHash: (username, repo, callback) ->
     hash = @users[username].repos?[repo]
     return callback null, hash
+
+  # Get repos for an array of [username, reponame] key pairs.
+  getRepos: (keys, callback) ->
+    repos = []
+    for key in keys
+      [username, reponame] = key
+
+      user = new PublicUser @users[username]
+      commit = @commits.bySha1[ user.repos?[reponame] ]
+      target = @arguments.bySha1[ commit?.targetSha1 ]
+
+      repos.push repo = {
+        username: username
+        reponame: reponame
+        user: user
+        commit: commit
+        target: target
+      }
+    return callback null, repos
 
   #### Objects ####
 

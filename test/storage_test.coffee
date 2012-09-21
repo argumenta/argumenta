@@ -1,5 +1,6 @@
 Storage     = require '../lib/argumenta/storage'
 User        = require '../lib/argumenta/user'
+PublicUser  = require '../lib/argumenta/public_user'
 Objects     = require '../lib/argumenta/objects'
 fixtures    = require '../test/fixtures'
 should      = require 'should'
@@ -26,6 +27,31 @@ for type in storageTypes
       storage.clearAll (err) ->
         should.not.exist err
         done()
+
+    # WithUser Helper
+    withUser = (callback) ->
+      user = fixtures.uniqueUser()
+      storage.addUser user, (err) ->
+        should.not.exist err
+        callback user
+
+    # WithArgument Helper
+    withArgument = (callback) ->
+      withUser (user) ->
+        argument = fixtures.validArgument()
+        commit = new Commit 'argument', argument.sha1(), fixtures.validCommitter()
+        storage.addCommit commit, (er1) ->
+          storage.addArgument argument, (er2) ->
+            [er1, er2].should.eql [1..2].map -> null
+            callback user, commit, argument
+
+    # WithArgumentRepo Helper
+    withArgumentRepo = (callback) ->
+      withArgument (user, commit, argument) ->
+        repo = argument.repo()
+        storage.addRepo user.username, repo, commit.sha1(), (err) ->
+          should.not.exist err
+          callback user, repo, commit, argument
 
     afterEach clearStorage
 
@@ -120,30 +146,31 @@ for type in storageTypes
                 hash.should.equal commit.sha1()
                 done()
 
-    # WithUser Helper
-    withUser = (callback) ->
-      user = fixtures.validUser()
-      storage.addUser user, (err) ->
-        should.not.exist err
-        callback user
-
-    # WithArgument Helper
-    withArgument = (callback) ->
-      withUser (user) ->
-        argument = fixtures.validArgument()
-        commit = new Commit 'argument', argument.sha1(), fixtures.validCommitter()
-        storage.addCommit commit, (er1) ->
-          storage.addArgument argument, (er2) ->
-            [er1, er2].should.eql [1..2].map -> null
-            callback user, commit, argument
-
-    # WithArgumentRepo Helper
-    withArgumentRepo = (callback) ->
-      withArgument (user, commit, argument) ->
-        repo = argument.repo()
-        storage.addRepo user.username, repo, commit.sha1(), (err) ->
-          should.not.exist err
-          callback user, repo, commit, argument
+    describe 'getRepos( keys, callback )', ->
+      it 'should retrieve repos by [username, reponame] keys', (done) ->
+        withArgumentRepo (user1, repo1, commit1, argument1) ->
+          withArgumentRepo (user2, repo2, commit2, argument2) ->
+            key1 = [ user1.username, repo1 ]
+            key2 = [ user2.username, repo2 ]
+            keys = [ key1, key2 ]
+            storage.getRepos keys, (err, repos) ->
+              should.not.exist err
+              repos.length.should.equal 2
+              repos[0].should.eql {
+                username: user1.username
+                reponame: repo1
+                user: new PublicUser user1
+                commit: commit1
+                target: argument1
+              }
+              repos[1].should.eql {
+                username: user2.username
+                reponame: repo2
+                user: new PublicUser user2
+                commit: commit2
+                target: argument2
+              }
+              done()
 
     describe 'getRepoTarget( username, repo, callback )', ->
       it 'should retrieve the commit and target object', (done) ->
