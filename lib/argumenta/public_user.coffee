@@ -21,9 +21,11 @@ class PublicUser extends User
   # @api public
   # @see User
   # @param [String] username The user's login name.
-  constructor: (@username) ->
-    if arguments[0].username?
-      @username = arguments[0].username
+  constructor: (@username, @repos=[]) ->
+    if arguments.length is 1 and arguments[0].username?
+      params    = arguments[0]
+      @username = params.username
+      @repos    = params.repos or @repos
 
   ### Instance Methods ###
 
@@ -53,7 +55,7 @@ class PublicUser extends User
   # @return [Boolean] The validation status.
   validate: () ->
     try
-      @validateUsername()
+      @validateUsername() and @validateRepos()
       @validationStatus = true
       @validationError = null
     catch err
@@ -61,5 +63,34 @@ class PublicUser extends User
       @validationError = err
     finally
       return @validationStatus
+
+  #### Instance Field Validators ####
+
+  # Each invokes a static validator with instance params.
+  #
+  #     try
+  #       isValid = user.validateRepos()
+  #     catch validationErr
+  #       message = validationErr.message
+  #
+  # @throws ValidationError
+  # @return [Boolean] True only on success.
+  #
+  validateRepos: () ->
+    PublicUser.validateRepos @repos
+
+  #### Static Validators ####
+
+  # Validates the given parameters.  
+  # Each throws an error on failure, or returns true.
+  #
+  # @throws ValidationError
+  # @return [Boolean] True only on success.
+  #
+  @validateRepos: (repos) ->
+    unless typeof repos is 'array' or repos instanceof Array
+      throw new @ValidationError "Repos must be an array."
+
+    return true
 
 module.exports = PublicUser

@@ -48,3 +48,15 @@ describe 'PublicUser', ->
     it 'should return false if the username is invalid', ->
       user = new PublicUser {username: ''}
       user.validate().should.equal false
+
+    it 'should return true if repos is valid', ->
+      username = fixtures.validUsername()
+      repos = []
+      user = new PublicUser {username: username, repos: repos}
+      user.validate().should.equal true
+
+    it 'should return false if repos is not an array', ->
+      username = fixtures.validUsername()
+      repos = 'not-array'
+      user = new PublicUser {username: username, repos: repos}
+      user.validate().should.equal false
