@@ -389,8 +389,8 @@ describe 'App', () ->
               json.user.should.include {username: user.username}
               json.repo.should.eql argument.repo
               json.commit.should.include
-                targetType: 'argument'
-                targetSha1: argument.sha1
+                target_type: 'argument'
+                target_sha1: argument.sha1
               json.argument.should.eql argument
               done()
             eval jsonp
