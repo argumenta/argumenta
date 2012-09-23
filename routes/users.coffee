@@ -49,6 +49,19 @@ exports.public = (req, res) ->
           error: "Repos not found for user '#{name}'.",
           status: 404
       else
+        toData = (repo) ->
+          return {
+            username: repo.username
+            reponame: repo.reponame
+            user:     repo.user.data()
+            commit:   repo.commit.data()
+            target:   repo.target.data()
+          }
+
+        if /^json/.test req.param 'format'
+          user = user.data()
+          repos = repos.map (repo) -> toData(repo)
+
         return res.reply 'users/public',
           user: user,
           repos: repos

@@ -345,14 +345,17 @@ describe 'App', () ->
             done()
 
     describe 'GET /:name.json', ->
-      it 'should be an alias for /users/:name.json', (done) ->
-        get '/tester.json', (err, res) ->
-          res.status.should.equal 200
-          res.type.should.equal 'application/json'
-          res.body.should.be.an.instanceof Object
-          res.body.user.should.eql { username: 'tester', repos: [] }
-          should.not.exist res.body.error
-          done()
+      it "should show the user's public info as json", (done) ->
+        sessionWithArgument (user, argument, get, post) ->
+          get "/#{user.username}.json", (err, res) ->
+            should.not.exist err
+            res.type.should.equal 'application/json'
+            json = res.body
+            json.user.username.should.equal user.username
+            Object.keys(json.user.repos).length.should.equal 1
+            json.repos[0].username.should.equal user.username
+            json.repos[0].target.should.eql argument
+            done()
 
   describe '/:name/:repo.:format?', ->
     describe 'GET /:name/:repo.:format?', ->
