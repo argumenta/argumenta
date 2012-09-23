@@ -32,3 +32,23 @@ exports.show = (req, res) ->
   argumenta.storage.getUser name, (err, user) ->
     return res.reply 'index', error: "User '#{name}' not found.", status: 404 if err
     return res.reply 'users/user', user: user
+
+# Show public overview of a user, including repos
+exports.public = (req, res) ->
+  name = req.param 'name'
+  unless name?
+    return res.reply 'index', error: "Username missing."
+
+  argumenta.storage.getUser name, (err, user) ->
+    return res.reply 'index', error: "User '#{name}' not found.", status: 404 if err
+
+    keys = ( [name, reponame] for reponame, hash of user.repos )
+    argumenta.storage.getRepos keys, (err, repos) ->
+      if err
+        return res.reply 'index',
+          error: "Repos not found for user '#{name}'.",
+          status: 404
+      else
+        return res.reply 'users/public',
+          user: user,
+          repos: repos

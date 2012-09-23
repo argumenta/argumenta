@@ -140,6 +140,10 @@ body.argumenta .wrapper {
   margin: 5px;
   padding: 5px;
 }
+*.argumenta .content-pane .title-pane,
+*.argumenta .content-pane .content-pane {
+  margin: 0px;
+}
 *.argumenta button,
 *.argumenta input,
 *.argumenta select,

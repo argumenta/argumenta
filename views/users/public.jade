@@ -1,0 +1,15 @@
+extends ../layout
+block content
+  .column
+    .title-pane
+      h1
+        b User
+        |  | 
+        a(href="/#{user.username}")= user.username
+    .content-pane
+      h2.title-pane
+        b Argument Repos
+      for repo in repos
+        - var argument = repo.target
+        - var commit = repo.commit
+        include ../partials/argument

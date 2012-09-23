@@ -149,7 +149,7 @@ describe 'App', () ->
           res.type.should.equal 'application/json'
           res.text.should.match /tester/
           res.body.should.be.an.instanceof Object
-          res.body.user.should.eql { username: 'tester' }
+          res.body.user.should.eql { username: 'tester', repos: [] }
           should.not.exist res.body.error
           done()
 
@@ -333,12 +333,16 @@ describe 'App', () ->
   describe '/:name.:format?', ->
 
     describe 'GET /:name', ->
-      it 'should be an alias for /users/:name', (done) ->
-        get '/tester', (err, res)->
-          res.status.should.equal 200
-          res.text.should.match /tester/
-          res.text.should.not.match /error/i
-          done()
+      it "should show the user's public page", (done) ->
+        sessionWithArgument (user, argument, get, post) ->
+          get '/' + user.username, (err, res) ->
+            should.not.exist err
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            res.text.should.not.match /error/i
+            res.text.should.match new RegExp user.username
+            res.text.should.match new RegExp argument.title
+            done()
 
     describe 'GET /:name.json', ->
       it 'should be an alias for /users/:name.json', (done) ->
@@ -346,7 +350,7 @@ describe 'App', () ->
           res.status.should.equal 200
           res.type.should.equal 'application/json'
           res.body.should.be.an.instanceof Object
-          res.body.user.should.eql { username: 'tester' }
+          res.body.user.should.eql { username: 'tester', repos: [] }
           should.not.exist res.body.error
           done()
 
@@ -379,7 +383,7 @@ describe 'App', () ->
             jsonp = res.text
             jsonpCallback = (json) ->
               should.not.exist json.error
-              json.user.should.eql {username: user.username}
+              json.user.should.include {username: user.username}
               json.repo.should.eql argument.repo
               json.commit.should.include
                 targetType: 'argument'
