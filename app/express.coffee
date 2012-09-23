@@ -48,11 +48,16 @@ configure = () ->
     app.locals.pretty = true
     app.use reply (opts, req) ->
       format = req.param 'format'
-      # Send argumenta object instances as plain object data
+      # Send argumenta objects with data() methods as plain object data
       if format is 'json' or format is 'jsonp'
         for key, val of opts
-          if val instanceof Objects.Argument
-            opts[key] = val.data()
+          switch typeof val
+            when 'object'
+              if typeof val.data is 'function'
+                opts[key] = val.data()
+            when 'array'
+              if 'function' is typeof val[0]?.data
+                opts[key] = val.map (obj) -> obj.data()
       return opts
     app.use app.router
 
