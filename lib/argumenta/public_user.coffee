@@ -29,6 +29,16 @@ class PublicUser extends User
 
   ### Instance Methods ###
 
+  # Gets the user info as plain object data.
+  #
+  # @api public
+  # @return [Object] The user data.
+  data: () ->
+    return {
+      username: @username
+      repos: @repos
+    }
+
   # Checks for equality with another user instance.
   #
   #     isEqual = user1.equals( user2 )

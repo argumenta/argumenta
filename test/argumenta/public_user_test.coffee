@@ -28,6 +28,16 @@ describe 'PublicUser', ->
       should.not.exist user.email
       should.not.exist user.password_hash
 
+
+  describe 'data()', ->
+    it 'should return the user info as a plain object', ->
+      user = fixtures.validPublicUser()
+      data = user.data()
+      data.should.eql {
+        username: user.username
+        repos: user.repos
+      }
+
   describe 'equals( user )', ->
     it 'should return true for an identical user', ->
       userA = fixtures.validPublicUser()
