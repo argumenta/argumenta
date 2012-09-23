@@ -70,14 +70,14 @@ class LocalStore extends Base
   #### Repos ####
 
   # Add a user repo for a given commit hash.
-  addRepo: (username, repo, commit, callback) ->
+  addRepo: (username, reponame, commitHash, callback) ->
     @users[username].repos ?= {}
-    @users[username].repos[repo] = commit
+    @users[username].repos[reponame] = commitHash
     return callback null
 
   # Get the commit hash for a given user repo.
-  getRepoHash: (username, repo, callback) ->
-    hash = @users[username].repos?[repo]
+  getRepoHash: (username, reponame, callback) ->
+    hash = @users[username].repos?[reponame]
     return callback null, hash
 
   # Get repos for an array of [username, reponame] key pairs.

@@ -123,15 +123,15 @@ class Storage extends Base
   # Add a user repo for a given commit hash.
   #
   # @param [String] username The user's name.
-  # @param [String] repo     The repo's name.
+  # @param [String] reponame The repo's name.
   # @param [Function] callback Called on success or error.
   # @param [Error] err Any error.
-  # @param [String] commit   The commit's hash.
-  addRepo: (username, repo, commit, callback) ->
+  # @param [String] commitHash The commit's hash.
+  addRepo: (username, reponame, commitHash, callback) ->
     @getUser username, (err, user) =>
       if err or not user
         return callback new @NotFoundError "User required to create repo. Got: #{user}"
-      @store.addRepo username, repo, commit, (err) ->
+      @store.addRepo username, reponame, commitHash, (err) ->
         return callback err
 
   # Get the commit hash for a given user repo.
@@ -140,12 +140,12 @@ class Storage extends Base
   #       console.log "This repo points to commit: #{hash}!"
   #
   # @param [String] username The user's name.
-  # @param [String] repo     The repo's name.
+  # @param [String] reponame The repo's name.
   # @param [Function] callback Called on success or error.
   # @param [Error] err Any error.
-  # @param [String] commit This repo's commit hash.
-  getRepoHash: (username, repo, callback) ->
-    @store.getRepoHash username, repo, (err, hash) ->
+  # @param [String] commitHash This repo's commit hash.
+  getRepoHash: (username, reponame, callback) ->
+    @store.getRepoHash username, reponame, (err, hash) ->
       return callback null, hash
 
   # Get the commit and target for a given user repo.
@@ -155,13 +155,13 @@ class Storage extends Base
   #                   "with target: #{target.sha1()}"
   #
   # @param [String] username The user's name.
-  # @param [String] repo     The repo's name.
+  # @param [String] reponame The repo's name.
   # @param [Function] cb(err, commit, target) Called on success or error.
   # @param [Error] err Any error.
   # @param [Commit] commit The target commit.
   # @param [Argument] target The target object.
-  getRepoTarget: (username, repo, cb) ->
-    @getRepoHash username, repo, (er1, hash) =>
+  getRepoTarget: (username, reponame, cb) ->
+    @getRepoHash username, reponame, (er1, hash) =>
       @getCommit hash, (er2, commit) =>
         @getArgument commit.targetSha1, (er3, argument) =>
           err = er1 or er2 or er3

@@ -48,10 +48,10 @@ for type in storageTypes
     # WithArgumentRepo Helper
     withArgumentRepo = (callback) ->
       withArgument (user, commit, argument) ->
-        repo = argument.repo()
-        storage.addRepo user.username, repo, commit.sha1(), (err) ->
+        reponame = argument.repo()
+        storage.addRepo user.username, reponame, commit.sha1(), (err) ->
           should.not.exist err
-          callback user, repo, commit, argument
+          callback user, reponame, commit, argument
 
     afterEach clearStorage
 
@@ -113,35 +113,35 @@ for type in storageTypes
 
     #### Repos ####
 
-    describe 'addRepo( username, repo, commit, callback )', ->
+    describe 'addRepo( username, reponame, commit, callback )', ->
       it 'should store a repo for a valid user and commit', (done) ->
         user = fixtures.validUser()
         commit = fixtures.validCommit()
-        repo = fixtures.validRepoName()
+        reponame = fixtures.validRepoName()
         storage.addUser user, (er1) ->
           storage.addCommit commit, (er2) ->
-            storage.addRepo user.username, repo, commit.sha1(), (er3) ->
+            storage.addRepo user.username, reponame, commit.sha1(), (er3) ->
               [er1, er2, er3].should.eql [1..3].map -> null
               done()
 
       it 'should fail if no such user exists', (done) ->
         commit = fixtures.validCommit()
-        repo = fixtures.validRepoName()
+        reponame = fixtures.validRepoName()
         storage.addCommit commit, (er1) ->
-          storage.addRepo 'nobody', repo, commit.sha1(), (er2) ->
+          storage.addRepo 'nobody', reponame, commit.sha1(), (er2) ->
             should.not.exist er1
             er2.should.be.an.instanceOf Storage.NotFoundError
             done()
 
-    describe 'getRepoHash( username, repo, callback )', ->
+    describe 'getRepoHash( username, reponame, callback )', ->
       it 'should retrieve a commit hash for a stored repo', (done) ->
         user = fixtures.validUser()
         commit = fixtures.validCommit()
-        repo = fixtures.validRepoName()
+        reponame = fixtures.validRepoName()
         storage.addUser user, (er1) ->
           storage.addCommit commit, (er2) ->
-            storage.addRepo user.username, repo, commit.sha1(), (er3) ->
-              storage.getRepoHash user.username, repo, (er4, hash) ->
+            storage.addRepo user.username, reponame, commit.sha1(), (er3) ->
+              storage.getRepoHash user.username, reponame, (er4, hash) ->
                 [er1, er2, er3, er4].should.eql [1..4].map -> null
                 hash.should.equal commit.sha1()
                 done()
@@ -172,10 +172,10 @@ for type in storageTypes
               }
               done()
 
-    describe 'getRepoTarget( username, repo, callback )', ->
+    describe 'getRepoTarget( username, reponame, callback )', ->
       it 'should retrieve the commit and target object', (done) ->
-        withArgumentRepo (user, repo, commit, argument) ->
-          storage.getRepoTarget user.username, repo, (err, retrievedCommit, retrievedTarget) ->
+        withArgumentRepo (user, reponame, commit, argument) ->
+          storage.getRepoTarget user.username, reponame, (err, retrievedCommit, retrievedTarget) ->
             should.not.exist err
             retrievedCommit.equals( commit ).should.equal true
             retrievedTarget.equals( argument ).should.equal true
