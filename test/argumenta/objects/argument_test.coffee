@@ -81,6 +81,12 @@ describe 'Argument', ->
       argument = new Argument '', premises, conclusion
       argument.validate().should.equal false
 
+    it 'should return false if title above max length', ->
+      chars = ("a" for i in [1..Argument.MAX_TITLE_LENGTH + 1])
+      longTitle = chars.join ''
+      argument = new Argument longTitle, premises, conclusion
+      argument.validate().should.equal false
+
     it 'should return false if missing premises', ->
       argument = new Argument title, [ '' ], conclusion
       argument.validate().should.equal false

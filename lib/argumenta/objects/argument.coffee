@@ -17,7 +17,7 @@ class Argument
   ### Constants ###
 
   # The character limit for argument titles.
-  @MAX_TITLE_LENGTH: 160
+  @MAX_TITLE_LENGTH: 100
 
   # Static and instance refs to all object errors.
   Errors: @Errors = Errors
