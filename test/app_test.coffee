@@ -59,6 +59,15 @@ sessionWithArgument = (callback) ->
       res.status.should.equal 200
       callback user, data, get, post
 
+# Verify JSONP Helper - Given a JSONP response, invokes callback with json.
+verifyJSONP = (res, callback) ->
+  res.type.should.equal 'text/javascript'
+  res.text.should.exist
+  jsonp = res.text
+  jsonpCallback = (json) ->
+    callback(json)
+  eval jsonp
+
 # Superagent helpers.
 agent = superagent.agent()
 get = getFor agent
@@ -288,15 +297,6 @@ describe 'App', () ->
           sha1: prop.sha1
           text: prop.text
 
-    # Verify JSONP Helper - Given a JSONP response, invokes callback with json.
-    verifyJSONP = (res, callback) ->
-      res.type.should.equal 'text/javascript'
-      res.text.should.exist
-      jsonp = res.text
-      jsonpCallback = (json) ->
-        callback(json)
-      eval jsonp
-
     describe 'GET /arguments/:sha1/propositions.:format?', ->
       it "should return argument propositions as json", (done) ->
         sessionWithArgument (user, argument, get, post) ->
@@ -382,9 +382,25 @@ describe 'App', () ->
           get "/#{user.username}/#{argument.repo}.jsonp", (err, res) ->
             res.status.should.equal 200
             res.redirects.should.eql []
+            verifyJSONP res, (json) ->
+              should.not.exist json.error
+              json.user.should.include {username: user.username}
+              json.repo.should.eql argument.repo
+              json.commit.should.include
+                target_type: 'argument'
+                target_sha1: argument.sha1
+              json.argument.should.eql argument
+              done()
+
+    describe 'GET /:name/:repo.:format?callback=:cbName', ->
+      it 'should show a repo as jsonp with custom callback', (done) ->
+        sessionWithArgument (user, argument, get, post) ->
+          get "/#{user.username}/#{argument.repo}.jsonp?callback=myCb", (err, res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
             res.type.should.equal 'text/javascript'
             jsonp = res.text
-            jsonpCallback = (json) ->
+            myCb = (json) ->
               should.not.exist json.error
               json.user.should.include {username: user.username}
               json.repo.should.eql argument.repo
