@@ -1,6 +1,8 @@
 express = require 'express'
 flash   = require 'connect-flash'
 http    = require 'http'
+reply   = require '../app/middleware/reply'
+notFound= require '../app/middleware/not_found'
 routes  = require '../routes'
 config  = require '../config'
 Objects = require '../lib/argumenta/objects'
@@ -13,15 +15,6 @@ globals = ( extensions, processor ) ->
   globalsFunc = (req, res, next) ->
     res.locals( extensions )
     processor( extensions, req, res ) if processor
-    next()
-
-# Reply middleware: Adds a res.reply helper
-respond = require '../routes/helpers/respond'
-reply = ( processor ) ->
-  replyFunc = (req, res, next) ->
-    res.reply = ( view, opts ) ->
-      opts = processor( opts, req ) if processor
-      respond( view, opts, req, res )
     next()
 
 # Config
@@ -46,19 +39,21 @@ configure = () ->
         messages: messages
         username: req.session.username or ''
     app.locals.pretty = true
-    app.use reply (opts, req) ->
-      format = req.param 'format'
-      # Send argumenta objects with data() methods as plain object data
-      if format is 'json' or format is 'jsonp'
-        for key, val of opts
-          switch typeof val
-            when 'object'
-              if typeof val.data is 'function'
-                opts[key] = val.data()
-            when 'array'
-              if 'function' is typeof val[0]?.data
-                opts[key] = val.map (obj) -> obj.data()
-      return opts
+    app.use reply
+      processor: (opts, req) ->
+        format = req.param 'format'
+        # Send argumenta objects with data() methods as plain object data
+        if format is 'json' or format is 'jsonp'
+          for key, val of opts
+            switch typeof val
+              when 'object'
+                if typeof val.data is 'function'
+                  opts[key] = val.data()
+              when 'array'
+                if 'function' is typeof val[0]?.data
+                  opts[key] = val.map (obj) -> obj.data()
+        return opts
+    app.use notFound view: 'index'
     app.use app.router
 
 app.configure 'production', ->
