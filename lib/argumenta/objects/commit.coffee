@@ -36,6 +36,13 @@ class Commit
   # @param [String] commitDate The commit date string (optional; defaults to the current time).
   # @param [Array<String>] parentSha1s The SHA1s of any parent commits (optional; defaults to none).
   constructor: (@targetType, @targetSha1, @committer, @commitDate, @parentSha1s=[]) ->
+    if arguments.length is 1 and arguments[0].committer
+      params = arguments[0]
+      @targetType  = params.targetType or params.target_type
+      @targetSha1  = params.targetSha1 or params.target_sha1
+      @committer   = params.committer
+      @commitDate  = params.commitDate or params.commit_date
+      @parentSha1s = params.parentSha1s or params.parent_sha1s
     @commitDate ?= Commit.formatDate new Date()
 
   ### Instance Methods ###

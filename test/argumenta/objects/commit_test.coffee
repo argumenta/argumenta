@@ -1,5 +1,6 @@
-should = require 'should'
-Commit = require '../../../lib/argumenta/objects/commit'
+should   = require 'should'
+fixtures = require '../../../test/fixtures'
+Commit   = require '../../../lib/argumenta/objects/commit'
 
 describe 'Commit', ->
 
@@ -19,6 +20,12 @@ describe 'Commit', ->
       commit.committer.should.equal 'tester'
       commit.commitDate.should.match /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/
       should.ok Date.now() - new Date(commit.commitDate) < 2000
+
+  describe 'new Commit( options )', ->
+    it 'should create a new commit instance', ->
+      commit1 = fixtures.validCommit()
+      commit2 = new Commit( commit1.data() )
+      should.ok commit1.equals commit2
 
   describe 'new Commit( targetType, targetSha1, committer, commitDate, parentSha1s )', ->
     it 'should create a new commit instance', ->
