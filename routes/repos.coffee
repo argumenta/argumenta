@@ -33,19 +33,12 @@ exports.show = (req, res) ->
     return res.reply 'index', error: "No repo for '/#{name}/#{repo}'."
 
   argumenta.storage.getUser name, (err, user) ->
-    if err
-      return res.reply 'index'
-        error: "User '#{name}' not found."
-        status: 404
+    return res.notFound "User '#{name}' not found." if err
 
     argumenta.storage.getRepoTarget name, repo, (err, commit, target) ->
-      if err
-        return res.reply 'index'
-          error: "Repo '/#{name}/#{repo}' not found."
-          status: 404
-      else
-        return res.reply 'users/repo'
-          user: user
-          repo: repo
-          commit: commit
-          argument: target
+      return res.notFound "Repo '/#{name}/#{repo}' not found." if err
+      return res.reply 'users/repo'
+        user: user
+        repo: repo
+        commit: commit
+        argument: target
