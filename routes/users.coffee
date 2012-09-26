@@ -44,22 +44,7 @@ exports.public = (req, res) ->
 
     keys = ( [name, reponame] for reponame, hash of user.repos )
     argumenta.storage.getRepos keys, (err, repos) ->
-      if err
-        return res.notFound "Repos not found for user '#{name}'."
-      else
-        toData = (repo) ->
-          return {
-            username: repo.username
-            reponame: repo.reponame
-            user:     repo.user.data()
-            commit:   repo.commit.data()
-            target:   repo.target.data()
-          }
-
-        if /^json/.test req.param 'format'
-          user = user.data()
-          repos = repos.map (repo) -> toData(repo)
-
-        return res.reply 'users/public',
-          user: user,
-          repos: repos
+      return res.notFound "Repos not found for user '#{name}'." if err
+      return res.reply 'users/public',
+        user: user,
+        repos: repos

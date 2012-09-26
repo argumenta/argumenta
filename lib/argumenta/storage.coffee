@@ -182,7 +182,7 @@ class Storage extends Base
   # @param [Array<Array<String>>] keys An array of [username, reponame] arrays.
   # @param [Function] cb(err, repos) Called on completion or error.
   # @param [StorageError] err Any error.
-  # @param [Array<Object>] repos The retrieved repos.
+  # @param [Array<Repo>] repos The retrieved repos.
   getRepos: (keys, cb) ->
     @store.getRepos keys, (err, repos) ->
       return cb err if err

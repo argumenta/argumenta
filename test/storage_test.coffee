@@ -1,6 +1,7 @@
 Storage     = require '../lib/argumenta/storage'
 User        = require '../lib/argumenta/user'
 PublicUser  = require '../lib/argumenta/public_user'
+Repo        = require '../lib/argumenta/repo'
 Objects     = require '../lib/argumenta/objects'
 fixtures    = require '../test/fixtures'
 should      = require 'should'
@@ -156,20 +157,8 @@ for type in storageTypes
             storage.getRepos keys, (err, repos) ->
               should.not.exist err
               repos.length.should.equal 2
-              repos[0].should.eql {
-                username: user1.username
-                reponame: repo1
-                user: new PublicUser user1
-                commit: commit1
-                target: argument1
-              }
-              repos[1].should.eql {
-                username: user2.username
-                reponame: repo2
-                user: new PublicUser user2
-                commit: commit2
-                target: argument2
-              }
+              should.ok repos[0].equals new Repo( user1, repo1, commit1, argument1 )
+              should.ok repos[1].equals new Repo( user2, repo2, commit2, argument2 )
               done()
 
     describe 'getRepoTarget( username, reponame, callback )', ->

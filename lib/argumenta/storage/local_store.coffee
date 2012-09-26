@@ -1,5 +1,6 @@
 Base       = require '../../argumenta/base'
 PublicUser = require '../../argumenta/public_user'
+Repo       = require '../../argumenta/repo'
 
 class LocalStore extends Base
 
@@ -90,13 +91,8 @@ class LocalStore extends Base
       commit = @commits.bySha1[ user.repos?[reponame] ]
       target = @arguments.bySha1[ commit?.targetSha1 ]
 
-      repos.push repo = {
-        username: username
-        reponame: reponame
-        user: user
-        commit: commit
-        target: target
-      }
+      repos.push new Repo( user, reponame, commit, target )
+
     return callback null, repos
 
   #### Objects ####
