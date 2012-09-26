@@ -1,6 +1,7 @@
 
 User       = require '../../lib/argumenta/user'
 PublicUser = require '../../lib/argumenta/public_user'
+Repo       = require '../../lib/argumenta/repo'
 Objects    = require '../../lib/argumenta/objects'
 
 {Argument, Proposition, Commit, Tags} = Objects
@@ -77,6 +78,15 @@ class Fixtures
 
   @validRepoName: () ->
     return 'the-argument-title'
+
+  @validRepo: () ->
+    return new Repo @validPublicUser(), @validRepoName(), @validCommit(), @validArgument()
+
+  uniqueRepoCount = 0
+
+  @uniqueRepo: () ->
+    return new Repo @validPublicUser(), "unique-reponame-#{++uniqueRepoCount}",
+      @validCommit(), @validArgument()
 
   #### Arguments ####
 
