@@ -1,6 +1,7 @@
 express = require 'express'
 flash   = require 'connect-flash'
 http    = require 'http'
+_       = require 'underscore'
 reply   = require '../app/middleware/reply'
 notFound= require '../app/middleware/not_found'
 routes  = require '../routes'
@@ -45,13 +46,10 @@ configure = () ->
         # Send argumenta objects with data() methods as plain object data
         if format is 'json' or format is 'jsonp'
           for key, val of opts
-            switch typeof val
-              when 'object'
-                if typeof val.data is 'function'
-                  opts[key] = val.data()
-              when 'array'
-                if 'function' is typeof val[0]?.data
-                  opts[key] = val.map (obj) -> obj.data()
+            if _.isObject(val) and typeof val.data is 'function'
+              opts[key] = val.data()
+            else if _.isArray(val) and typeof val[0]?.data is 'function'
+              opts[key] = val.map (obj) -> obj.data()
         return opts
     app.use notFound view: 'index'
     app.use app.router
