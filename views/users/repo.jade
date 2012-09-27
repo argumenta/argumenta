@@ -5,8 +5,10 @@ block content
     h2.title-pane
       b Argument Repo
       br
-      a(href="/#{user.username}", title="User") #{user.username}
+      a(href="/#{repo.user.username}", title="User") #{repo.user.username}
       |  / 
-      a(href="/#{user.username}/#{repo}", title="Repo") #{repo}
+      a(href="/#{repo.user.username}/#{repo.reponame}", title="Repo") #{repo.reponame}
     .content-pane
+      - var argument = repo.target;
+      - var commit = repo.commit;
       include ../partials/argument

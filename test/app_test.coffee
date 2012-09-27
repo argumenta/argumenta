@@ -374,7 +374,7 @@ describe 'App', () ->
             res.redirects.should.eql []
             res.type.should.equal 'application/json'
             res.body.should.be.an.instanceof Object
-            res.body.argument.should.eql argument
+            res.body.repo.target.should.eql argument
             done()
 
       it 'should show a repo as jsonp', (done) ->
@@ -384,12 +384,12 @@ describe 'App', () ->
             res.redirects.should.eql []
             verifyJSONP res, (json) ->
               should.not.exist json.error
-              json.user.should.include {username: user.username}
-              json.repo.should.eql argument.repo
-              json.commit.should.include
+              json.repo.user.should.include {username: user.username}
+              json.repo.reponame.should.eql argument.repo
+              json.repo.commit.should.include
                 target_type: 'argument'
                 target_sha1: argument.sha1
-              json.argument.should.eql argument
+              json.repo.target.should.eql argument
               done()
 
     describe 'GET /:name/:repo.:format?callback=:cbName', ->
@@ -402,11 +402,11 @@ describe 'App', () ->
             jsonp = res.text
             myCb = (json) ->
               should.not.exist json.error
-              json.user.should.include {username: user.username}
-              json.repo.should.eql argument.repo
-              json.commit.should.include
+              json.repo.user.should.include {username: user.username}
+              json.repo.reponame.should.eql argument.repo
+              json.repo.commit.should.include
                 target_type: 'argument'
                 target_sha1: argument.sha1
-              json.argument.should.eql argument
+              json.repo.target.should.eql argument
               done()
             eval jsonp

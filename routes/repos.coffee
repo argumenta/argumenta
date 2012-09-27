@@ -36,10 +36,5 @@ exports.show = (req, res) ->
   keys = [key]
   argumenta.storage.getRepos keys, (err, repos) ->
     return res.notFound "Repo '#{name}/#{repo}' not found." if err
-
-    repo = repos[0]
     return res.reply 'users/repo'
-      user: repo.user
-      repo: repo.reponame
-      commit: repo.commit
-      argument: repo.target
+      repo: repos[0]
