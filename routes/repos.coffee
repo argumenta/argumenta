@@ -32,13 +32,14 @@ exports.show = (req, res) ->
   unless name? and repo?
     return res.reply 'index', error: "No repo for '/#{name}/#{repo}'."
 
-  argumenta.storage.getUser name, (err, user) ->
-    return res.notFound "User '#{name}' not found." if err
+  key  = [name, repo]
+  keys = [key]
+  argumenta.storage.getRepos keys, (err, repos) ->
+    return res.notFound "Repo '#{name}/#{repo}' not found." if err
 
-    argumenta.storage.getRepoTarget name, repo, (err, commit, target) ->
-      return res.notFound "Repo '/#{name}/#{repo}' not found." if err
-      return res.reply 'users/repo'
-        user: user
-        repo: repo
-        commit: commit
-        argument: target
+    repo = repos[0]
+    return res.reply 'users/repo'
+      user: repo.user
+      repo: repo.reponame
+      commit: repo.commit
+      argument: repo.target
