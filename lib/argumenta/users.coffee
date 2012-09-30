@@ -1,6 +1,7 @@
 Base = require '../argumenta/base'
 Auth = require '../argumenta/auth'
 User = require '../argumenta/user'
+PublicUser = require '../argumenta/public_user'
 
 #
 # Users models user accounts.  
@@ -39,7 +40,7 @@ class Users extends Base
   # @param [String] email The user's email.
   # @param [Function] callback(err, user) Called on error or success.
   # @param [Error] err Any error.
-  # @param [User] user The new user instance.
+  # @param [PublicUser] publicUser A public representation of the new user.
   create: (username, password, email, callback) ->
 
     try User.validatePassword password
@@ -53,6 +54,9 @@ class Users extends Base
 
       @storage.addUser user, (err) =>
         return callback err, null if err
-        return callback null, user
+
+        @storage.getUser username, (err, publicUser) =>
+          return callback err, null if err
+          return callback null, publicUser
 
 module.exports = Users

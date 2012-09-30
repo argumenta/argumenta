@@ -1,9 +1,10 @@
-Argumenta = require '../../lib/argumenta'
-Storage   = require '../../lib/argumenta/storage'
-User      = require '../../lib/argumenta/user'
-Users     = require '../../lib/argumenta/users'
-bcrypt    = require 'bcrypt'
-should    = require 'should'
+Argumenta   = require '../../lib/argumenta'
+Storage     = require '../../lib/argumenta/storage'
+User        = require '../../lib/argumenta/user'
+PublicUser  = require '../../lib/argumenta/public_user'
+Users       = require '../../lib/argumenta/users'
+bcrypt      = require 'bcrypt'
+should      = require 'should'
 
 describe 'Users', ->
 
@@ -22,17 +23,14 @@ describe 'Users', ->
       username = 'tester'
       password = 'tester12'
       email = 'tester@xyz.com'
-      users.create username, password, email, (err, user) ->
+      users.create username, password, email, (err, publicUser) ->
         should.not.exist err
-        user.should.be.an.instanceOf User
-        user.validate().should.equal true
+        should.ok publicUser instanceof PublicUser
+        should.ok publicUser.validate()
+        should.ok publicUser.equals new PublicUser {username, repos: []}
 
-        # Test values
-        should.not.exist user.password
-        user.username.should.equal      'tester'
-        user.email.should.equal         'tester@xyz.com'
-        user.password_hash.should.match /\$.+\$.+\$.+/
-
-        # Verify password
-        should.ok bcrypt.compareSync 'tester12', user.password_hash
-        done()
+        argumenta.storage.getPasswordHash username, (err, hash) ->
+          should.not.exist err
+          hash.should.match /\$.+\$.+\$.+/
+          should.ok bcrypt.compareSync 'tester12', hash
+          done()
