@@ -122,7 +122,8 @@ describe 'App', () ->
           password: ''
           email:    'tester@xyz.com'
         post '/users', badUser, (res) ->
-          res.status.should.equal 400
+          res.redirects.should.eql [ base + '/join' ]
+          res.status.should.equal 200
           res.text.should.match /error.*password.*blank/i
           done()
 
@@ -132,9 +133,33 @@ describe 'App', () ->
           password: 'tester12'
           email:    'tester@xyz.com'
         post '/users', existingUser, (res) ->
-          res.status.should.equal 409
+          res.redirects.should.eql [ base + '/join' ]
+          res.status.should.equal 200
           res.text.should.match /User already exists./
           done()
+
+    describe 'POST /users.json', ->
+      it 'should create a user and return json confirmation', (done) ->
+        data = fixtures.uniqueUserData()
+        post '/users.json', data, (res) ->
+          res.status.should.equal 201
+          res.body.message.should.match new RegExp "Welcome.*#{data.username}"
+          done()
+
+      it 'should fail with 400 status if user is invalid', (done) ->
+        data = fixtures.invalidUserData()
+        post '/users.json', data, (res) ->
+          res.status.should.equal 400
+          should.exist res.body.error
+          done()
+
+      it 'should fail with 409 status if user exists', (done) ->
+        session (user, get, post) ->
+          data = user
+          post '/users.json', data, (res) ->
+            res.status.should.equal 409
+            should.exist res.body.error
+            done()
 
     describe 'GET /users', ->
       it 'should show a list of users', ->

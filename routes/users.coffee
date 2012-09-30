@@ -15,13 +15,13 @@ exports.create = (req, res) ->
 
   argumenta.users.create username, password, email, (err, user) ->
     if err
-      return res.reply 'index',
-        error: err.message,
+      return res.failed '/join', err.message,
         status: Errors.statusFor err
     else
       req.session.username = username
-      req.flash 'message', "Welcome aboard, #{user.username}!"
-      return res.redirect "/users/#{user.username}"
+      return res.created "/users/#{user.username}",
+        "Welcome aboard, #{user.username}!",
+        user: user
 
 # Show a user as html or json
 exports.show = (req, res) ->

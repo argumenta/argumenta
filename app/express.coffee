@@ -1,12 +1,15 @@
-express = require 'express'
-flash   = require 'connect-flash'
-http    = require 'http'
-_       = require 'underscore'
-reply   = require '../app/middleware/reply'
-notFound= require '../app/middleware/not_found'
-routes  = require '../routes'
-config  = require '../config'
-Objects = require '../lib/argumenta/objects'
+express  = require 'express'
+flash    = require 'connect-flash'
+http     = require 'http'
+_        = require 'underscore'
+reply    = require '../app/middleware/reply'
+success  = require '../app/middleware/success'
+created  = require '../app/middleware/created'
+failed   = require '../app/middleware/failed'
+notFound = require '../app/middleware/not_found'
+routes   = require '../routes'
+config   = require '../config'
+Objects  = require '../lib/argumenta/objects'
 
 # Express Instance
 app = module.exports = express()
@@ -51,6 +54,9 @@ configure = () ->
             else if _.isArray(val) and typeof val[0]?.data is 'function'
               opts[key] = val.map (obj) -> obj.data()
         return opts
+    app.use success()
+    app.use failed()
+    app.use created()
     app.use notFound view: 'index'
     app.use app.router
 
@@ -75,7 +81,7 @@ unless config.appMode.match /production|testing|development/
 app.get  '/',                         routes.main.index
 
 app.get  '/users',                    routes.users.index
-app.post '/users',                    routes.users.create
+app.post '/users.:format?',           routes.users.create
 app.get  '/users/:name.:format?',     routes.users.show
 
 app.get  '/join',                     routes.join.index
