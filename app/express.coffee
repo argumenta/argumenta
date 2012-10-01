@@ -91,7 +91,7 @@ app.post '/login.:format?',           routes.login.verify
 app.get  '/logout.:format?',          routes.logout.index
 
 app.get  '/arguments/new',            routes.arguments.new
-app.post '/arguments',                routes.arguments.create
+app.post '/arguments.:format?',       routes.arguments.create
 app.get  '/arguments/:hash.:format?', routes.arguments.show
 app.get  '/arguments/:hash/propositions.:format?', routes.arguments.propositions
 

@@ -31,19 +31,24 @@ exports.create = (req, res) ->
 
   unless username = req.session.username
     req.cookies.argument = req.body
-    return res.redirect "/login"
+    return res.failed "/login", "Login to publish arguments.",
+      status: 401
 
   argument = new Argument title, premises, conclusion
 
   argumenta.arguments.commit username, argument, (err, commit) ->
     if err
-      req.flash 'arguments', argument.data()
-      req.flash 'errors', err.message
-      res.status Errors.statusFor err
-      res.redirect "/arguments/new"
+      if /^json/.test req.param 'format'
+        return res.failed '/arguments', err.message,
+          status: Errors.statusFor err
+      else
+        req.flash 'arguments', argument.data()
+        return res.failed '/arguments/new', err.message,
+          status: Errors.statusFor err
     else
-      repo = argument.repo()
-      return res.redirect "/#{username}/#{repo}"
+      reponame = argument.repo()
+      return res.created "/#{username}/#{reponame}",
+        "Created a new argument!", {argument}
 
 # Show an argument as html, json, or jsonp
 exports.show = (req, res) ->

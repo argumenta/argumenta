@@ -292,6 +292,34 @@ describe 'App', () ->
             matchesArgument res.text, data
             done()
 
+    describe 'POST /arguments.json', ->
+      it 'should create an argument and return json confirmation', (done) ->
+        session (user, get, post) ->
+          data = fixtures.uniqueArgumentData()
+          post '/arguments.json', data, (res) ->
+            res.status.should.equal 201
+            json = res.body
+            json.message.should.match new RegExp "Created a new argument!"
+            done()
+
+      it 'should fail with 400 status if argument is invalid', (done) ->
+        session (user, get, post) ->
+          data = fixtures.invalidArgumentData()
+          post '/arguments.json', data, (res) ->
+            res.status.should.equal 400
+            json = res.body
+            json.error.should.exist
+            done()
+
+      it 'should fail with 401 status if not logged in', (done) ->
+        noSession (user, get, post) ->
+          data = fixtures.invalidArgumentData()
+          post '/arguments.json', data, (res) ->
+            res.status.should.equal 401
+            json = res.body
+            json.error.should.exist
+            done()
+
     describe 'GET /arguments/:sha1.:format?', ->
       it 'should return an argument page', (done) ->
         sessionWithArgument (user, argument, get, post) ->
