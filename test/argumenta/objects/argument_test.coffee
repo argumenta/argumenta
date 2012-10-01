@@ -27,11 +27,19 @@ describe 'Argument', ->
       argument.conclusion.should.be.an.instanceOf Proposition
       argument.conclusion.text.should.equal 'The conclusion.'
 
+    it 'should create an invalid instance if params are missing', ->
+      argument = new Argument null, null, null
+      argument.validate().should.equal false
+
   describe 'new Argument( params )', ->
     it 'should create a new, equivalent instance', ->
       argument = new Argument title: title, premises: premises, conclusion: conclusion
       expected = new Argument title, premises, conclusion
       should.ok argument.equals expected
+
+    it 'should create an invalid instance if params are missing', ->
+      argument = new Argument {}
+      argument.validate().should.equal false
 
   describe 'children()', ->
     it 'should return an array with premises and conclusion', ->

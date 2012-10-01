@@ -39,7 +39,7 @@ class Argument
   # @param [String]        title The title text.
   # @param [Array<String>] premises The premise texts.
   # @param [String]        conclusion The conclusion text.
-  constructor: (title, premises, conclusion) ->
+  constructor: (title='', premises=[], conclusion='') ->
     if arguments.length is 1
       params = arguments[0]
       return new Argument( params.title, params.premises, params.conclusion )
