@@ -39,6 +39,14 @@ session = (callback) ->
       res.text.should.match new RegExp 'Logged in as <a href="/'+user.username+'">'+user.username+'</a>'
       callback user, get, post
 
+# Logged out session helper - provides a user session just after logout, get, post.
+loggedOutSession = (callback) ->
+  session (user, get, post) ->
+    get '/logout', (err, res) ->
+      should.not.exist err
+      res.status.should.equal 200
+      callback user, get, post
+
 # No session helper - provides user without account, get, post.
 noSession = (callback) ->
   user = fixtures.uniqueUser()
@@ -206,38 +214,42 @@ describe 'App', () ->
           done()
 
     describe 'POST /login', ->
-
       it 'should accept a correct login', (done) ->
-        data =
-          username: 'tester'
-          password: 'tester12'
-
-        req_post '/login', data, (err, res, body) ->
-          should.not.exist err
-          res.statusCode.should.equal 302
-          res.headers.location.should.match /^http.*tester$/
-          url = res.headers.location
-
-          req_get url, (err, res, body) ->
-            should.not.exist err
-            res.statusCode.should.equal 200
-            body.should.match /Welcome back/
-            body.should.match new RegExp 'Logged in as <a href="/tester">tester</a>'
+        loggedOutSession (user, get, post) ->
+          post '/login', user, (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql [ "#{base}/#{user.username}" ]
+            res.text.should.match /Welcome back/
+            res.text.should.match new RegExp "Logged in as .*#{user.username}"
             done()
 
       it 'should deny an incorrect login', (done) ->
-        data =
-          username: 'tester'
-          password: 'wrong!'
-        req_post '/login', data, (err, res, body) ->
-          should.not.exist err
-          res.statusCode.should.equal 302
-          res.headers.location.should.match /^http.*login$/
-          url = res.headers.location
+        loggedOutSession (user, get, post) ->
+          data = user
+          data.password = 'wrong'
+          post '/login', data, (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql [ base + '/login' ]
+            res.text.should.match /Invalid username and password combination./
+            done()
 
-          req_get url, (err, res, body) ->
-            res.statusCode.should.equal 200
-            res.body.should.match /Invalid username and password combination./
+    describe 'POST /login.json', ->
+      it 'should accept a correct login and return json confirmation', (done) ->
+        loggedOutSession (user, get, post) ->
+          post '/login.json', user, (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            json = res.body
+            should.not.exist json.error
+            json.message.should.match /Welcome back/
+            done()
+
+      it 'should deny an incorrect login and return json error', (done) ->
+        loggedOutSession (user, get, post) ->
+          data = username: user.username, password: 'wrong!'
+          post '/login.json', data, (res) ->
+            res.status.should.equal 401
+            res.body.error.should.match /Invalid username and password combination./
             done()
 
   describe '/arguments', ->
@@ -347,13 +359,25 @@ describe 'App', () ->
               done()
 
   describe '/logout', ->
-    describe 'GET logout', ->
+    describe 'GET /logout', ->
       it 'should clear session cookie and redirect to index', (done) ->
         get '/logout', (err, res) ->
           res.status.should.equal 200
           res.redirects.should.eql(['http://localhost:3000/'])
           res.text.should.match /Sign in.*or.*Join now!/
           done()
+
+    describe 'GET /logout.json', ->
+      it 'should clear session cookie', (done) ->
+        session (user, get, post) ->
+          get '/logout.json', (res) ->
+            get '/logout.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              should.not.exist res.body.error
+              post '/arguments.json', {}, (res) ->
+                res.status.should.equal 401
+                done()
 
   describe '/:name.:format?', ->
 

@@ -14,14 +14,15 @@ exports.verify = (req, res) ->
 
   argumenta.auth.verifyLogin params.username, params.password, (err, result) ->
     if err
-      req.flash 'errors', "Error verifying login."
-      res.redirect '/login'
+      req.flash 'username', params.username
+      res.failed "/login", "Error verifying login."
+        status: 401
     else
       if result
         req.session.username = params.username
-        req.flash 'messages', "Welcome back, #{params.username}"
-        res.redirect "/users/#{params.username}"
+        res.success "/#{params.username}",
+          "Welcome back, #{params.username}"
       else
         req.flash 'username', params.username
-        req.flash 'errors', "Invalid username and password combination."
-        res.redirect '/login'
+        res.failed "/login", "Invalid username and password combination.",
+          status: 401
