@@ -1,6 +1,6 @@
-should = require 'should'
-Tags = require '../../../lib/argumenta/objects/tags'
-
+should        = require 'should'
+fixtures      = require '../../../test/fixtures'
+Tags          = require '../../../lib/argumenta/objects/tags'
 Tag           = Tags.Tag
 SupportTag    = Tags.SupportTag
 DisputeTag    = Tags.DisputeTag
@@ -89,6 +89,13 @@ describe 'SupportTag', ->
       supportTag.sourceSha1.should.equal '1a1a1a1a1a1a1a1a000000000000000000000000'
       supportTag.validate().should.equal true
 
+  describe 'new SupportTag( options )', ->
+    it 'should create a new support tag instance', ->
+      tag1 = fixtures.validSupportTag()
+      options = tag1.data()
+      tag2 = new SupportTag( options )
+      should.ok tag1.equals tag2
+
   describe 'objectRecord()', ->
     it 'should return a support tag object record', ->
       tag = new SupportTag(targetType, targetSha1, sourceType, sourceSha1 )
@@ -106,6 +113,12 @@ describe 'SupportTag', ->
     it 'should return the sha1 of the object record', ->
       tag = new SupportTag(targetType, targetSha1, sourceType, sourceSha1 )
       tag.sha1().should.equal '2fcda77e243e4a7dc8fd9f3aa24c3392f7b59d20'
+
+  describe 'data()', ->
+    it 'should return the tag data as a plain object', ->
+      tag1 = fixtures.validSupportTag()
+      tag2 = new Tag tag1.data()
+      should.ok tag1.equals tag2
 
 describe 'DisputeTag', ->
 
@@ -126,6 +139,13 @@ describe 'DisputeTag', ->
       disputeTag.sourceSha1.should.equal '1a1a1a1a1a1a1a1a000000000000000000000000'
       disputeTag.validate().should.equal true
 
+  describe 'new DisputeTag( options )', ->
+    it 'should create a new dispute tag instance', ->
+      tag1 = fixtures.validDisputeTag()
+      options = tag1.data()
+      tag2 = new DisputeTag( options )
+      should.ok tag1.equals tag2
+
   describe 'objectRecord()', ->
     it 'should return a dispute tag object record', ->
       tag = new DisputeTag(targetType, targetSha1, sourceType, sourceSha1 )
@@ -144,6 +164,12 @@ describe 'DisputeTag', ->
       tag = new DisputeTag(targetType, targetSha1, sourceType, sourceSha1 )
       tag.sha1().should.equal 'dad237cb552c9ecbfa67afa3774a620ea90e8ad6'
 
+  describe 'data()', ->
+    it 'should return the tag data as a plain object', ->
+      tag1 = fixtures.validDisputeTag()
+      tag2 = new Tag tag1.data()
+      should.ok tag1.equals tag2
+
 describe 'CitationTag', ->
 
   targetType = 'proposition'
@@ -160,6 +186,13 @@ describe 'CitationTag', ->
       citationTag.targetSha1.should.equal '0123456789abcdef000000000000000000000000'
       citationTag.citationText.should.equal 'The citation text, with URL: http://wikipedia.org/wiki/Citation'
       citationTag.validate().should.equal true
+
+  describe 'new CitationTag( options )', ->
+    it 'should create a new citation tag instance', ->
+      tag1 = fixtures.validCitationTag()
+      options = tag1.data()
+      tag2 = new CitationTag( options )
+      should.ok tag1.equals tag2
 
   describe 'validate()', ->
     it 'should return false unless targetType is proposition', ->
@@ -185,6 +218,12 @@ describe 'CitationTag', ->
       tag = new CitationTag( targetType, targetSha1, citationText )
       tag.sha1().should.equal 'd115f73df5dffab5af976180972e3fe7d0f5f104'
 
+  describe 'data()', ->
+    it 'should return the tag data as a plain object', ->
+      tag1 = fixtures.validCitationTag()
+      tag2 = new Tag tag1.data()
+      should.ok tag1.equals tag2
+
 describe 'CommentaryTag', ->
 
   targetType = 'argument'
@@ -201,6 +240,13 @@ describe 'CommentaryTag', ->
       commentaryTag.targetSha1.should.equal '1a1a1a1a1a1a1a1a000000000000000000000000'
       commentaryTag.commentaryText.should.equal 'The commentary analysis, up to a few paragraphs...'
       commentaryTag.validate().should.equal true
+
+  describe 'new CommentaryTag( options )', ->
+    it 'should create a new commentary tag instance', ->
+      tag1 = fixtures.validCommentaryTag()
+      options = tag1.data()
+      tag2 = new CommentaryTag( options )
+      should.ok tag1.equals tag2
 
   describe 'validate()', ->
     it 'should return false unless targetType is argument', ->
@@ -225,3 +271,9 @@ describe 'CommentaryTag', ->
     it 'should return the sha1 of the object record', ->
       tag = new CommentaryTag( targetType, targetSha1, commentaryText )
       tag.sha1().should.equal 'bf753c448ecc31b1f0f20639f2eb9951cc191be1'
+
+  describe 'data()', ->
+    it 'should return the tag data as a plain object', ->
+      tag1 = fixtures.validCommentaryTag()
+      tag2 = new Tag tag1.data()
+      should.ok tag1.equals tag2

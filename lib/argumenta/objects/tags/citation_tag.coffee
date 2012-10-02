@@ -27,6 +27,12 @@ class CitationTag extends Tag
   # @param [String] targetSha1 The target object's sha1 hash.
   # @param [String] citationText The citation text.
   constructor: (@targetType, @targetSha1, @citationText) ->
+    if arguments.length is 1
+      opts = arguments[0]
+      @targetType   = opts.targetType or opts.target_type
+      @targetSha1   = opts.targetSha1 or opts.target_sha1
+      @citationText = opts.citationText or opts.citation_text
+
     @tagType = 'citation'
 
   ### Instance Methods ###

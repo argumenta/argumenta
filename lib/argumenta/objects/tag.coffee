@@ -45,6 +45,10 @@ class Tag
   constructor: (tagType, params...) ->
     Tags = require './tags'
 
+    if arguments.length is 1
+      opts = arguments[0]
+      tagType = opts.tagType or opts.tag_type
+
     switch tagType
       when 'support' then Constructor = Tags.SupportTag
       when 'dispute' then Constructor = Tags.DisputeTag
@@ -52,6 +56,7 @@ class Tag
       when 'commentary' then Constructor = Tags.CommentaryTag
       else throw new @Errors.Object "Invalid tag type."
 
+    return new Constructor( opts ) if opts
     return new Constructor(params[0], params[1], params[2], params[3])
 
   ### Instance Methods ###
@@ -100,6 +105,23 @@ class Tag
   # @return [String] The sha1 hex value.
   sha1: () ->
     return Utils.SHA1 @objectRecord()
+
+  # Gets the tag's info as plain object data.
+  #
+  #   data = tag.data()
+  #
+  # @api public
+  # @return [Object] The tag data.
+  data: () ->
+    data = {}
+    data.tag_type = @tagType
+    data.target_type = @targetType
+    data.target_sha1 = @targetSha1
+    data.source_type = @sourceType if @sourceType?
+    data.source_sha1 = @sourceSha1 if @sourceSha1?
+    data.citation_text = @citationText if @citationText?
+    data.commentary_text = @commentaryText if @commentaryText?
+    return data
 
   # Checks for equality with another tag.
   #

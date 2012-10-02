@@ -27,6 +27,12 @@ class CommentaryTag extends Tag
   # @param [String] targetSha1 The target object's sha1 hash.
   # @param [String] commentaryText The commentary text.
   constructor: (@targetType, @targetSha1, @commentaryText) ->
+    if arguments.length is 1
+      opts = arguments[0]
+      @targetType     = opts.targetType or opts.target_type
+      @targetSha1     = opts.targetSha1 or opts.target_sha1
+      @commentaryText = opts.commentaryText or opts.commentary_text
+
     @tagType = 'commentary'
 
   ### Instance Methods ###

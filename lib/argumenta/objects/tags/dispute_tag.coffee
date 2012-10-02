@@ -30,6 +30,13 @@ class DisputeTag extends Tag
   # @param [String] sourceType The source object's type.
   # @param [String] sourceSha1 The source object's sha1 hash.
   constructor: (@targetType, @targetSha1, @sourceType, @sourceSha1) ->
+    if arguments.length is 1
+      opts = arguments[0]
+      @targetType = opts.targetType or opts.target_type
+      @targetSha1 = opts.targetSha1 or opts.target_sha1
+      @sourceType = opts.sourceType or opts.source_type
+      @sourceSha1 = opts.sourceSha1 or opts.source_sha1
+
     @tagType = 'dispute'
 
   ### Instance Methods ###
