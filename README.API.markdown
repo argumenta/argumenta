@@ -23,65 +23,61 @@ The current version (0.0.1alpha1) provides the following features:
 <span id="routes"></span>
 ## Routes
 
-<style>
-  table.routes { width: 600px; }
-  table.routes td { width: 50%; }
-</style>
-
 ### [Users](#users)
 
-<table class="routes">
+<table class="routes" width="600px">
   <tr>
-    <td><a href="#get-users-user">GET /users/:user.json</a></td>
-    <td>Get a user's account info.</td>
+    <td width="300px"><a href="#get-users-user">GET /users/:user.json</a></td>
+    <td width="300px">Get a user's account info.</td>
   </tr>
   <tr>
-    <td><a href="#get-user">GET /:user.json</a></td>
-    <td>Get a user's account and argument repos.</td>
+    <td width="300px"><a href="#get-user">GET /:user.json</a></td>
+    <td width="300px">Get a user's account and argument repos.</td>
   </tr>
 </table>
 
 ### [Repos](#repos)
 
-<table class="routes">
+
+<table class="routes" width="600px">
   <tr>
-    <td><a href="#get-user-repo">GET /:user/:repo.json</a></td>
-    <td>Get a repo owned by a user.</td>
+    <td width="300px"><a href="#get-user-repo">GET /:user/:repo.json</a></td>
+    <td width="300px">Get a repo owned by a user.</td>
   </tr>
 </table>
 
 ### [Arguments](#arguments)
 
-<table class="routes">
+<table class="routes" width="600px">
   <tr>
-    <td><a href="#get-argument">GET /arguments/:sha1.json</td>
-    <td>Get an argument by its sha1.</td>
+    <td width="300px"><a href="#get-argument">GET /arguments/:sha1.json</td>
+    <td width="300px">Get an argument by its sha1.</td>
   </tr>
   <tr>
-    <td><a href="#get-argument-propositions">GET /arguments/:sha1/propositions.json</td>
-    <td>Get an argument's propositions.</td>
+    <td width="300px"><a href="#get-argument-propositions">GET /arguments/:sha1/propositions.json</td>
+    <td width="300px">Get an argument's propositions.</td>
   </tr>
 </table>
 
 ### [Propositions](#propositions)
 
-<table class="routes">
+<table class="routes" width="600px">
   <tr>
-    <td><a href="#get-proposition">GET /propositions/:sha1.json</td>
-    <td>Get a proposition by its sha1.</td>
+    <td width="300px"><a href="#get-proposition">GET /propositions/:sha1.json</td>
+    <td width="300px">Get a proposition by its sha1.</td>
   </tr>
   <tr>
-    <td><a href="#get-proposition-tags">GET /propositions/:sha1/tags.json</td>
-    <td>Get a proposition's tags (plus source objects).</td>
+    <td width="300px"><a href="#get-proposition-tags">GET /propositions/:sha1/tags.json</td>
+    <td width="300px">Get a proposition's tags (plus source objects).</td>
   </tr>
 </table>
 
 ### [Tags](#tags)
 
-<table class="routes">
+<table class="routes" width="600px">
   <tr>
-    <td><a href="#get-tag">GET /tags/:sha1.json</td>
-    <td>Get a tag by its sha1.</td>
+    <td width="300px"><a href="#get-tag">GET /tags/:sha1.json</td>
+    <td width="300px">Get a tag by its sha1.</td>
   </tr>
 </table>
 
@@ -89,38 +85,36 @@ The current version (0.0.1alpha1) provides the following features:
 
 ### [Join](#join)
 
-<table class="routes">
+<table class="routes" width="600px">
   <tr>
-    <td><a href="#post-users">POST /users.json</td>
-    <td>Create a new user account.</td>
+    <td width="300px"><a href="#post-users">POST /users.json</td>
+    <td width="300px">Create a new user account.</td>
   </tr>
 </table>
 
 ### [Login](#login)
 
-<table class="routes">
+<table class="routes" width="600px">
   <tr>
-    <td><a href="#post-login">POST /login.json</td>
-    <td>Start an authenticated user session.</td>
+    <td width="300px"><a href="#post-login">POST /login.json</td>
+    <td width="300px">Start an authenticated user session.</td>
   </tr>
   <tr>
-    <td><a href="#get-logout">GET /logout.json</td>
-    <td>End the current user session.</td>
+    <td width="300px"><a href="#get-logout">GET /logout.json</td>
+    <td width="300px">End the current user session.</td>
   </tr>
 </table>
 
 ### [Publish](#publish)
 
-<table class="routes">
+<table class="routes" width="600px">
   <tr>
-    <td><a href="#post-arguments">POST /arguments.json</td>
-    <td>Create a new argument (with repo).</td>
+    <td width="300px"><a href="#post-arguments">POST /arguments.json</td>
+    <td width="300px">Create a new argument (with repo).</td>
   </tr>
-</table>
-<table class="routes">
   <tr>
-    <td><a href="#post-tags">POST /tags.json</td>
-    <td>Create a new tag (support, dispute, citation, or commentary).</td>
+    <td width="300px"><a href="#post-tags">POST /tags.json</td>
+    <td width="300px">Create a new tag (support, dispute, citation, or commentary).</td>
   </tr>
 </table>
 
