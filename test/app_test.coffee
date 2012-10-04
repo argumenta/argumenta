@@ -67,6 +67,18 @@ sessionWithArgument = (callback) ->
       res.status.should.equal 200
       callback user, data, get, post
 
+# Session with tag helper - provides user, argument, tag, get, post
+sessionWithTag = (callback) ->
+  sessionWithArgument (user, argumentData, get, post) ->
+    argument = new Argument argumentData
+    tag = fixtures.validSupportTag()
+    tag.targetType = 'proposition'
+    tag.targetSha1 = argument.propositions[0].sha1()
+    data = tag.data()
+    post '/tags.json', data, (res) ->
+      res.status.should.equal 201
+      callback( user, argumentData, data, get, post )
+
 # Verify JSONP Helper - Given a JSONP response, invokes callback with json.
 verifyJSONP = (res, callback) ->
   res.type.should.equal 'text/javascript'
@@ -385,6 +397,53 @@ describe 'App', () ->
               expectedData = arg.propositions.map (p) -> p.data()
               matchesPropositionsData json.propositions, expectedData
               done()
+
+  describe '/tags', ->
+    describe 'GET /tags/:hash.:format?', ->
+      it 'should return a tag as json', (done) ->
+        sessionWithTag (user, argument, tag, get, post) ->
+          get '/tags/' + tag.sha1 + '.json', (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            json = res.body
+            should.not.exist json.error
+            json.tag.should.eql tag
+            done()
+
+    describe 'POST /tags.json', ->
+      it 'should create a tag and return json confirmation', (done) ->
+        sessionWithArgument (user, argumentData, get, post) ->
+          argument = new Argument argumentData
+          tag = fixtures.validSupportTag()
+          tag.targetType = 'proposition'
+          tag.targetSha1 = argument.propositions[0].sha1()
+          data = tag.data()
+          post '/tags.json', data, (res) ->
+            res.status.should.equal 201
+            json = res.body
+            json.message.should.match new RegExp "Created a new tag!"
+            json.tag.should.eql data
+            done()
+
+      it 'should fail with 400 status if tag is invalid', (done) ->
+        sessionWithArgument (user, argumentData, get, post) ->
+          tag = fixtures.validSupportTag()
+          tag.targetType = ''
+          data = tag.data()
+          post '/tags.json', data, (res) ->
+            res.status.should.equal 400
+            json = res.body
+            json.error.should.exist
+            done()
+
+      it 'should fail with 401 status if not logged in', (done) ->
+        noSession (user, get, post) ->
+          data = fixtures.validSupportTag().data()
+          post '/tags.json', data, (res) ->
+            res.status.should.equal 401
+            json = res.body
+            json.error.should.exist
+            done()
 
   describe '/logout', ->
     describe 'GET /logout', ->

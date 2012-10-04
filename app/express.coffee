@@ -95,6 +95,9 @@ app.post '/arguments.:format?',       routes.arguments.create
 app.get  '/arguments/:hash.:format?', routes.arguments.show
 app.get  '/arguments/:hash/propositions.:format?', routes.arguments.propositions
 
+app.get  '/tags/:hash.:format?',      routes.tags.show
+app.post '/tags.:format?',            routes.tags.create
+
 app.get  '/:name.:format?',           routes.users.public
 app.get  '/:name/:repo.:format?',     routes.repos.show
 
