@@ -121,6 +121,7 @@ class Tag
     data.source_sha1 = @sourceSha1 if @sourceSha1?
     data.citation_text = @citationText if @citationText?
     data.commentary_text = @commentaryText if @commentaryText?
+    data.sha1 = @sha1()
     return data
 
   # Checks for equality with another tag.

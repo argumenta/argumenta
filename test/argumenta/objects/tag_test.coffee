@@ -120,6 +120,13 @@ describe 'SupportTag', ->
       tag2 = new Tag tag1.data()
       should.ok tag1.equals tag2
 
+    it 'should include the sha1', ->
+      tag = fixtures.validSupportTag()
+      data = tag.data()
+      data.should.include {
+        sha1: tag.sha1()
+      }
+
 describe 'DisputeTag', ->
 
   targetType = 'proposition'
@@ -169,6 +176,13 @@ describe 'DisputeTag', ->
       tag1 = fixtures.validDisputeTag()
       tag2 = new Tag tag1.data()
       should.ok tag1.equals tag2
+
+    it 'should include the sha1', ->
+      tag = fixtures.validDisputeTag()
+      data = tag.data()
+      data.should.include {
+        sha1: tag.sha1()
+      }
 
 describe 'CitationTag', ->
 
@@ -224,6 +238,13 @@ describe 'CitationTag', ->
       tag2 = new Tag tag1.data()
       should.ok tag1.equals tag2
 
+    it 'should include the sha1', ->
+      tag = fixtures.validCitationTag()
+      data = tag.data()
+      data.should.include {
+        sha1: tag.sha1()
+      }
+
 describe 'CommentaryTag', ->
 
   targetType = 'argument'
@@ -277,3 +298,10 @@ describe 'CommentaryTag', ->
       tag1 = fixtures.validCommentaryTag()
       tag2 = new Tag tag1.data()
       should.ok tag1.equals tag2
+
+    it 'should include the sha1', ->
+      tag = fixtures.validCommentaryTag()
+      data = tag.data()
+      data.should.include {
+        sha1: tag.sha1()
+      }
