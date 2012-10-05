@@ -78,28 +78,29 @@ unless config.appMode.match /production|testing|development/
   configure()
 
 # Routes
-app.get  '/',                         routes.main.index
+app.get  '/',                                      routes.main.index
 
-app.get  '/users',                    routes.users.index
-app.post '/users.:format?',           routes.users.create
-app.get  '/users/:name.:format?',     routes.users.show
+app.get  '/users',                                 routes.users.index
+app.post '/users.:format?',                        routes.users.create
+app.get  '/users/:name.:format?',                  routes.users.show
 
-app.get  '/join',                     routes.join.index
+app.get  '/join',                                  routes.join.index
 
-app.get  '/login',                    routes.login.index
-app.post '/login.:format?',           routes.login.verify
-app.get  '/logout.:format?',          routes.logout.index
+app.get  '/login',                                 routes.login.index
+app.post '/login.:format?',                        routes.login.verify
+app.get  '/logout.:format?',                       routes.logout.index
 
-app.get  '/arguments/new',            routes.arguments.new
-app.post '/arguments.:format?',       routes.arguments.create
-app.get  '/arguments/:hash.:format?', routes.arguments.show
+app.get  '/arguments/new',                         routes.arguments.new
+app.post '/arguments.:format?',                    routes.arguments.create
+app.get  '/arguments/:hash.:format?',              routes.arguments.show
 app.get  '/arguments/:hash/propositions.:format?', routes.arguments.propositions
 
-app.get  '/tags/:hash.:format?',      routes.tags.show
-app.post '/tags.:format?',            routes.tags.create
 
-app.get  '/:name.:format?',           routes.users.public
-app.get  '/:name/:repo.:format?',     routes.repos.show
+app.get  '/tags/:hash.:format?',                   routes.tags.show
+app.post '/tags.:format?',                         routes.tags.create
+
+app.get  '/:name.:format?',                        routes.users.public
+app.get  '/:name/:repo.:format?',                  routes.repos.show
 
 # Http
 http.createServer(app).listen(3000)
