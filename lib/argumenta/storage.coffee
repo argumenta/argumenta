@@ -301,6 +301,17 @@ class Storage extends Base
       return cb new @RetrievalError "Failed getting commits from the store." if err
       return cb null, commits
 
+  # Get commits from the store with given target hashes.
+  #
+  # @param [Array<String>]  targetHashes Target hashes of tags to retrieve.
+  # @param [Function]       cb(err, commits) Called on completion or error.
+  # @param [StorageError]   err Any error.
+  # @param [Array<Commits>] commits The retrieved commits.
+  getCommitsFor: (targetHashes, cb) ->
+    @store.getCommitsFor targetHashes, (err, commits) ->
+      return cb new @RetrievalError "Failed getting commits from the store." if err
+      return cb null, commits
+
   # Add a tag to the store.
   #
   # @param [Tag] tag The tag to store.
@@ -336,5 +347,44 @@ class Storage extends Base
     @store.getTags hashes, (err, tags) ->
       return cb new @RetrievalError "Failed getting tags from the store." if err
       return cb null, tags
+
+  # Get tags from the store with given target hashes.
+  #
+  # @param [Array<String>] targetHashes Target hashes of tags to retrieve.
+  # @param [Function]      cb(err, tags) Called on completion or error.
+  # @param [StorageError]  err Any error.
+  # @param [Array<Tag>]    tags The retrieved tags.
+  getTagsFor: (targetHashes, cb) ->
+    @store.getTagsFor targetHashes, (err, tags) ->
+      return cb new @RetrievalError "Failed getting tags from the store." if err
+      return cb null, tags
+
+  # Get tags (plus any source objects) from the store given target hashes.
+  #
+  # @param [Array<String>] targetHashes Target hashes of tags to retrieve.
+  # @param [Function]      cb(err, tags) Called on completion or error.
+  # @param [StorageError]  err Any error.
+  # @param [Array<Tag>]    tags The tags for the given targets.
+  # @param [Array<Object>] sources Any source objects for the tags.
+  # @param [Array<Commit>] commits The commits for tags and sources.
+  getTagsPlusSources: (targetHashes, cb) ->
+    @getTagsFor targetHashes, (er1, tags) =>
+      objectHashes = []
+      sourceHashes = []
+      for tag in tags
+        objectHashes.push tag.sha1()
+        if tag.sourceSha1
+          objectHashes.push tag.sourceSha1
+          sourceHashes.push tag.sourceSha1
+      @getArguments sourceHashes, (er2, args) =>
+        @getPropositions sourceHashes, (er3, props) =>
+          sources = []
+          for obj in [].concat args, props
+            sources.push obj if obj
+          @getCommitsFor objectHashes, (er4, commits) =>
+            if err = er1 or er2 or er3 or er4
+              return cb new @RetrievalError """
+                Failed getting tags plus sources from the store."""
+            return cb null, tags, sources, commits
 
 module.exports = Storage

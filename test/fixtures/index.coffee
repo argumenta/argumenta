@@ -108,7 +108,7 @@ class Fixtures
 
   @uniqueArgument: () ->
     return new Argument "Title #{++uniqueArgumentCount}",
-                        @validPremises(), @validConclusion()
+                        @uniquePremises(), @uniqueConclusion()
 
   @invalidArgument: () ->
     return new Argument 'invalid-argument', [ '' ], ''
@@ -119,8 +119,14 @@ class Fixtures
   @validPremises: () ->
     return ['The first premise.', 'The second premise.']
 
+  @uniquePremises: () ->
+    return [@uniqueProposition().text, @uniqueProposition().text]
+
   @validConclusion: () ->
     return 'The conclusion'
+
+  @uniqueConclusion: () ->
+    return @uniqueProposition().text
 
   #### Propositions ####
 
@@ -173,6 +179,12 @@ class Fixtures
     return '1a1a1a1a1a1a1a1a000000000000000000000000'
 
   #### Tags ####
+
+  uniqueCitationCount = 0
+
+  @uniqueCitationTag: () ->
+    return new CitationTag @validCitationTargetType(), @validTargetSha1(),
+                           "Unique citation no. #{++uniqueCitationCount}"
 
   @validTag: () ->
     return new SupportTag @validSupportTargetType(), @validTargetSha1(),

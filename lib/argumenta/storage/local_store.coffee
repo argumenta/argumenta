@@ -14,8 +14,8 @@ class LocalStore extends Base
     # Init object hashes
     @arguments = { bySha1: {} }
     @propositions = { bySha1: {} }
-    @commits = { bySha1: {} }
-    @tags = { bySha1: {} }
+    @commits = { bySha1: {}, withTargetSha1: {} }
+    @tags = { bySha1: {}, withTargetSha1: {} }
 
   # Store a User in memory.
   addUser: (user, cb) ->
@@ -137,6 +137,8 @@ class LocalStore extends Base
   addCommit: (commit, cb) ->
     hash = commit.sha1()
     @commits.bySha1[ hash ] = commit
+    @commits.withTargetSha1[ commit.targetSha1 ] ?= []
+    @commits.withTargetSha1[ commit.targetSha1 ].push commit
 
     return cb null
 
@@ -149,10 +151,21 @@ class LocalStore extends Base
 
     return cb null, results
 
+  # Get commits from the store with given target hashes.
+  getCommitsFor: (targetHashes, cb) ->
+    results = []
+    for hash in targetHashes
+      commits = @commits.withTargetSha1[hash]
+      results = results.concat commits or []
+
+    return cb null, results
+
   # Add a tag to the store
   addTag: (tag, cb) ->
     hash = tag.sha1()
     @tags.bySha1[ hash ] = tag
+    @tags.withTargetSha1[ tag.targetSha1 ] ?= []
+    @tags.withTargetSha1[ tag.targetSha1 ].push tag
 
     return cb null
 
@@ -162,6 +175,15 @@ class LocalStore extends Base
     for hash in hashes
       t = @tags.bySha1[hash]
       results.push t if t?
+
+    return cb null, results
+
+  # Get tags from the store with given target hashes.
+  getTagsFor: (targetHashes, cb) ->
+    results = []
+    for hash in targetHashes
+      tags = @tags.withTargetSha1[hash]
+      results = results.concat tags or []
 
     return cb null, results
 

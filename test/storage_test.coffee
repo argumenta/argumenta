@@ -39,7 +39,7 @@ for type in storageTypes
     # WithArgument Helper
     withArgument = (callback) ->
       withUser (user) ->
-        argument = fixtures.validArgument()
+        argument = fixtures.uniqueArgument()
         commit = new Commit 'argument', argument.sha1(), fixtures.validCommitter()
         storage.addCommit commit, (er1) ->
           storage.addArgument argument, (er2) ->
@@ -53,6 +53,32 @@ for type in storageTypes
         storage.addRepo user.username, reponame, commit.sha1(), (err) ->
           should.not.exist err
           callback user, reponame, commit, argument
+
+    # With Citation Tag
+    withCitationTag = (callback) ->
+      withArgument (user, argCommit, argument) ->
+        prop = argument.propositions[0]
+        tag = fixtures.uniqueCitationTag()
+        tag.targetType = 'proposition'
+        tag.targetSha1 = prop.sha1()
+        tagCommit = new Commit 'tag', tag.sha1(), fixtures.validCommitter()
+        storage.addCommit tagCommit, (err) ->
+          storage.addTag tag, (err) ->
+            should.not.exist err
+            callback user, prop, tagCommit, tag
+
+    # With Support Tag
+    withSupportTag = (callback) ->
+      withArgument (user, argCommit, argument) ->
+        target = prop1 = argument.propositions[0]
+        source = prop2 = argument.propositions[1]
+        tag = new Tag 'support', 'proposition', prop1.sha1(), 'proposition', prop2.sha1()
+        tagCommit = new Commit 'tag', tag.sha1(), user.username
+        storage.addCommit tagCommit, (err) ->
+          should.not.exist err
+          storage.addTag tag, (err) ->
+            should.not.exist err
+            callback user, target, source, tagCommit, tag
 
     afterEach clearStorage
 
@@ -250,6 +276,18 @@ for type in storageTypes
             commitB.equals( commitA ).should.equal true
             done()
 
+    describe 'getCommitsFor( hashes, callback )', ->
+      it 'should retrieve stored commits by target hash', (done) ->
+        withArgument (user, commit1, argument1) ->
+          withArgument (user, commit2, argument2) ->
+            targetHashes = [argument1.sha1(), argument2.sha1()]
+            storage.getCommitsFor targetHashes, (err, commits) ->
+              should.not.exist err
+              commits.length.should.equal 2
+              should.ok commit1.equals commits[0]
+              should.ok commit2.equals commits[1]
+              done()
+
     #### Tags ####
 
     describe 'addTag( tag, callback )', ->
@@ -317,6 +355,45 @@ for type in storageTypes
               tag2 = tags[1]
               should.ok tag1.equals tagA
               should.ok tag2.equals tagB
+              done()
+
+    describe 'getTagsFor( hashes, callback )', ->
+      it 'should retrieve stored tags by target hash', (done) ->
+        withCitationTag (user1, proposition1, tag1Commit, tag1) ->
+          withCitationTag (user2, proposition2, tag2Commit, tag2) ->
+            targetHashes = [proposition1.sha1(), proposition2.sha1()]
+            storage.getTagsFor targetHashes, (err, tags) ->
+              should.not.exist err
+              tags.length.should.equal 2
+              should.ok tag1.equals tags[0]
+              should.ok tag2.equals tags[1]
+              done()
+
+    describe 'getTagsPlusSources( targetHashes, callback )', ->
+      it 'should retrieve citation tags, sources, and commits', (done) ->
+        withCitationTag (user1, proposition1, tag1Commit, tag1) ->
+          withCitationTag (user2, proposition2, tag2Commit, tag2) ->
+            targetHashes = [proposition1.sha1(), proposition2.sha1()]
+            storage.getTagsPlusSources targetHashes, (err, tags, sources, commits) ->
+              tags.length.should.equal 2
+              sources.length.should.equal 0
+              commits.length.should.equal 2
+              should.ok tag1.equals tags[0]
+              should.ok tag2.equals tags[1]
+              should.ok tag1Commit.equals commits[0]
+              should.ok tag2Commit.equals commits[1]
+              done()
+
+      it 'should retrieve support tags, sources, and commits', (done) ->
+        withSupportTag (user, target1, source1, tag1Commit, tag1) ->
+          withSupportTag (user, target2, source2, tag2Commit, tag2) ->
+            targetHashes = [target1.sha1(), target2.sha1()]
+            storage.getTagsPlusSources targetHashes, (err, tags, sources, commits) ->
+              tags.length.should.equal 2
+              should.ok tag1.equals tags[0]
+              should.ok tag2.equals tags[1]
+              should.ok source1.equals sources[0]
+              should.ok source2.equals sources[1]
               done()
 
     #### Propositions ####
