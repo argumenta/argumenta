@@ -114,6 +114,7 @@ class Tag
   # @return [Object] The tag data.
   data: () ->
     data = {}
+    data.object_type = 'tag'
     data.tag_type = @tagType
     data.target_type = @targetType
     data.target_sha1 = @targetSha1
