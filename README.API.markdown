@@ -1,20 +1,20 @@
 
 # Argumenta API
 
-## [Overview](#overview) / [Features](#features) / [Routes](#routes) / [Usage](#usage)
+## [Overview](#overview) / [Features](#features) / [Routes](#routes) / [Usage](#usage) / [Changes](#changes)
 
 <span id="overview"></span>
 ## Overview
 
 The Argumenta API provides a RESTful interface to data in JSON form.
 
-It can be used to access resources including Users, Repos, Arguments, and Tags.  
-Planned resources include Propositions, Follows, Activity, and Search.
+It can be used to access resources including Users, Repos, Arguments, Propositions, and Tags.  
+Planned resources include Follows, Activity, and Search.
 
 <span id="features"></span>
 ## Features
 
-The current version (0.0.1alpha1) provides the following features:
+The current version (0.0.1alpha2) provides the following features:
 
 + Read access for general use by unauthenticated clients.
 + Cookie-based authenticated sessions for account creation, login, and publishing.
@@ -68,6 +68,10 @@ The current version (0.0.1alpha1) provides the following features:
   </tr>
   <tr>
     <td width="300px"><a href="#get-proposition-tags">GET /propositions/:sha1/tags.json</td>
+    <td width="300px">Get a proposition's tags.</td>
+  </tr>
+  <tr>
+    <td width="300px"><a href="#get-proposition-tags-plus-sources">GET /propositions/:sha1/tags-plus-sources.json</td>
     <td width="300px">Get a proposition's tags (plus source objects).</td>
   </tr>
 </table>
@@ -436,17 +440,125 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 *Get a proposition by its sha1.*
 
 #### Params
+
++ sha1: The proposition's sha1.
+
 #### Returns
+
++ Success: 200 (OK)
++ Error: 404 (Not Found)
+
 #### Example
+    curl -i http://localhost:3000/propositions/30be8f3b68d20f5c3898265e33c583ddee374a6a.json
+
+    HTTP/1.1 200 OK
+    X-Powered-By: Express
+    Content-Type: application/json; charset=utf-8
+    Content-Length: 163
+    Set-Cookie: connect.sess=j%3A%7B%22flash%22%3A%7B%7D%7D.uie4zyZwXs1gm4wy8hoWGGj7yp%2BR4XiEkv%2FIoxw5GoQ; path=/; httpOnly
+    Connection: keep-alive
+
+    {
+      "proposition": {
+        "text": "Second premise.",
+        "object_type": "proposition",
+        "sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a"
+      },
+      "error": null
+    }
 
 <span id="get-proposition-tags"></span>
 ### GET /propositions/:sha1/tags.json
 
+*Get a proposition's tags.*
+
+#### Params
+
++ sha1: The proposition's sha1.
+
+#### Returns
+
++ Success: 200 (OK)
+
+#### Example
+
+    curl -i http://localhost:3000/propositions/30be8f3b68d20f5c3898265e33c583ddee374a6a/tags.json
+
+    HTTP/1.1 200 OK
+    X-Powered-By: Express
+    Content-Type: application/json; charset=utf-8
+    Content-Length: 354
+    Set-Cookie: connect.sess=j%3A%7B%22flash%22%3A%7B%7D%7D.uie4zyZwXs1gm4wy8hoWGGj7yp%2BR4XiEkv%2FIoxw5GoQ; path=/; httpOnly
+    Connection: keep-alive
+
+    {
+      "tags": [
+        {
+          "object_type": "tag",
+          "tag_type": "citation",
+          "target_type": "proposition",
+          "target_sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
+          "citation_text": "The citation text, with url: http://wikipedia.org/wiki/Citation",
+          "sha1": "412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae"
+        }
+      ],
+      "error": null
+    }
+
+<span id="get-proposition-tags-plus-sources"></span>
+### GET /propositions/:sha1/tags-plus-sources.json
+
 *Get a proposition's tags (plus source objects).*
 
 #### Params
+
++ sha1: The proposition's sha1.
+
 #### Returns
+
++ Success: 200 (OK)
+
 #### Example
+
+    curl -i http://localhost:3000/propositions/30be8f3b68d20f5c3898265e33c583ddee374a6a/tags-plus-sources.json
+
+    HTTP/1.1 200 OK
+    X-Powered-By: Express
+    Content-Type: application/json; charset=utf-8
+    Content-Length: 749
+    Set-Cookie: connect.sess=j%3A%7B%22flash%22%3A%7B%7D%7D.uie4zyZwXs1gm4wy8hoWGGj7yp%2BR4XiEkv%2FIoxw5GoQ; path=/; httpOnly
+    Connection: keep-alive
+
+    {
+      "tags": [
+        {
+          "object_type": "tag",
+          "tag_type": "support",
+          "target_type": "proposition",
+          "target_sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
+          "source_type": "proposition",
+          "source_sha1": "dfe2394f3cdad27e56023cd0574be36b9a5f9e6e",
+          "sha1": "08f6c25476af45f8d8ee4cb0601740bc7bf098ab"
+        }
+      ],
+      "sources": [
+        {
+          "text": "The conclusion! :D",
+          "object_type": "proposition",
+          "sha1": "dfe2394f3cdad27e56023cd0574be36b9a5f9e6e"
+        }
+      ],
+      "commits": [
+        {
+          "target_type": "tag",
+          "target_sha1": "08f6c25476af45f8d8ee4cb0601740bc7bf098ab",
+          "committer": "tester",
+          "commit_date": "2012-10-09T02:29:34Z",
+          "parent_sha1s": []
+        }
+      ],
+      "error": null
+    }
 
 <span id="tags"></span>
 ## Tags [&para;](#tags)
@@ -686,7 +798,7 @@ Required for **commentary** tags:
 + Error: 400 (Bad Request)
 + Error: 401 (Unauthorized)
 
-#### Example
+#### Example: Create a Citation Tag
 
     curl -i -X POST http://localhost:3000/tags.json \
       -d 'tag_type=citation' \
@@ -714,3 +826,44 @@ Required for **commentary** tags:
       "error": null
     }
 
+#### Example: Create a Support Tag
+
+    curl -i -X POST http://localhost:3000/tags.json \
+      -d 'tag_type=support' \
+      -d 'target_type=proposition' \
+      -d 'target_sha1=30be8f3b68d20f5c3898265e33c583ddee374a6a' \
+      -d 'source_type=proposition' \
+      -d 'source_sha1=dfe2394f3cdad27e56023cd0574be36b9a5f9e6e' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    HTTP/1.1 201 Created
+    X-Powered-By: Express
+    Content-Type: application/json; charset=utf-8
+    Content-Length: 431
+    Connection: keep-alive
+
+    {
+      "url": "/tags/08f6c25476af45f8d8ee4cb0601740bc7bf098ab",
+      "message": "Created a new tag!",
+      "tag": {
+        "object_type": "tag",
+        "tag_type": "support",
+        "target_type": "proposition",
+        "target_sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
+        "source_type": "proposition",
+        "source_sha1": "dfe2394f3cdad27e56023cd0574be36b9a5f9e6e",
+        "sha1": "08f6c25476af45f8d8ee4cb0601740bc7bf098ab"
+      },
+      "error": null
+    }
+
+<span id="changes"></span>
+# Changes
+
+## 0.0.1alpha2
+
+Add Proposition routes.
+
+## 0.0.1alpha1
+
+Initial version with routes for Users, Repos, Arguments, Propositions, and Tags.
