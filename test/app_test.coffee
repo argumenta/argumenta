@@ -74,10 +74,12 @@ sessionWithTag = (callback) ->
     tag = fixtures.validSupportTag()
     tag.targetType = 'proposition'
     tag.targetSha1 = argument.propositions[0].sha1()
-    data = tag.data()
-    post '/tags.json', data, (res) ->
+    tag.sourceType = 'proposition'
+    tag.sourceSha1 = argument.propositions[1].sha1()
+    tagData = tag.data()
+    post '/tags.json', tagData, (res) ->
       res.status.should.equal 201
-      callback( user, argumentData, data, get, post )
+      callback user, argumentData, tagData, get, post
 
 # Verify JSONP Helper - Given a JSONP response, invokes callback with json.
 verifyJSONP = (res, callback) ->
@@ -397,6 +399,89 @@ describe 'App', () ->
               expectedData = arg.propositions.map (p) -> p.data()
               matchesPropositionsData json.propositions, expectedData
               done()
+
+  describe '/propositions', ->
+
+    describe 'GET /propositions/:hash.:format?', ->
+      it 'should return a proposition as json', (done) ->
+        sessionWithArgument (user, argumentData, get, post) ->
+          argument = new Argument argumentData
+          prop = argument.propositions[0]
+          hash = prop.sha1()
+          get '/propositions/' + hash + '.json', (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            json = res.body
+            json.proposition.should.eql prop.data()
+            done()
+
+      it "should fail with 404 status if the proposition doesn't exist", (done) ->
+        session (user, get, post) ->
+          prop = fixtures.uniqueProposition()
+          hash = prop.sha1()
+          get '/propositions/' + hash + '.json', (res) ->
+            res.status.should.equal 404
+            res.redirects.should.eql []
+            json = res.body
+            json.error.should.exist
+            done()
+
+    describe 'GET /propositions/:hash/tags.:format?', ->
+      it 'should return proposition tags as json', (done) ->
+        sessionWithTag (user, argumentData, tag, get, post) ->
+          argument = new Argument argumentData
+          prop = argument.propositions[0]
+          hash = prop.sha1()
+          get '/propositions/' + hash + '/tags.json', (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            json = res.body
+            json.tags[0].should.eql tag
+            done()
+
+      it "should return empty array if proposition has no tags", (done) ->
+        noSession (user, get, post) ->
+          argument = fixtures.uniqueArgument()
+          prop = argument.propositions[0]
+          hash = prop.sha1()
+          get '/propositions/' + hash + '/tags.json', (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            json = res.body
+            json.tags.length.should.equal 0
+            should.not.exist json.error
+            done()
+
+    describe 'GET /propositions/:hash/tags-plus-sources.:format?', ->
+      it 'should return proposition tags plus sources as json', (done) ->
+        sessionWithTag (user, argumentData, tag, get, post) ->
+          argument = new Argument argumentData
+          prop = argument.propositions[0]
+          hash = prop.sha1()
+          get '/propositions/' + hash + '/tags-plus-sources.json', (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            json = res.body
+            json.tags.length.should.equal 1
+            json.sources.length.should.equal 1
+            json.commits.length.should.equal 1
+            json.tags[0].should.eql tag
+            done()
+
+      it "should return empty array if proposition has no tags", (done) ->
+        noSession (user, get, post) ->
+          argument = fixtures.uniqueArgument()
+          prop = argument.propositions[0]
+          hash = prop.sha1()
+          get '/propositions/' + hash + '/tags-plus-sources.json', (res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql []
+            json = res.body
+            json.tags.length.should.equal 0
+            json.sources.length.should.equal 0
+            json.commits.length.should.equal 0
+            should.not.exist json.error
+            done()
 
   describe '/tags', ->
     describe 'GET /tags/:hash.:format?', ->
