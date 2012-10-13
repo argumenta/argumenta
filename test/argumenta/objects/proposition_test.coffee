@@ -1,4 +1,5 @@
-should = require 'should'
+should      = require 'should'
+fixtures    = require '../../../test/fixtures'
 Proposition = require '../../../lib/argumenta/objects/proposition'
 
 describe 'Proposition', ->
@@ -28,6 +29,19 @@ describe 'Proposition', ->
         object_type: 'proposition'
         sha1: prop.sha1()
       }
+
+    it 'should include metadata if present', ->
+      prop = fixtures.validProposition()
+      metadata = fixtures.validPropositionMetadata(prop)
+      prop.metadata = metadata
+      data = prop.data()
+      data.metadata.should.eql prop.metadata
+
+    it 'should omit metadata if not present', ->
+      prop = fixtures.validProposition()
+      prop.metadata = null
+      data = prop.data()
+      should.not.exist data.metadata
 
   describe 'equals()', ->
     it 'should return true if propositions are equal', ->

@@ -144,6 +144,22 @@ class Fixtures
   @validPropositionText: () ->
     return 'The proposition text.'
 
+  @validPropositionMetadata: (prop=@validProposition()) ->
+    return {
+      sha1: prop.sha1()
+      object_type: 'proposition'
+      tag_sha1s: {
+        support: []
+        dispute: []
+        citation: []
+      }
+      tag_counts: {
+        support: 0
+        dispute: 0
+        citation: 0
+      }
+    }
+
   #### Commits ####
 
   @validCommit: () ->

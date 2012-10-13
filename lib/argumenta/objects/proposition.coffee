@@ -58,11 +58,13 @@ class Proposition
   # @api public
   # @return [Object] The proposition data.
   data: () ->
-    return {
+    data = {
       text: @text
       object_type: 'proposition'
       sha1: @sha1()
     }
+    data.metadata = @metadata if @metadata?
+    return data
 
   # Checks for equality with another proposition.
   #
