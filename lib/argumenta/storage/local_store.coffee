@@ -32,8 +32,12 @@ class LocalStore extends Base
   # Delete *all* entities from the store.
   clearAll: (cb) ->
     @users = {}
+
     for collection in [@arguments, @propositions, @commits, @tags]
       collection.bySha1 = {}
+
+    for collection in [@commits, @tags]
+      collection.withTargetSha1 = {}
 
     return cb null
 
@@ -130,6 +134,33 @@ class LocalStore extends Base
     for hash in hashes
       p = @propositions.bySha1[hash]
       results.push p if p?
+
+    return cb null, results
+
+  # Get propositions metadata by hashes.
+  getPropositionsMetadata: (hashes, cb) ->
+    results = []
+    for hash in hashes
+      tags = @tags.withTargetSha1[hash] or []
+      metadata = {
+        sha1: hash
+        object_type: 'proposition'
+        tag_sha1s: {
+          support: []
+          dispute: []
+          citation: []
+        }
+        tag_counts: {
+          support: 0
+          dispute: 0
+          citation: 0
+        }
+      }
+      sha1s = metadata.tag_sha1s
+      counts = metadata.tag_counts
+      sha1s[tag.tagType].push tag.sha1() for tag in tags
+      counts[type] = sha1s[type].length for type in Object.keys counts
+      results.push metadata
 
     return cb null, results
 

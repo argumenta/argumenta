@@ -445,3 +445,37 @@ for type in storageTypes
             should.ok propositions[0].equals propA
             should.ok propositions[1].equals propB
             done()
+
+    describe 'getPropositionsMetadata( hashes, callback )', ->
+      it 'should get propositions metadata', (done) ->
+        withCitationTag (user1, prop1, tag1Commit, tag1) ->
+          withSupportTag (user2, prop2, source, tag2Commit, tag2) ->
+            hashes = [prop1.sha1(), prop2.sha1()]
+            storage.getPropositionsMetadata hashes, (err, metadata) ->
+              metadata.length.should.equal 2
+              m1 = metadata[0]
+              m2 = metadata[1]
+              m1.sha1.should.equal prop1.sha1()
+              m2.sha1.should.equal prop2.sha1()
+              m1.tag_counts.citation.should.equal 1
+              m2.tag_counts.support.should.equal 1
+              m1.tag_sha1s.citation[0].should.equal tag1.sha1()
+              m2.tag_sha1s.support[0].should.equal tag2.sha1()
+              done()
+
+    describe 'getPropositionsWithMetadata( hashes, callback )', ->
+      it 'should get propositions along with metadata', (done) ->
+        withCitationTag (user1, prop1, tag1Commit, tag1) ->
+          withSupportTag (user2, prop2, source, tag2Commit, tag2) ->
+            hashes = [prop1.sha1(), prop2.sha1()]
+            storage.getPropositionsWithMetadata hashes, (err, propositions) ->
+              propositions.length.should.equal 2
+              p1 = propositions[0]
+              p2 = propositions[1]
+              should.ok p1.equals prop1
+              should.ok p2.equals prop2
+              p1.metadata.tag_counts.citation.should.equal 1
+              p2.metadata.tag_counts.support.should.equal 1
+              p1.metadata.tag_sha1s.citation[0].should.equal tag1.sha1()
+              p2.metadata.tag_sha1s.support[0].should.equal tag2.sha1()
+              done()

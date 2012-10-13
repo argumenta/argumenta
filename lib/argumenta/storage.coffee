@@ -265,6 +265,33 @@ class Storage extends Base
       return cb new @Error "Failed getting propositions from the store." if err
       return cb null, propositions
 
+  # Get propositions metadata from the store by hashes.
+  #
+  # @param [Array<String>] hashes Hash ids of the propositions to retrieve.
+  # @param [Function]      cb(err, propositions) Called on completion or error.
+  # @param [StorageError]  err Any error.
+  # @param [Array<Object>] metadata The retrieved metadata.
+  getPropositionsMetadata: (hashes, cb) ->
+    @store.getPropositionsMetadata hashes, (err, metadata) ->
+      return cb new @Error "Failed getting propositions metadata from the store." if err
+      return cb null, metadata
+
+  # Get propositions (along with metadata) from the store by hashes.
+  #
+  # @param [Array<String>] hashes Hash ids of the propositions to retrieve.
+  # @param [Function]      cb(err, propositions) Called on completion or error.
+  # @param [StorageError]  err Any error.
+  # @param [Array<Proposition>] propositions The retrieved propositions (with metadata).
+  getPropositionsWithMetadata: (hashes, cb) ->
+    @store.getPropositions hashes, (er1, propositions) =>
+      @store.getPropositionsMetadata hashes, (er2, metadata) =>
+        if err = er1 or er2
+          return cb new @Error "Failed getting propositions from the store."
+        metadataBySha1 = {}
+        metadataBySha1[data.sha1] = data for data in metadata
+        prop.metadata = metadataBySha1[prop.sha1()] for prop in propositions
+        return cb null, propositions
+
   # Add a commit to the store.
   #
   # @param [Commit] commit The commit to store.
