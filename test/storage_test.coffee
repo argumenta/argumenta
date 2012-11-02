@@ -29,6 +29,15 @@ for type in storageTypes
         should.not.exist err
         done()
 
+    # WithProposition Helper
+    withProposition = (callback) ->
+      proposition = fixtures.uniqueProposition()
+      storage.addPropositions [proposition], (err) ->
+        should.not.exist err
+        storage.getProposition proposition.sha1(), (err, retrievedProposition) ->
+          should.not.exist err
+          callback retrievedProposition
+
     # WithUser Helper
     withUser = (callback) ->
       user = fixtures.uniqueUser()
@@ -429,6 +438,17 @@ for type in storageTypes
           storage.getProposition [proposition.sha1()], (err, retrievedProposition) ->
             should.not.exist err
             retrievedProposition.equals(proposition).should.equal true
+            done()
+
+      it 'should retrieve propositions modifiable without side effects', (done) ->
+        withProposition (prop1) ->
+          hash = prop1.sha1()
+          text = prop1.text
+          prop1.text = 'something different'
+          storage.getProposition hash, (err, prop2) ->
+            should.not.exist err
+            prop2.text.should.equal text
+            prop2.sha1().should.equal hash
             done()
 
     describe 'getPropositions( hashes, callback )', ->

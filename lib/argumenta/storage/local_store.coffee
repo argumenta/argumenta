@@ -1,6 +1,7 @@
-Base       = require '../../argumenta/base'
-PublicUser = require '../../argumenta/public_user'
-Repo       = require '../../argumenta/repo'
+Base        = require '../../argumenta/base'
+Proposition = require '../../argumenta/objects/proposition'
+PublicUser  = require '../../argumenta/public_user'
+Repo        = require '../../argumenta/repo'
 
 class LocalStore extends Base
 
@@ -133,7 +134,7 @@ class LocalStore extends Base
     results = []
     for hash in hashes
       p = @propositions.bySha1[hash]
-      results.push p if p?
+      results.push new Proposition p.text if p?
 
     return cb null, results
 
