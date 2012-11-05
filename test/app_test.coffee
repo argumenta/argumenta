@@ -386,6 +386,10 @@ describe 'App', () ->
             arg = new Argument(argument)
             expectedData = arg.propositions.map (p) -> p.data()
             matchesPropositionsData json.propositions, expectedData
+            metadata = json.propositions[0].metadata
+            should.exist metadata
+            should.exist metadata.tag_sha1s
+            should.exist metadata.tag_counts
             done()
 
       it "should return argument propositions as jsonp", (done) ->

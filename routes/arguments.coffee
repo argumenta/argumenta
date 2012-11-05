@@ -73,8 +73,8 @@ exports.propositions = (req, res) ->
     return res.reply 'index', error: err.message, status: Errors.statusFor err if err
     propHashes = argument.propositions.map (prop) -> prop.sha1()
 
-    argumenta.storage.getPropositions propHashes, (err, propositions) ->
+    argumenta.storage.getPropositionsWithMetadata propHashes, (err, propositions) ->
       return res.reply 'index', error: err.message, status: Errors.statusFor err if err
       return res.reply 'arguments/propositions',
         argument: argument
-        propositions: propositions.map (p) -> p.data()
+        propositions: propositions

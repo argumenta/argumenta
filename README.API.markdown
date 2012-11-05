@@ -14,7 +14,7 @@ Planned resources include Follows, Activity, and Search.
 <span id="features"></span>
 ## Features
 
-The current version (0.0.1alpha2) provides the following features:
+The current version (0.0.1alpha3) provides the following features:
 
 + Read access for general use by unauthenticated clients.
 + Cookie-based authenticated sessions for account creation, login, and publishing.
@@ -395,7 +395,8 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     HTTP/1.1 200 OK
     X-Powered-By: Express
     Content-Type: application/json; charset=utf-8
-    Content-Length: 745
+    Content-Length: 1903
+    ETag: -178917881
     Set-Cookie: connect.sess=j%3A%7B%22flash%22%3A%7B%7D%7D.uie4zyZwXs1gm4wy8hoWGGj7yp%2BR4XiEkv%2FIoxw5GoQ; path=/; httpOnly
     Connection: keep-alive
 
@@ -415,17 +416,63 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
         {
           "text": "First premise.",
           "object_type": "proposition",
-          "sha1": "49cb32b909f2cdfad750fd76af83a126414d0e7a"
+          "sha1": "49cb32b909f2cdfad750fd76af83a126414d0e7a",
+          "metadata": {
+            "sha1": "49cb32b909f2cdfad750fd76af83a126414d0e7a",
+            "object_type": "proposition",
+            "tag_sha1s": {
+              "support": [],
+              "dispute": [],
+              "citation": []
+            },
+            "tag_counts": {
+              "support": 0,
+              "dispute": 0,
+              "citation": 0
+            }
+          }
         },
         {
           "text": "Second premise.",
           "object_type": "proposition",
-          "sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a"
+          "sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
+          "metadata": {
+            "sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
+            "object_type": "proposition",
+            "tag_sha1s": {
+              "support": [
+                "08f6c25476af45f8d8ee4cb0601740bc7bf098ab"
+              ],
+              "dispute": [],
+              "citation": [
+                "412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae"
+              ]
+            },
+            "tag_counts": {
+              "support": 1,
+              "dispute": 0,
+              "citation": 1
+            }
+          }
         },
         {
           "text": "The conclusion! :D",
           "object_type": "proposition",
-          "sha1": "dfe2394f3cdad27e56023cd0574be36b9a5f9e6e"
+          "sha1": "dfe2394f3cdad27e56023cd0574be36b9a5f9e6e",
+          "metadata": {
+            "sha1": "dfe2394f3cdad27e56023cd0574be36b9a5f9e6e",
+            "object_type": "proposition",
+            "tag_sha1s": {
+              "support": [],
+              "dispute": [],
+              "citation": []
+            },
+            "tag_counts": {
+              "support": 0,
+              "dispute": 0,
+              "citation": 0
+            }
+          }
         }
       ],
       "error": null
@@ -859,6 +906,10 @@ Required for **commentary** tags:
 
 <span id="changes"></span>
 # Changes
+
+## 0.0.1alpha3
+
+Include metadata with argument propositions.
 
 ## 0.0.1alpha2
 
