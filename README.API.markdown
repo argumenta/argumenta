@@ -14,7 +14,7 @@ Planned resources include Follows, Activity, and Search.
 <span id="features"></span>
 ## Features
 
-The current version (0.0.1alpha3) provides the following features:
+The current version (0.0.1alpha4) provides the following features:
 
 + Read access for general use by unauthenticated clients.
 + Cookie-based authenticated sessions for account creation, login, and publishing.
@@ -496,12 +496,13 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 + Error: 404 (Not Found)
 
 #### Example
+
     curl -i http://localhost:3000/propositions/30be8f3b68d20f5c3898265e33c583ddee374a6a.json
 
     HTTP/1.1 200 OK
     X-Powered-By: Express
     Content-Type: application/json; charset=utf-8
-    Content-Length: 163
+    Content-Length: 601
     Set-Cookie: connect.sess=j%3A%7B%22flash%22%3A%7B%7D%7D.uie4zyZwXs1gm4wy8hoWGGj7yp%2BR4XiEkv%2FIoxw5GoQ; path=/; httpOnly
     Connection: keep-alive
 
@@ -509,7 +510,25 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "proposition": {
         "text": "Second premise.",
         "object_type": "proposition",
-        "sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a"
+        "sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
+        "metadata": {
+          "sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
+          "object_type": "proposition",
+          "tag_sha1s": {
+            "support": [
+              "08f6c25476af45f8d8ee4cb0601740bc7bf098ab"
+            ],
+            "dispute": [],
+            "citation": [
+              "412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae"
+            ]
+          },
+          "tag_counts": {
+            "support": 1,
+            "dispute": 0,
+            "citation": 1
+          }
+        }
       },
       "error": null
     }
@@ -906,6 +925,10 @@ Required for **commentary** tags:
 
 <span id="changes"></span>
 # Changes
+
+## 0.0.1alpha4
+
+Include metadata with each proposition.
 
 ## 0.0.1alpha3
 

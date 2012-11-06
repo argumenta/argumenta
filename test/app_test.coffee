@@ -416,7 +416,11 @@ describe 'App', () ->
             res.status.should.equal 200
             res.redirects.should.eql []
             json = res.body
-            json.proposition.should.eql prop.data()
+            json.proposition.should.include prop.data()
+            metadata = json.proposition.metadata
+            should.exist metadata
+            should.exist metadata.tag_sha1s
+            should.exist metadata.tag_counts
             done()
 
       it "should fail with 404 status if the proposition doesn't exist", (done) ->

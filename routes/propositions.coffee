@@ -6,12 +6,16 @@ Errors    = require '../lib/argumenta/errors'
 exports.show = (req, res) ->
   hash = req.param 'hash'
 
-  argumenta.storage.getProposition hash, (err, proposition) ->
+  argumenta.storage.getPropositionsWithMetadata [hash], (err, props) ->
     if err
       return res.failed '/', err.message,
         status: Errors.statusFor err
-    else
+
+    if proposition = props[0]
       return res.reply "propositions/show", {proposition}
+    else
+      return res.failed '/', "Proposition '#{hash}' not found.",
+        status: 404
 
 # Show proposition tags as html, json, or jsonp
 exports.tags = (req, res) ->
