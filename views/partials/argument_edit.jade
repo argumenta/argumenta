@@ -8,19 +8,19 @@
     .title
       label Title
       textarea(name="title", value=argument.title, placeholder=placeholder.title)
-        #{argument.title}
+        | #{argument.title}
     each premise, num in argument.premises
       .premise
         label Premise #{num + 1}
         textarea(name="premises", value=premise.text, placeholder=placeholder.premises[num].text)
-          #{premise.text}
+          | #{premise.text}
         .buttons
           button.addPremise(type="button", title="Add premise") &plus;
           button.removePremise(type="button", title="Remove premise", tabindex="-1") &minus;
     .conclusion
       label Conclusion
       textarea(name="conclusion", value=argument.conclusion.text, placeholder=placeholder.conclusion.text)
-        #{argument.conclusion.text}
+        | #{argument.conclusion.text}
     h6.digest
       b sha1 
       code.sha1(title=argument.objectRecord())= argument.sha1()

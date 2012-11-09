@@ -268,6 +268,15 @@ describe 'App', () ->
 
   describe '/arguments', ->
 
+    describe 'GET /arguments/new', ->
+      it 'should show a form to create a new argument', (done) ->
+        session (user, get, post) ->
+          get '/arguments/new', (err, res) ->
+            should.not.exist err
+            res.status.should.equal 200
+            res.text.should.match /Create a new argument!/
+            done()
+
     describe 'POST /arguments', ->
       it 'should create an argument given a session and valid argument', (done) ->
         session (user, get, post) ->
