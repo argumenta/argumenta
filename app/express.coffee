@@ -1,15 +1,11 @@
-express  = require 'express'
-flash    = require 'connect-flash'
-http     = require 'http'
-_        = require 'underscore'
-reply    = require '../app/middleware/reply'
-success  = require '../app/middleware/success'
-created  = require '../app/middleware/created'
-failed   = require '../app/middleware/failed'
-notFound = require '../app/middleware/not_found'
-routes   = require '../routes'
-config   = require '../config'
-Objects  = require '../lib/argumenta/objects'
+express    = require 'express'
+flash      = require 'connect-flash'
+http       = require 'http'
+_          = require 'underscore'
+middleware = require '../app/middleware'
+routes     = require '../routes'
+config     = require '../config'
+Objects    = require '../lib/argumenta/objects'
 
 # Express Instance
 app = module.exports = express()
@@ -43,7 +39,7 @@ configure = () ->
         messages: messages
         username: req.session.username or ''
     app.locals.pretty = true
-    app.use reply
+    app.use middleware.reply
       processor: (opts, req) ->
         format = req.param 'format'
         # Send argumenta objects with data() methods as plain object data
@@ -54,10 +50,10 @@ configure = () ->
             else if _.isArray(val) and typeof val[0]?.data is 'function'
               opts[key] = val.map (obj) -> obj.data()
         return opts
-    app.use success()
-    app.use failed()
-    app.use created()
-    app.use notFound view: 'index'
+    app.use middleware.success()
+    app.use middleware.failed()
+    app.use middleware.created()
+    app.use middleware.notFound view: 'index'
     app.use app.router
 
 app.configure 'production', ->
