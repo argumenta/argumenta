@@ -10,19 +10,6 @@ Objects    = require '../lib/argumenta/objects'
 # Express Instance
 app = module.exports = express()
 
-# Globals middleware: Extends locals with given properties
-globals = (extensions) ->
-  globalsFunc = (req, res, next) ->
-    res.locals extensions
-    next()
-
-# Locals middleware: Extends locals dynamically
-locals = (extensions) ->
-  localsFunc = (req, res, next) ->
-    vals = if _.isFunction( extensions ) then extensions(req, res) else extensions
-    res.locals vals
-    next()
-
 # Config
 configure = () ->
   app.configure ->
@@ -37,8 +24,8 @@ configure = () ->
     app.use express.methodOverride()
     app.use express.cookieSession()
     app.use flash()
-    app.use globals siteName: config.siteName, title: ''
-    app.use locals (req, res) ->
+    app.use middleware.globals siteName: config.siteName, title: ''
+    app.use middleware.locals (req, res) ->
       return extensions =
         username: req.session.username or ''
         errors:   req.flash 'errors'

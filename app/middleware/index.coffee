@@ -1,5 +1,7 @@
 
 Middleware =
+  globals  : require './globals'
+  locals   : require './locals'
   reply    : require './reply'
   success  : require './success'
   created  : require './created'
