@@ -3,7 +3,7 @@
 
 ## [Overview](#overview) / [Features](#features) / [Routes](#routes) / [Usage](#usage) / [Changes](#changes)
 
-<span id="overview"></span>
+<a name="overview"></a>
 ## Overview
 
 The Argumenta API provides a RESTful interface to data in JSON form.
@@ -11,7 +11,7 @@ The Argumenta API provides a RESTful interface to data in JSON form.
 It can be used to access resources including Users, Repos, Arguments, Propositions, and Tags.  
 Planned resources include Follows, Activity, and Search.
 
-<span id="features"></span>
+<a name="features"></a>
 ## Features
 
 The current version (0.0.1alpha4) provides the following features:
@@ -20,7 +20,7 @@ The current version (0.0.1alpha4) provides the following features:
 + Cookie-based authenticated sessions for account creation, login, and publishing.
 + JSON and JSONP response formats via the extensions '.json' and '.jsonp'.
 
-<span id="routes"></span>
+<a name="routes"></a>
 ## Routes
 
 ### [Users](#users)
@@ -122,7 +122,7 @@ The current version (0.0.1alpha4) provides the following features:
   </tr>
 </table>
 
-<span id="usage"></span>
+<a name="usage"></a>
 ## Usage
 
 ### 1. Errors
@@ -188,10 +188,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     });
 
-<span id="users"></span>
+<a name="users"></a>
 ## Users [&para;](#users)
 
-<span id="get-users-user"></span>
+<a name="get-users-user"></a>
 ### GET /users/:user.json
 
 *Get a user's account info.*
@@ -222,7 +222,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     }
 
 
-<span id="get-user"></span>
+<a name="get-user"></a>
 ### GET /:user.json
 
 *Get a user's account and argument repos.*
@@ -282,10 +282,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="repos"></span>
+<a name="repos"></a>
 ## Repos [&para;](#repos)
 
-<span id="get-user-repo"></span>
+<a name="get-user-repo"></a>
 ### GET /:user/:repo.json
 
 *Get a repo owned by a user.*
@@ -338,10 +338,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="arguments"></span>
+<a name="arguments"></a>
 ## Arguments [&para;](#arguments)
 
-<span id="get-argument"></span>
+<a name="get-argument"></a>
 ### GET /arguments/:sha1.json
 
 *Get an argument by its sha1.*
@@ -376,10 +376,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="argument-propositions"></span>
+<a name="argument-propositions"></a>
 ## Argument Propositions [&para;](#argument-propositions)
 
-<span id="get-argument-propositions"></span>
+<a name="get-argument-propositions"></a>
 ### GET /arguments/:sha1/propositions.json
 
 *Get an argument's propositions.*
@@ -478,10 +478,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="propositions"></span>
+<a name="propositions"></a>
 ## Propositions [&para;](#propositions)
 
-<span id="get-proposition"></span>
+<a name="get-proposition"></a>
 ### GET /propositions/:sha1.json
 
 *Get a proposition by its sha1.*
@@ -533,7 +533,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="get-proposition-tags"></span>
+<a name="get-proposition-tags"></a>
 ### GET /propositions/:sha1/tags.json
 
 *Get a proposition's tags.*
@@ -571,7 +571,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="get-proposition-tags-plus-sources"></span>
+<a name="get-proposition-tags-plus-sources"></a>
 ### GET /propositions/:sha1/tags-plus-sources.json
 
 *Get a proposition's tags (plus source objects).*
@@ -626,10 +626,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="tags"></span>
+<a name="tags"></a>
 ## Tags [&para;](#tags)
 
-<span id="get-tag"></span>
+<a name="get-tag"></a>
 ### GET /tags/:sha1.json
 
 *Get a tag by its sha1.*
@@ -666,10 +666,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 
 # Session Routes (Authenticated)
 
-<span id="join"></span>
+<a name="join"></a>
 ## Join [&para;](#join)
 
-<span id="post-users"></span>
+<a name="post-users"></a>
 ### POST /users.json
 
 *Create a new user account.*
@@ -711,10 +711,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="login"></span>
+<a name="login"></a>
 ## Login [&para;](#login)
 
-<span id="post-login"></span>
+<a name="post-login"></a>
 ### POST /login.json
 
 *Start an authenticated user session.*
@@ -749,7 +749,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="get-logout"></span>
+<a name="get-logout"></a>
 ### GET /logout.json
 
 *End the current user session.*
@@ -780,10 +780,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="publish"></span>
+<a name="publish"></a>
 ## Publish [&para;](#publish)
 
-<span id="post-arguments"></span>
+<a name="post-arguments"></a>
 ### POST /arguments.json
 
 *Create a new argument (with repo).*
@@ -832,7 +832,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
-<span id="post-tags"></span>
+<a name="post-tags"></a>
 ### POST /tags.json
 
 *Create a new tag (support, dispute, citation, or commentary).*
@@ -923,7 +923,7 @@ Required for **commentary** tags:
       "error": null
     }
 
-<span id="changes"></span>
+<a name="changes"></a>
 # Changes
 
 ## 0.0.1alpha4
