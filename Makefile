@@ -1,7 +1,7 @@
 COFFEE_PATHS := app config lib routes test
 DOC_SOURCES := lib
 TEST_PATHS := test
-TESTS := $(shell find $(TEST_PATHS) -name '*.coffee' | sed 's/coffee$$/js/')
+TESTS ?= $(shell find $(TEST_PATHS) -name '*.coffee' | sed 's/coffee$$/js/')
 REPORTER ?= spec
 BCRYPT_COST ?= 1
 
