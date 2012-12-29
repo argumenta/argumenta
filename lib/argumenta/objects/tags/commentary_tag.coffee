@@ -20,7 +20,7 @@ class CommentaryTag extends Tag
   #     targetSha1 = '0123456789abcdef000000000000000000000000'
   #     commentaryText = 'The commentary analysis, up to a few paragraphs...'
   #
-  #     commentaryTag = new commentaryTag( targetType, targetSha1, commentaryTag )
+  #     commentaryTag = new commentaryTag( targetType, targetSha1, commentaryText )
   #
   # @api public
   # @param [String] targetType The target object's type.

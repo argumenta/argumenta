@@ -31,7 +31,7 @@ class LocalStore extends Base
     return cb null
 
   # Delete *all* entities from the store.
-  clearAll: (cb) ->
+  clearAll: (opts, cb) ->
     @users = {}
 
     for collection in [@arguments, @propositions, @commits, @tags]
@@ -54,6 +54,7 @@ class LocalStore extends Base
 
     return cb null, publicUser
 
+  # Gets a user's password hash.
   getPasswordHash: (username, cb) ->
     u = @users[username]
     unless u

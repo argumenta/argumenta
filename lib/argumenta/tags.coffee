@@ -47,10 +47,10 @@ class Tags extends Base
 
     commit = new Commit 'tag', tag.sha1(), username
 
-    @storage.addCommit commit, (err) =>
-      return callback err, commit if err
-      @storage.addTag tag, (err) =>
-        return callback err, null if err
+    @storage.addTag tag, (err) =>
+      return callback err, null if err
+      @storage.addCommit commit, (err) =>
+        return callback err, commit if err
         return callback null, commit
 
 module.exports = Tags

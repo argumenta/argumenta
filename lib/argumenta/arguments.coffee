@@ -50,10 +50,10 @@ class Arguments extends Base
       parents.push hash if hash
       commit = new Commit 'argument', argument.sha1(), username, null, parents
 
-      @storage.addCommit commit, (err) =>
-        return callback err, commit if err
-        @storage.addArgument argument, (err) =>
-          return callback err, null if err
+      @storage.addArgument argument, (err) =>
+        return callback err, null if err
+        @storage.addCommit commit, (err) =>
+          return callback err, commit if err
           @storage.addRepo username, argument.repo(), commit.sha1(), (err) =>
             return callback err, commit
 

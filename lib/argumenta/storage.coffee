@@ -19,23 +19,26 @@ class Storage extends Base
   #     storage = new Storage
   #       storageType: 'local'
   #
-  # Create a mongo-backed storage instance:
+  # Create a postgres-backed storage instance:
   #
   #     storage = new Storage
-  #       storageType: 'mongo',
-  #       storageUrl: 'mongodb://localhost:27017'
+  #       storageType: 'postgres',
+  #       storageUrl:  'postgres://user:pass@localhost:5432/db'
   #
   # @param [Object] opts The storage backing options.
-  # @param [String] opts.storageType The backing type: 'local' or 'mongo'.
+  # @param [String] opts.storageType The backing type: 'local' or 'postgres'.
   # @param [String] opts.storageUrl  The backing url, if needed.
   constructor: (opts={}) ->
-    {storageType} = opts
+    {storageType, storageUrl} = opts
 
     LocalStore = require './storage/local_store'
+    PostgresStore = require './storage/postgres_store'
 
     switch storageType
       when 'local'
         @store = new LocalStore()
+      when 'postgres'
+        @store = new PostgresStore( storageUrl )
       else
         throw new @Error "Construction error: Invalid storageType: #{storageType}"
 
@@ -73,16 +76,22 @@ class Storage extends Base
     unless user.validate()
       return cb user.validationError
 
-    @store.addUser user, (err) ->
-      return cb err if err
-      return cb null
+    @store.getUser user.username, (err, prevUser) =>
+      return cb new @Errors.StorageConflict "User already exists" if prevUser
+      return cb err if err and not err instanceof @Errors.NotFound
+
+      @store.addUser user, (err) ->
+        return cb err if err
+        return cb null
 
   # Delete *all* entities from the store.
   #
+  # @param [Object]       opts An options hash.
+  # @param [Boolean]      opts.quick Enables quick deletion.
   # @param [Function]     cb(err) Called on completion or error.
   # @param [StorageError] err Any error.
-  clearAll: (cb) ->
-    @store.clearAll (err) ->
+  clearAll: (opts={}, cb) ->
+    @store.clearAll opts, (err) ->
       return cb err
 
   # Get a user by username, omitting sensitive fields.
@@ -96,6 +105,18 @@ class Storage extends Base
     @store.getUser username, (err, user) ->
       return cb new @Error("Failed getting user: " + username, err) if err
       return cb null, user
+
+  # Get repos for a given user.
+  #
+  # @param [String] username     The username of the repo owner.
+  # @param [Object] opts         Options for retrieval.
+  # @param [Number] opts.limit   The maximum number of repos to return (Default: 50).
+  # @param [Number] opts.offset  The number of repos to skip. (Default: 0).
+  # @param [Boolean] opts.latest Whether to start with the latest repos. (Default: true).
+  getUserRepos: (username, opts, cb) ->
+    @store.getUserRepos username, opts, (err, repos) ->
+      return cb new @Error "Failed getting user repos for '#{username}'", err if err
+      return cb null, repos
 
   # Get a user's password hash.
   #
@@ -303,7 +324,9 @@ class Storage extends Base
     unless commit.validate()
       return cb new @InputError "Commit to store must be valid."
 
-    @store.addCommit commit, cb
+    @store.addCommit commit, (err) ->
+      return cb new @Error "Failed storing commit.", err if err
+      return cb null
 
   # Get a commit from the store by hash.
   #
@@ -389,7 +412,7 @@ class Storage extends Base
   # Get tags (plus any source objects) from the store given target hashes.
   #
   # @param [Array<String>] targetHashes Target hashes of tags to retrieve.
-  # @param [Function]      cb(err, tags) Called on completion or error.
+  # @param [Function]      cb(err, tags, sources, commits) Called on completion or error.
   # @param [StorageError]  err Any error.
   # @param [Array<Tag>]    tags The tags for the given targets.
   # @param [Array<Object>] sources Any source objects for the tags.

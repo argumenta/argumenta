@@ -18,6 +18,7 @@ class Errors
   @StorageInput:     class StorageInputError extends StorageError
   @StorageRetrieval: class StorageRetrievalError extends StorageError
   @LocalStore:       class LocalStoreError extends StorageError
+  @PostgresStore:    class PostgresStoreError extends StorageError
 
   @Arguments:        class ArgumentsError extends BaseError
   @Users:            class UsersError extends BaseError
