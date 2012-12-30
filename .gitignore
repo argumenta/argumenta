@@ -1,3 +1,6 @@
+# Deploy Config
+config/deploy/*
+
 # Vim Swap Files
 *.swp
 
