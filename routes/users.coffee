@@ -42,9 +42,9 @@ exports.public = (req, res) ->
   argumenta.storage.getUser name, (err, user) ->
     return res.notFound "User '#{name}' not found." if err
 
-    keys = ( [name, reponame] for reponame, hash of user.repos )
-    argumenta.storage.getRepos keys, (err, repos) ->
-      return res.notFound "Repos not found for user '#{name}'." if err
+    repoOpts = { offset: 0, limit: 50, latest: true }
+    argumenta.storage.getUserRepos name, repoOpts, (err, repos) ->
+      return res.notFound "Failed getting repos for user '#{name}'." if err
       return res.reply 'users/public',
         user: user,
         repos: repos
