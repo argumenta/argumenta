@@ -4,7 +4,7 @@ module.exports = Development =
   appMode:      'development'
 
   # Security
-  appSecret:    'your-secret-here'
+  appSecret:    'SECRET'
 
   # Logging (levels: debug, info, warn, error, fatal)
   logLevel:     'info'
@@ -14,4 +14,6 @@ module.exports = Development =
 
   # Storage
   storageType:  'local'
-  storageUrl:    null
+
+  # Postgres
+  postgresUrl:  'postgres://argumenta_development:PASSWORD@localhost:5432/argumenta_development'

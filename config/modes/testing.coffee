@@ -4,7 +4,7 @@ module.exports = Testing =
   appMode:      'testing'
 
   # Security
-  appSecret:    'your-secret-here'
+  appSecret:    'SECRET'
 
   # Logging (levels: debug, info, warn, error, fatal)
   logLevel:     'fatal'
@@ -13,5 +13,7 @@ module.exports = Testing =
   siteName:     'Argumenta'
 
   # Storage
-  storageType:  'local'
-  storageUrl:    null
+  storageType:  'postgres'
+
+  # Postgres Config
+  postgresUrl:  'postgres://argumenta_testing:PASSWORD@localhost:5432/argumenta_testing'

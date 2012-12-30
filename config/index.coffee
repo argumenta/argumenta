@@ -1,10 +1,13 @@
 _        = require 'underscore'
 
-# Default, app mode, and environment configs
-defaults = require './defaults'
-modeConf = require './mode'
-envConf  = require './env'
+appMode = process.env.NODE_ENV or 'development'
 
-Config   = _.extend {}, defaults, modeConf, envConf
+# Default, app mode, deploy and environment configs
+defaults   = require './defaults'
+deployConf = (try require "./deploy/#{appMode}") or null
+modeConf   = (try require "./modes/#{appMode}") or null
+envConf    = require './env'
+
+Config   = _.extend {}, defaults, modeConf, deployConf, envConf
 
 module.exports = Config

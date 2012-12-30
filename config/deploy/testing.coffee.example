@@ -1,0 +1,5 @@
+module.exports = Testing =
+
+  appSecret:   'SECRET'
+  storageType: 'postgres'
+  postgresUrl: 'postgres://argumenta_testing:PASSWORD@localhost:5432/argumenta_testing'
