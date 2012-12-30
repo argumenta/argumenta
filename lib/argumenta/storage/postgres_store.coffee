@@ -236,13 +236,13 @@ class PostgresStore extends Base
   # Add a commit to the store.
   # @api public
   addCommit: (commit, callback) ->
-    @session (err, session) ->
+    sha1 = commit.sha1()
+    @getCommits [sha1], (err, commits) =>
       return callback err if err
+      return callback null if commits.length > 0
 
-      selectQuery = Queries.selectCommitBySha1(commit.sha1())
-      session.query selectQuery, (err, result) ->
+      @session (err, session) ->
         return callback err if err
-        return callback null if result.rows.length > 0
 
         queries = [
           Queries.insertObject(commit)
@@ -258,10 +258,15 @@ class PostgresStore extends Base
     @query query, (err, result) ->
       return callback err if err
 
-      commits = []
+      data = {}
       for row in result.rows
         row.parent_sha1s = Queries.parseArray(row.parent_sha1s)
-        commits.push new Commit( row )
+        data[row.commit_sha1] = row
+
+      commits = []
+      for hash in hashes
+        row = data[hash]
+        commits.push new Commit( row ) if row
 
       return callback null, commits
 
@@ -272,10 +277,15 @@ class PostgresStore extends Base
     @query query, (err, result) ->
       return callback err if err
 
-      commits = []
+      data = { byTarget: {} }
       for row in result.rows
         row.parent_sha1s = Queries.parseArray(row.parent_sha1s)
-        commits.push new Commit( row )
+        data.byTarget[row.target_sha1] = row
+
+      commits = []
+      for hash in targetHashes
+        row = data.byTarget[hash]
+        commits.push new Commit( row ) if row
 
       return callback null, commits
 
