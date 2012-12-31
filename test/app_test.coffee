@@ -1,4 +1,4 @@
-app        = require '../app'
+config     = require '../config'
 fixtures   = require '../test/fixtures'
 superagent = require 'superagent'
 request    = require 'request'
@@ -105,546 +105,557 @@ req_post = (path, data, cb) ->
     form: data
   request.post options, cb
 
-describe 'App', () ->
+describeTests = () ->
+  app = require '../app'
+  describeAppTests config.storageType, app
 
-  before (done) ->
-    unless app.config.appMode is 'testing'
-      return console.log "Won't drop non-testing database"
+# Describes app tests for the given storage type and app.
+describeAppTests = (type, app) ->
 
-    app.argumenta.storage.clearAll (err) ->
-      should.not.exist err
-      done()
+  describe "App with #{type} store", ->
 
-  describe '/', () ->
-    describe 'GET /', ->
-      it 'should respond with index and links to log in', (done) ->
-        get '/', (res) ->
-          res.status.should.equal 200
-          res.text.should.match /Argumenta/
-          res.text.should.match /Sign in.*or.*Join now!/
-          done()
+    before (done) ->
+      unless app.config.appMode is 'testing'
+        return console.log "Won't drop non-testing database"
 
-  describe '/users', () ->
+      app.argumenta.storage.clearAll null, (err) ->
+        should.not.exist err
+        done()
 
-    describe 'POST /users', (done) ->
-      it 'should create a new user and sign in', (done) ->
-        user =
-          username: 'tester'
-          password: 'tester12'
-          email:    'tester@xyz.com'
-        post '/users', user, (err, res) ->
-          res.status.should.equal 200
-          res.text.should.match /tester/
-          res.text.should.match new RegExp 'Logged in as <a href="/tester">tester</a>'
-          done()
+    describe '/', () ->
+      describe 'GET /', ->
+        it 'should respond with index and links to log in', (done) ->
+          get '/', (res) ->
+            res.status.should.equal 200
+            res.text.should.match /Argumenta/
+            res.text.should.match /Sign in.*or.*Join now!/
+            done()
 
-      it 'should refuse to create an invalid user', (done) ->
-        badUser =
-          username: ''
-          password: ''
-          email:    'tester@xyz.com'
-        post '/users', badUser, (res) ->
-          res.redirects.should.eql [ base + '/join' ]
-          res.status.should.equal 200
-          res.text.should.match /error.*password.*blank/i
-          done()
+    describe '/users', () ->
 
-      it 'should refuse to overwrite an already existing user', (done) ->
-        existingUser =
-          username: 'tester'
-          password: 'tester12'
-          email:    'tester@xyz.com'
-        post '/users', existingUser, (res) ->
-          res.redirects.should.eql [ base + '/join' ]
-          res.status.should.equal 200
-          res.text.should.match /User already exists./
-          done()
+      describe 'POST /users', () ->
+        it 'should create a new user and sign in', (done) ->
+          user =
+            username: 'tester'
+            password: 'tester12'
+            email:    'tester@xyz.com'
+          post '/users', user, (err, res) ->
+            res.status.should.equal 200
+            res.text.should.match /tester/
+            res.text.should.match new RegExp 'Logged in as <a href="/tester">tester</a>'
+            done()
 
-    describe 'POST /users.json', ->
-      it 'should create a user and return json confirmation', (done) ->
-        data = fixtures.uniqueUserData()
-        post '/users.json', data, (res) ->
-          res.status.should.equal 201
-          res.body.message.should.match new RegExp "Welcome.*#{data.username}"
-          done()
+        it 'should refuse to create an invalid user', (done) ->
+          badUser =
+            username: ''
+            password: ''
+            email:    'tester@xyz.com'
+          post '/users', badUser, (res) ->
+            res.redirects.should.eql [ base + '/join' ]
+            res.status.should.equal 200
+            res.text.should.match /error.*password.*blank/i
+            done()
 
-      it 'should fail with 400 status if user is invalid', (done) ->
-        data = fixtures.invalidUserData()
-        post '/users.json', data, (res) ->
-          res.status.should.equal 400
-          should.exist res.body.error
-          done()
+        it 'should refuse to overwrite an already existing user', (done) ->
+          existingUser =
+            username: 'tester'
+            password: 'tester12'
+            email:    'tester@xyz.com'
+          post '/users', existingUser, (res) ->
+            res.redirects.should.eql [ base + '/join' ]
+            res.status.should.equal 200
+            res.text.should.match /User already exists./
+            done()
 
-      it 'should fail with 409 status if user exists', (done) ->
-        session (user, get, post) ->
-          data = user
+      describe 'POST /users.json', ->
+        it 'should create a user and return json confirmation', (done) ->
+          data = fixtures.uniqueUserData()
           post '/users.json', data, (res) ->
-            res.status.should.equal 409
+            res.status.should.equal 201
+            res.body.message.should.match new RegExp "Welcome.*#{data.username}"
+            done()
+
+        it 'should fail with 400 status if user is invalid', (done) ->
+          data = fixtures.invalidUserData()
+          post '/users.json', data, (res) ->
+            res.status.should.equal 400
             should.exist res.body.error
             done()
 
-    describe 'GET /users', ->
-      it 'should show a list of users', ->
-        get '/users', (res) ->
-          res.status.should.equal 200
-          res.text.should.match /Users/
-          res.text.should.match /tester/
+        it 'should fail with 409 status if user exists', (done) ->
+          session (user, get, post) ->
+            data = user
+            post '/users.json', data, (res) ->
+              res.status.should.equal 409
+              should.exist res.body.error
+              done()
 
-    describe 'GET /users/:name', ->
-      it 'should show the user', (done) ->
-        get '/users/' + 'tester', (res) ->
-          res.status.should.equal 200
-          res.text.should.match /tester/
-          res.text.should.not.match /Error getting/
-          done()
-
-    describe 'GET /users/:name.json', ->
-      it 'should show the user as json', (done) ->
-        get '/users/' + 'tester.json', (res) ->
-          res.status.should.equal 200
-          res.type.should.equal 'application/json'
-          res.text.should.match /tester/
-          res.body.should.be.an.instanceof Object
-          res.body.user.should.eql { username: 'tester', repos: [] }
-          should.not.exist res.body.error
-          done()
-
-      it 'should show an error when user not found', (done) ->
-        get '/users/' + 'nobody.json', (res) ->
-          res.status.should.equal 404
-          res.type.should.equal 'application/json'
-          res.text.should.match /error.*user.*nobody.*not found/i
-          done()
-
-  describe '/login', ->
-
-    describe 'GET /login', ->
-      it 'should show the login page', (done) ->
-        get '/login', (res) ->
-          res.status.should.equal 200
-          res.text.should.match /Username/
-          res.text.should.match /Password/
-          res.text.should.match /Login!/
-          done()
-
-    describe 'POST /login', ->
-      it 'should accept a correct login', (done) ->
-        loggedOutSession (user, get, post) ->
-          post '/login', user, (res) ->
+      describe 'GET /users', ->
+        it 'should show a list of users', (done) ->
+          get '/users', (res) ->
             res.status.should.equal 200
-            res.redirects.should.eql [ "#{base}/#{user.username}" ]
-            res.text.should.match /Welcome back/
-            res.text.should.match new RegExp "Logged in as .*#{user.username}"
+            res.text.should.match /Users/
+            res.text.should.match /tester/
             done()
 
-      it 'should deny an incorrect login', (done) ->
-        loggedOutSession (user, get, post) ->
-          data = user
-          data.password = 'wrong'
-          post '/login', data, (res) ->
+      describe 'GET /users/:name', ->
+        it 'should show the user', (done) ->
+          get '/users/' + 'tester', (res) ->
             res.status.should.equal 200
-            res.redirects.should.eql [ base + '/login' ]
-            res.text.should.match /Invalid username and password combination./
+            res.text.should.match /tester/
+            res.text.should.not.match /Error getting/
             done()
 
-    describe 'POST /login.json', ->
-      it 'should accept a correct login and return json confirmation', (done) ->
-        loggedOutSession (user, get, post) ->
-          post '/login.json', user, (res) ->
+      describe 'GET /users/:name.json', ->
+        it 'should show the user as json', (done) ->
+          get '/users/' + 'tester.json', (res) ->
             res.status.should.equal 200
-            res.redirects.should.eql []
-            json = res.body
-            should.not.exist json.error
-            json.message.should.match /Welcome back/
+            res.type.should.equal 'application/json'
+            res.text.should.match /tester/
+            res.body.should.be.an.instanceof Object
+            res.body.user.should.eql { username: 'tester', repos: [] }
+            should.not.exist res.body.error
             done()
 
-      it 'should deny an incorrect login and return json error', (done) ->
-        loggedOutSession (user, get, post) ->
-          data = username: user.username, password: 'wrong!'
-          post '/login.json', data, (res) ->
-            res.status.should.equal 401
-            res.body.error.should.match /Invalid username and password combination./
+        it 'should show an error when user not found', (done) ->
+          get '/users/' + 'nobody.json', (res) ->
+            res.status.should.equal 404
+            res.type.should.equal 'application/json'
+            res.text.should.match /error.*user.*nobody.*not found/i
             done()
 
-  describe '/arguments', ->
+    describe '/login', ->
 
-    describe 'GET /arguments/new', ->
-      it 'should show a form to create a new argument', (done) ->
-        session (user, get, post) ->
-          get '/arguments/new', (err, res) ->
-            should.not.exist err
+      describe 'GET /login', ->
+        it 'should show the login page', (done) ->
+          get '/login', (res) ->
             res.status.should.equal 200
-            res.text.should.match /Create a new argument!/
+            res.text.should.match /Username/
+            res.text.should.match /Password/
+            res.text.should.match /Login!/
             done()
 
-    describe 'POST /arguments', ->
-      it 'should create an argument given a session and valid argument', (done) ->
-        session (user, get, post) ->
-          data = fixtures.validArgumentData()
-          post '/arguments', data, (err, res) ->
-            should.not.exist err
-            res.status.should.equal 200
-            res.redirects.should.eql ["#{base}/#{user.username}/#{data.repo}"]
-            res.text.should.match new RegExp "#{user.username}.*/.*#{data.repo}"
-            matchesArgument res.text, data
-            get '/arguments/' + data.sha1, (res) ->
+      describe 'POST /login', ->
+        it 'should accept a correct login', (done) ->
+          loggedOutSession (user, get, post) ->
+            post '/login', user, (res) ->
               res.status.should.equal 200
+              res.redirects.should.eql [ "#{base}/#{user.username}" ]
+              res.text.should.match /Welcome back/
+              res.text.should.match new RegExp "Logged in as .*#{user.username}"
+              done()
+
+        it 'should deny an incorrect login', (done) ->
+          loggedOutSession (user, get, post) ->
+            data = user
+            data.password = 'wrong'
+            post '/login', data, (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql [ base + '/login' ]
+              res.text.should.match /Invalid username and password combination./
+              done()
+
+      describe 'POST /login.json', ->
+        it 'should accept a correct login and return json confirmation', (done) ->
+          loggedOutSession (user, get, post) ->
+            post '/login.json', user, (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              should.not.exist json.error
+              json.message.should.match /Welcome back/
+              done()
+
+        it 'should deny an incorrect login and return json error', (done) ->
+          loggedOutSession (user, get, post) ->
+            data = username: user.username, password: 'wrong!'
+            post '/login.json', data, (res) ->
+              res.status.should.equal 401
+              res.body.error.should.match /Invalid username and password combination./
+              done()
+
+    describe '/arguments', ->
+
+      describe 'GET /arguments/new', ->
+        it 'should show a form to create a new argument', (done) ->
+          session (user, get, post) ->
+            get '/arguments/new', (err, res) ->
+              should.not.exist err
+              res.status.should.equal 200
+              res.text.should.match /Create a new argument!/
+              done()
+
+      describe 'POST /arguments', ->
+        it 'should create an argument given a session and valid argument', (done) ->
+          session (user, get, post) ->
+            data = fixtures.validArgumentData()
+            post '/arguments', data, (err, res) ->
+              should.not.exist err
+              res.status.should.equal 200
+              res.redirects.should.eql ["#{base}/#{user.username}/#{data.repo}"]
+              res.text.should.match new RegExp "#{user.username}.*/.*#{data.repo}"
+              matchesArgument res.text, data
+              get '/arguments/' + data.sha1, (res) ->
+                res.status.should.equal 200
+                matchesArgument res.text, data
+                done()
+
+        it 'should redirect to /login if user not logged in', (done) ->
+          noSession (user, get, post) ->
+            data = fixtures.uniqueArgumentData()
+            post '/arguments', data, (err, res) ->
+              should.not.exist err
+              res.status.should.equal 200
+              res.redirects.should.eql [base + "/login"]
+              get '/arguments/' + data.sha1, (res) ->
+                res.status.should.equal 404
+                done()
+
+        it 'should redisplay creation page if object is invalid', (done) ->
+          session (user, get, post) ->
+            data = fixtures.invalidArgumentData()
+            post '/arguments', data, (err, res) ->
+              should.not.exist err
+              res.redirects.should.eql [base + "/arguments/new"]
+              res.status.should.equal 200
+              res.text.should.match /Create a new argument/
+              res.text.should.match /Error: /
               matchesArgument res.text, data
               done()
 
-      it 'should redirect to /login if user not logged in', (done) ->
-        noSession (user, get, post) ->
-          data = fixtures.uniqueArgumentData()
-          post '/arguments', data, (err, res) ->
-            should.not.exist err
-            res.status.should.equal 200
-            res.redirects.should.eql [base + "/login"]
-            get '/arguments/' + data.sha1, (res) ->
-              res.status.should.equal 404
+      describe 'POST /arguments.json', ->
+        it 'should create an argument and return json confirmation', (done) ->
+          session (user, get, post) ->
+            data = fixtures.uniqueArgumentData()
+            post '/arguments.json', data, (res) ->
+              res.status.should.equal 201
+              json = res.body
+              json.message.should.match new RegExp "Created a new argument!"
               done()
 
-      it 'should redisplay creation page if object is invalid', (done) ->
-        session (user, get, post) ->
-          data = fixtures.invalidArgumentData()
-          post '/arguments', data, (err, res) ->
-            should.not.exist err
-            res.redirects.should.eql [base + "/arguments/new"]
-            res.status.should.equal 200
-            res.text.should.match /Create a new argument/
-            res.text.should.match /Error: /
-            matchesArgument res.text, data
-            done()
+        it 'should fail with 400 status if argument is invalid', (done) ->
+          session (user, get, post) ->
+            data = fixtures.invalidArgumentData()
+            post '/arguments.json', data, (res) ->
+              res.status.should.equal 400
+              json = res.body
+              json.error.should.exist
+              done()
 
-    describe 'POST /arguments.json', ->
-      it 'should create an argument and return json confirmation', (done) ->
-        session (user, get, post) ->
-          data = fixtures.uniqueArgumentData()
-          post '/arguments.json', data, (res) ->
-            res.status.should.equal 201
-            json = res.body
-            json.message.should.match new RegExp "Created a new argument!"
-            done()
+        it 'should fail with 401 status if not logged in', (done) ->
+          noSession (user, get, post) ->
+            data = fixtures.invalidArgumentData()
+            post '/arguments.json', data, (res) ->
+              res.status.should.equal 401
+              json = res.body
+              json.error.should.exist
+              done()
 
-      it 'should fail with 400 status if argument is invalid', (done) ->
-        session (user, get, post) ->
-          data = fixtures.invalidArgumentData()
-          post '/arguments.json', data, (res) ->
-            res.status.should.equal 400
-            json = res.body
-            json.error.should.exist
-            done()
+      describe 'GET /arguments/:sha1.:format?', ->
+        it 'should return an argument page', (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get '/arguments/' + argument.sha1, (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              matchesArgument res.text, argument
+              done()
 
-      it 'should fail with 401 status if not logged in', (done) ->
-        noSession (user, get, post) ->
-          data = fixtures.invalidArgumentData()
-          post '/arguments.json', data, (res) ->
-            res.status.should.equal 401
-            json = res.body
-            json.error.should.exist
-            done()
-
-    describe 'GET /arguments/:sha1.:format?', ->
-      it 'should return an argument page', (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get '/arguments/' + argument.sha1, (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            matchesArgument res.text, argument
-            done()
-
-      it 'should return an argument as json', (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get '/arguments/' + argument.sha1 + '.json', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            res.body.should.exist
-            json = res.body
-            should.not.exist json.error
-            json.argument.should.eql argument
-            done()
-
-      it 'should return an argument as jsonp', (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get '/arguments/' + argument.sha1 + '.jsonp', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            res.type.should.equal 'text/javascript'
-            res.text.should.exist
-            jsonp = res.text
-            jsonpCallback = (json) ->
+        it 'should return an argument as json', (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get '/arguments/' + argument.sha1 + '.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              res.body.should.exist
+              json = res.body
               should.not.exist json.error
               json.argument.should.eql argument
               done()
-            eval jsonp
 
-    # Matches Propositions Data Helper - Checks array of proposition data.
-    matchesPropositionsData = (actual, expected) ->
-      actual.length.should.equal expected.length
-      for prop, index in expected
-        actual[index].should.include
-          sha1: prop.sha1
-          text: prop.text
-
-    describe 'GET /arguments/:sha1/propositions.:format?', ->
-      it "should return argument propositions as json", (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get '/arguments/' + argument.sha1 + '/propositions.json', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            json = res.body
-            arg = new Argument(argument)
-            expectedData = arg.propositions.map (p) -> p.data()
-            matchesPropositionsData json.propositions, expectedData
-            metadata = json.propositions[0].metadata
-            should.exist metadata
-            should.exist metadata.tag_sha1s
-            should.exist metadata.tag_counts
-            done()
-
-      it "should return argument propositions as jsonp", (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get '/arguments/' + argument.sha1 + '/propositions.jsonp', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            verifyJSONP res, (json) ->
-              should.not.exist json.error
-              arg = new Argument argument
-              expectedData = arg.propositions.map (p) -> p.data()
-              matchesPropositionsData json.propositions, expectedData
-              done()
-
-  describe '/propositions', ->
-
-    describe 'GET /propositions/:hash.:format?', ->
-      it 'should return a proposition as json', (done) ->
-        sessionWithArgument (user, argumentData, get, post) ->
-          argument = new Argument argumentData
-          prop = argument.propositions[0]
-          hash = prop.sha1()
-          get '/propositions/' + hash + '.json', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            json = res.body
-            json.proposition.should.include prop.data()
-            metadata = json.proposition.metadata
-            should.exist metadata
-            should.exist metadata.tag_sha1s
-            should.exist metadata.tag_counts
-            done()
-
-      it "should fail with 404 status if the proposition doesn't exist", (done) ->
-        session (user, get, post) ->
-          prop = fixtures.uniqueProposition()
-          hash = prop.sha1()
-          get '/propositions/' + hash + '.json', (res) ->
-            res.status.should.equal 404
-            res.redirects.should.eql []
-            json = res.body
-            json.error.should.exist
-            done()
-
-    describe 'GET /propositions/:hash/tags.:format?', ->
-      it 'should return proposition tags as json', (done) ->
-        sessionWithTag (user, argumentData, tag, get, post) ->
-          argument = new Argument argumentData
-          prop = argument.propositions[0]
-          hash = prop.sha1()
-          get '/propositions/' + hash + '/tags.json', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            json = res.body
-            json.tags[0].should.eql tag
-            done()
-
-      it "should return empty array if proposition has no tags", (done) ->
-        noSession (user, get, post) ->
-          argument = fixtures.uniqueArgument()
-          prop = argument.propositions[0]
-          hash = prop.sha1()
-          get '/propositions/' + hash + '/tags.json', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            json = res.body
-            json.tags.length.should.equal 0
-            should.not.exist json.error
-            done()
-
-    describe 'GET /propositions/:hash/tags-plus-sources.:format?', ->
-      it 'should return proposition tags plus sources as json', (done) ->
-        sessionWithTag (user, argumentData, tag, get, post) ->
-          argument = new Argument argumentData
-          prop = argument.propositions[0]
-          hash = prop.sha1()
-          get '/propositions/' + hash + '/tags-plus-sources.json', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            json = res.body
-            json.tags.length.should.equal 1
-            json.sources.length.should.equal 1
-            json.commits.length.should.equal 1
-            json.tags[0].should.eql tag
-            done()
-
-      it "should return empty array if proposition has no tags", (done) ->
-        noSession (user, get, post) ->
-          argument = fixtures.uniqueArgument()
-          prop = argument.propositions[0]
-          hash = prop.sha1()
-          get '/propositions/' + hash + '/tags-plus-sources.json', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            json = res.body
-            json.tags.length.should.equal 0
-            json.sources.length.should.equal 0
-            json.commits.length.should.equal 0
-            should.not.exist json.error
-            done()
-
-  describe '/tags', ->
-    describe 'GET /tags/:hash.:format?', ->
-      it 'should return a tag as json', (done) ->
-        sessionWithTag (user, argument, tag, get, post) ->
-          get '/tags/' + tag.sha1 + '.json', (res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            json = res.body
-            should.not.exist json.error
-            json.tag.should.eql tag
-            done()
-
-    describe 'POST /tags.json', ->
-      it 'should create a tag and return json confirmation', (done) ->
-        sessionWithArgument (user, argumentData, get, post) ->
-          argument = new Argument argumentData
-          tag = fixtures.validSupportTag()
-          tag.targetType = 'proposition'
-          tag.targetSha1 = argument.propositions[0].sha1()
-          data = tag.data()
-          post '/tags.json', data, (res) ->
-            res.status.should.equal 201
-            json = res.body
-            json.message.should.match new RegExp "Created a new tag!"
-            json.tag.should.eql data
-            done()
-
-      it 'should fail with 400 status if tag is invalid', (done) ->
-        sessionWithArgument (user, argumentData, get, post) ->
-          tag = fixtures.validSupportTag()
-          tag.targetType = ''
-          data = tag.data()
-          post '/tags.json', data, (res) ->
-            res.status.should.equal 400
-            json = res.body
-            json.error.should.exist
-            done()
-
-      it 'should fail with 401 status if not logged in', (done) ->
-        noSession (user, get, post) ->
-          data = fixtures.validSupportTag().data()
-          post '/tags.json', data, (res) ->
-            res.status.should.equal 401
-            json = res.body
-            json.error.should.exist
-            done()
-
-  describe '/logout', ->
-    describe 'GET /logout', ->
-      it 'should clear session cookie and redirect to index', (done) ->
-        get '/logout', (err, res) ->
-          res.status.should.equal 200
-          res.redirects.should.eql(['http://localhost:3000/'])
-          res.text.should.match /Sign in.*or.*Join now!/
-          done()
-
-    describe 'GET /logout.json', ->
-      it 'should clear session cookie', (done) ->
-        session (user, get, post) ->
-          get '/logout.json', (res) ->
-            get '/logout.json', (res) ->
+        it 'should return an argument as jsonp', (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get '/arguments/' + argument.sha1 + '.jsonp', (res) ->
               res.status.should.equal 200
               res.redirects.should.eql []
-              should.not.exist res.body.error
-              post '/arguments.json', {}, (res) ->
-                res.status.should.equal 401
+              res.type.should.equal 'text/javascript'
+              res.text.should.exist
+              jsonp = res.text
+              jsonpCallback = (json) ->
+                should.not.exist json.error
+                json.argument.should.eql argument
+                done()
+              eval jsonp
+
+      # Matches Propositions Data Helper - Checks array of proposition data.
+      matchesPropositionsData = (actual, expected) ->
+        actual.length.should.equal expected.length
+        for prop, index in expected
+          actual[index].should.include
+            sha1: prop.sha1
+            text: prop.text
+
+      describe 'GET /arguments/:sha1/propositions.:format?', ->
+        it "should return argument propositions as json", (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get '/arguments/' + argument.sha1 + '/propositions.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              arg = new Argument(argument)
+              expectedData = arg.propositions.map (p) -> p.data()
+              matchesPropositionsData json.propositions, expectedData
+              metadata = json.propositions[0].metadata
+              should.exist metadata
+              should.exist metadata.tag_sha1s
+              should.exist metadata.tag_counts
+              done()
+
+        it "should return argument propositions as jsonp", (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get '/arguments/' + argument.sha1 + '/propositions.jsonp', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              verifyJSONP res, (json) ->
+                should.not.exist json.error
+                arg = new Argument argument
+                expectedData = arg.propositions.map (p) -> p.data()
+                matchesPropositionsData json.propositions, expectedData
                 done()
 
-  describe '/:name.:format?', ->
+    describe '/propositions', ->
 
-    describe 'GET /:name', ->
-      it "should show the user's public page", (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get '/' + user.username, (err, res) ->
-            should.not.exist err
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            res.text.should.not.match /error/i
-            res.text.should.match new RegExp user.username
-            res.text.should.match new RegExp argument.title
-            done()
-
-    describe 'GET /:name.json', ->
-      it "should show the user's public info as json", (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get "/#{user.username}.json", (err, res) ->
-            should.not.exist err
-            res.type.should.equal 'application/json'
-            json = res.body
-            json.user.username.should.equal user.username
-            Object.keys(json.user.repos).length.should.equal 1
-            json.repos[0].username.should.equal user.username
-            json.repos[0].target.should.eql argument
-            done()
-
-  describe '/:name/:repo.:format?', ->
-    describe 'GET /:name/:repo.:format?', ->
-      it 'should show a repo page', (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get "/#{user.username}/#{argument.repo}", (err, res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            matchesArgument res.text, argument
-            done()
-
-      it 'should show a repo as json', (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get "/#{user.username}/#{argument.repo}.json", (err, res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            res.type.should.equal 'application/json'
-            res.body.should.be.an.instanceof Object
-            res.body.repo.target.should.eql argument
-            done()
-
-      it 'should show a repo as jsonp', (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get "/#{user.username}/#{argument.repo}.jsonp", (err, res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            verifyJSONP res, (json) ->
-              should.not.exist json.error
-              json.repo.user.should.include {username: user.username}
-              json.repo.reponame.should.eql argument.repo
-              json.repo.commit.should.include
-                target_type: 'argument'
-                target_sha1: argument.sha1
-              json.repo.target.should.eql argument
+      describe 'GET /propositions/:hash.:format?', ->
+        it 'should return a proposition as json', (done) ->
+          sessionWithArgument (user, argumentData, get, post) ->
+            argument = new Argument argumentData
+            prop = argument.propositions[0]
+            hash = prop.sha1()
+            get '/propositions/' + hash + '.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              json.proposition.should.include prop.data()
+              metadata = json.proposition.metadata
+              should.exist metadata
+              should.exist metadata.tag_sha1s
+              should.exist metadata.tag_counts
               done()
 
-    describe 'GET /:name/:repo.:format?callback=:cbName', ->
-      it 'should show a repo as jsonp with custom callback', (done) ->
-        sessionWithArgument (user, argument, get, post) ->
-          get "/#{user.username}/#{argument.repo}.jsonp?callback=myCb", (err, res) ->
-            res.status.should.equal 200
-            res.redirects.should.eql []
-            res.type.should.equal 'text/javascript'
-            jsonp = res.text
-            myCb = (json) ->
-              should.not.exist json.error
-              json.repo.user.should.include {username: user.username}
-              json.repo.reponame.should.eql argument.repo
-              json.repo.commit.should.include
-                target_type: 'argument'
-                target_sha1: argument.sha1
-              json.repo.target.should.eql argument
+        it "should fail with 404 status if the proposition doesn't exist", (done) ->
+          session (user, get, post) ->
+            prop = fixtures.uniqueProposition()
+            hash = prop.sha1()
+            get '/propositions/' + hash + '.json', (res) ->
+              res.status.should.equal 404
+              res.redirects.should.eql []
+              json = res.body
+              json.error.should.exist
               done()
-            eval jsonp
+
+      describe 'GET /propositions/:hash/tags.:format?', ->
+        it 'should return proposition tags as json', (done) ->
+          sessionWithTag (user, argumentData, tag, get, post) ->
+            argument = new Argument argumentData
+            prop = argument.propositions[0]
+            hash = prop.sha1()
+            get '/propositions/' + hash + '/tags.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              json.tags[0].should.eql tag
+              done()
+
+        it "should return empty array if proposition has no tags", (done) ->
+          noSession (user, get, post) ->
+            argument = fixtures.uniqueArgument()
+            prop = argument.propositions[0]
+            hash = prop.sha1()
+            get '/propositions/' + hash + '/tags.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              json.tags.length.should.equal 0
+              should.not.exist json.error
+              done()
+
+      describe 'GET /propositions/:hash/tags-plus-sources.:format?', ->
+        it 'should return proposition tags plus sources as json', (done) ->
+          sessionWithTag (user, argumentData, tag, get, post) ->
+            argument = new Argument argumentData
+            prop = argument.propositions[0]
+            hash = prop.sha1()
+            get '/propositions/' + hash + '/tags-plus-sources.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              json.tags.length.should.equal 1
+              json.sources.length.should.equal 1
+              json.commits.length.should.equal 1
+              json.tags[0].should.eql tag
+              done()
+
+        it "should return empty array if proposition has no tags", (done) ->
+          noSession (user, get, post) ->
+            argument = fixtures.uniqueArgument()
+            prop = argument.propositions[0]
+            hash = prop.sha1()
+            get '/propositions/' + hash + '/tags-plus-sources.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              json.tags.length.should.equal 0
+              json.sources.length.should.equal 0
+              json.commits.length.should.equal 0
+              should.not.exist json.error
+              done()
+
+    describe '/tags', ->
+      describe 'GET /tags/:hash.:format?', ->
+        it 'should return a tag as json', (done) ->
+          sessionWithTag (user, argument, tag, get, post) ->
+            get '/tags/' + tag.sha1 + '.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              should.not.exist json.error
+              json.tag.should.eql tag
+              done()
+
+      describe 'POST /tags.json', ->
+        it 'should create a tag and return json confirmation', (done) ->
+          sessionWithArgument (user, argumentData, get, post) ->
+            argument = new Argument argumentData
+            tag = fixtures.validSupportTag()
+            tag.targetType = 'proposition'
+            tag.targetSha1 = argument.propositions[0].sha1()
+            tag.sourceType = 'proposition'
+            tag.sourceSha1 = argument.propositions[1].sha1()
+            data = tag.data()
+            post '/tags.json', data, (res) ->
+              res.status.should.equal 201
+              json = res.body
+              json.message.should.match new RegExp "Created a new tag!"
+              json.tag.should.eql data
+              done()
+
+        it 'should fail with 400 status if tag is invalid', (done) ->
+          sessionWithArgument (user, argumentData, get, post) ->
+            tag = fixtures.validSupportTag()
+            tag.targetType = ''
+            data = tag.data()
+            post '/tags.json', data, (res) ->
+              res.status.should.equal 400
+              json = res.body
+              json.error.should.exist
+              done()
+
+        it 'should fail with 401 status if not logged in', (done) ->
+          noSession (user, get, post) ->
+            data = fixtures.validSupportTag().data()
+            post '/tags.json', data, (res) ->
+              res.status.should.equal 401
+              json = res.body
+              json.error.should.exist
+              done()
+
+    describe '/logout', ->
+      describe 'GET /logout', ->
+        it 'should clear session cookie and redirect to index', (done) ->
+          get '/logout', (err, res) ->
+            res.status.should.equal 200
+            res.redirects.should.eql(['http://localhost:3000/'])
+            res.text.should.match /Sign in.*or.*Join now!/
+            done()
+
+      describe 'GET /logout.json', ->
+        it 'should clear session cookie', (done) ->
+          session (user, get, post) ->
+            get '/logout.json', (res) ->
+              get '/logout.json', (res) ->
+                res.status.should.equal 200
+                res.redirects.should.eql []
+                should.not.exist res.body.error
+                post '/arguments.json', {}, (res) ->
+                  res.status.should.equal 401
+                  done()
+
+    describe '/:name.:format?', ->
+
+      describe 'GET /:name', ->
+        it "should show the user's public page", (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get '/' + user.username, (err, res) ->
+              should.not.exist err
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              res.text.should.not.match /error/i
+              res.text.should.match new RegExp user.username
+              res.text.should.match new RegExp argument.title
+              done()
+
+      describe 'GET /:name.json', ->
+        it "should show the user's public info as json", (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get "/#{user.username}.json", (err, res) ->
+              should.not.exist err
+              res.type.should.equal 'application/json'
+              json = res.body
+              json.user.username.should.equal user.username
+              json.repos[0].username.should.equal user.username
+              json.repos[0].target.should.eql argument
+              done()
+
+    describe '/:name/:repo.:format?', ->
+      describe 'GET /:name/:repo.:format?', ->
+        it 'should show a repo page', (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get "/#{user.username}/#{argument.repo}", (err, res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              matchesArgument res.text, argument
+              done()
+
+        it 'should show a repo as json', (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get "/#{user.username}/#{argument.repo}.json", (err, res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              res.type.should.equal 'application/json'
+              res.body.should.be.an.instanceof Object
+              res.body.repo.target.should.eql argument
+              done()
+
+        it 'should show a repo as jsonp', (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get "/#{user.username}/#{argument.repo}.jsonp", (err, res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              verifyJSONP res, (json) ->
+                should.not.exist json.error
+                json.repo.user.should.include {username: user.username}
+                json.repo.reponame.should.eql argument.repo
+                json.repo.commit.should.include
+                  target_type: 'argument'
+                  target_sha1: argument.sha1
+                json.repo.target.should.eql argument
+                done()
+
+      describe 'GET /:name/:repo.:format?callback=:cbName', ->
+        it 'should show a repo as jsonp with custom callback', (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            get "/#{user.username}/#{argument.repo}.jsonp?callback=myCb", (err, res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              res.type.should.equal 'text/javascript'
+              jsonp = res.text
+              myCb = (json) ->
+                should.not.exist json.error
+                json.repo.user.should.include {username: user.username}
+                json.repo.reponame.should.eql argument.repo
+                json.repo.commit.should.include
+                  target_type: 'argument'
+                  target_sha1: argument.sha1
+                json.repo.target.should.eql argument
+                done()
+              eval jsonp
+
+describeTests()

@@ -1,3 +1,4 @@
+config      = require '../config'
 Storage     = require '../lib/argumenta/storage'
 User        = require '../lib/argumenta/user'
 PublicUser  = require '../lib/argumenta/public_user'
@@ -8,24 +9,36 @@ should      = require 'should'
 
 {Argument, Proposition, Commit, Tag} = Objects
 
-getStorage = (type) ->
+getStorage = (type, config) ->
   switch type
     when 'local'
       return new Storage
         storageType: 'local'
-    when 'mongo'
+    when 'postgres'
       return new Storage
-        storageType: 'mongo'
-        storageUrl:  'mongodb://localhost:27017'
+        storageType: 'postgres'
+        storageUrl:   config.postgresUrl
 
-storageTypes = ['local']
-for type in storageTypes
-  storage = getStorage type
+describeAllTests = () ->
+  storageTypes = ['local', 'postgres']
+
+  for type in storageTypes
+    storage = getStorage type, config
+    describeStorageTests storage, type
+
+describeStorageTests = (storage, type) ->
+
   describe "Storage with #{type} store", ->
 
     # Cleanup helper
     clearStorage = (done) ->
-      storage.clearAll (err) ->
+      storage.clearAll null, (err) ->
+        should.not.exist err
+        done()
+
+    # Cleanup Quick helper
+    clearStorageQuick = (done) ->
+      storage.clearAll {quick: true}, (err) ->
         should.not.exist err
         done()
 
@@ -45,13 +58,18 @@ for type in storageTypes
         should.not.exist err
         callback user
 
+    # WithCommit Helper
+    withCommit = (callback) ->
+      withArgument (user, commit, arg) ->
+        return callback user, arg, commit
+
     # WithArgument Helper
     withArgument = (callback) ->
       withUser (user) ->
         argument = fixtures.uniqueArgument()
-        commit = new Commit 'argument', argument.sha1(), fixtures.validCommitter()
-        storage.addCommit commit, (er1) ->
-          storage.addArgument argument, (er2) ->
+        commit = new Commit 'argument', argument.sha1(), user.username
+        storage.addArgument argument, (er1) ->
+          storage.addCommit commit, (er2) ->
             [er1, er2].should.eql [1..2].map -> null
             callback user, commit, argument
 
@@ -67,14 +85,26 @@ for type in storageTypes
     withCitationTag = (callback) ->
       withArgument (user, argCommit, argument) ->
         prop = argument.propositions[0]
-        tag = fixtures.uniqueCitationTag()
-        tag.targetType = 'proposition'
-        tag.targetSha1 = prop.sha1()
-        tagCommit = new Commit 'tag', tag.sha1(), fixtures.validCommitter()
-        storage.addCommit tagCommit, (err) ->
-          storage.addTag tag, (err) ->
+        text = fixtures.validCitationText()
+        tag = new Tag 'citation', 'proposition', prop.sha1(), text
+        tagCommit = new Commit 'tag', tag.sha1(), user.username
+        storage.addTag tag, (err) ->
+          should.not.exist err
+          storage.addCommit tagCommit, (err) ->
             should.not.exist err
             callback user, prop, tagCommit, tag
+
+    # With Commentary Tag
+    withCommentaryTag = (callback) ->
+      withArgument (user, argCommit, argument) ->
+        text = fixtures.validCommentaryText()
+        tag = new Tag 'commentary', 'argument', argument.sha1(), text
+        tagCommit = new Commit 'tag', tag.sha1(), user.username
+        storage.addTag tag, (err) ->
+          should.not.exist err
+          storage.addCommit tagCommit, (err) ->
+            should.not.exist err
+            callback user, argument, tagCommit, tag
 
     # With Support Tag
     withSupportTag = (callback) ->
@@ -83,13 +113,27 @@ for type in storageTypes
         source = prop2 = argument.propositions[1]
         tag = new Tag 'support', 'proposition', prop1.sha1(), 'proposition', prop2.sha1()
         tagCommit = new Commit 'tag', tag.sha1(), user.username
-        storage.addCommit tagCommit, (err) ->
+        storage.addTag tag, (err) ->
           should.not.exist err
-          storage.addTag tag, (err) ->
+          storage.addCommit tagCommit, (err) ->
             should.not.exist err
             callback user, target, source, tagCommit, tag
 
-    afterEach clearStorage
+    # With Dispute Tag
+    withDisputeTag = (callback) ->
+      withArgument (user, argCommit, argument) ->
+        target = prop1 = argument.propositions[0]
+        source = prop2 = argument.propositions[1]
+        tag = new Tag 'dispute', 'proposition', prop1.sha1(), 'proposition', prop2.sha1()
+        tagCommit = new Commit 'tag', tag.sha1(), user.username
+        storage.addTag tag, (err) ->
+          should.not.exist err
+          storage.addCommit tagCommit, (err) ->
+            should.not.exist err
+            callback user, target, source, tagCommit, tag
+
+    before clearStorage
+    afterEach clearStorageQuick
 
     #### Users ####
 
@@ -110,11 +154,11 @@ for type in storageTypes
             user.username.should.equal tester.username
             done()
 
-    describe 'clearAll( callback )', ->
+    describe 'clearAll( opts, callback )', ->
       it 'should delete all stored users', (done) ->
         tester = fixtures.validUser()
         storage.addUser tester, (err1) ->
-          storage.clearAll (err2) ->
+          storage.clearAll {quick: true}, (err2) ->
             storage.getUser tester.username, (err3, user)->
               should.ok err1 == err2 == null
               should.exist err3
@@ -122,65 +166,52 @@ for type in storageTypes
               done()
 
       it 'should delete all stored arguments & propositions', (done) ->
-        argument = fixtures.validArgument()
-        proposition = fixtures.validProposition()
-        storage.addArgument argument, (er1) ->
-          storage.addPropositions [proposition], (er2) ->
-            storage.clearAll (er3) ->
-              storage.getArguments [argument.sha1()], (er4, args) ->
-                storage.getPropositions [proposition.sha1()], (er5, props) ->
-                  [er1, er2, er3, er4, er5].should.eql ([1..5].map -> null)
-                  args.length.should.equal 0
-                  props.length.should.equal 0
-                  done()
+        withArgument (user, commit, argument) ->
+          storage.clearAll {quick: true}, (er1) ->
+            storage.getArguments [argument.sha1()], (er2, args) ->
+              prop = argument.propositions[0]
+              storage.getPropositions [prop.sha1()], (er3, props) ->
+                [er1, er2, er3].should.eql ([1..3].map -> null)
+                args.length.should.equal 0
+                props.length.should.equal 0
+                done()
 
       it 'should delete all stored tags & commits', (done) ->
-        tag = fixtures.validTag()
-        commit = fixtures.validCommit()
-        storage.addTag tag, (er1) ->
-          storage.addCommit commit, (er2) ->
-            storage.clearAll (er3) ->
-              storage.getTags [tag.sha1()], (er4, tags) ->
-                storage.getCommits [commit.sha1()], (er5, commits) ->
-                  [er1, er2, er3, er4, er5].should.eql ([1..5].map -> null)
-                  tags.length.should.equal 0
-                  commits.length.should.equal 0
-                  done()
+        withSupportTag (user, target, source, commit, tag) ->
+          storage.clearAll {quick: true}, (er1) ->
+            storage.getTags [tag.sha1()], (er2, tags) ->
+              storage.getCommits [commit.sha1()], (er3, commits) ->
+                [er1, er2, er3].should.eql ([1..3].map -> null)
+                tags.length.should.equal 0
+                commits.length.should.equal 0
+                done()
 
     #### Repos ####
 
     describe 'addRepo( username, reponame, commit, callback )', ->
       it 'should store a repo for a valid user and commit', (done) ->
-        user = fixtures.validUser()
-        commit = fixtures.validCommit()
-        reponame = fixtures.validRepoName()
-        storage.addUser user, (er1) ->
-          storage.addCommit commit, (er2) ->
-            storage.addRepo user.username, reponame, commit.sha1(), (er3) ->
-              [er1, er2, er3].should.eql [1..3].map -> null
-              done()
+        withArgument (user, commit, argument) ->
+          reponame = Argument.slugify( argument.title )
+          storage.addRepo user.username, reponame, commit.sha1(), (err) ->
+            should.not.exist err
+            done()
 
       it 'should fail if no such user exists', (done) ->
-        commit = fixtures.validCommit()
-        reponame = fixtures.validRepoName()
-        storage.addCommit commit, (er1) ->
-          storage.addRepo 'nobody', reponame, commit.sha1(), (er2) ->
-            should.not.exist er1
-            er2.should.be.an.instanceOf Storage.NotFoundError
+        withArgument (user, commit, argument) ->
+          reponame = Argument.slugify( argument.title )
+          storage.addRepo 'nobody', reponame, commit.sha1(), (err) ->
+            should.exist err
+            err.should.be.an.instanceOf Storage.NotFoundError
             done()
 
     describe 'getRepoHash( username, reponame, callback )', ->
       it 'should retrieve a commit hash for a stored repo', (done) ->
-        user = fixtures.validUser()
-        commit = fixtures.validCommit()
-        reponame = fixtures.validRepoName()
-        storage.addUser user, (er1) ->
-          storage.addCommit commit, (er2) ->
-            storage.addRepo user.username, reponame, commit.sha1(), (er3) ->
-              storage.getRepoHash user.username, reponame, (er4, hash) ->
-                [er1, er2, er3, er4].should.eql [1..4].map -> null
-                hash.should.equal commit.sha1()
-                done()
+        withArgumentRepo (user, repo, commit, argument) ->
+          reponame = Argument.slugify( argument.title )
+          storage.getRepoHash user.username, reponame, (err, hash) ->
+            should.not.exist err
+            hash.should.equal commit.sha1()
+            done()
 
     describe 'getRepos( keys, callback )', ->
       it 'should retrieve repos by [username, reponame] keys', (done) ->
@@ -199,6 +230,7 @@ for type in storageTypes
     describe 'getRepoTarget( username, reponame, callback )', ->
       it 'should retrieve the commit and target object', (done) ->
         withArgumentRepo (user, reponame, commit, argument) ->
+          reponame = Argument.slugify( argument.title )
           storage.getRepoTarget user.username, reponame, (err, retrievedCommit, retrievedTarget) ->
             should.not.exist err
             retrievedCommit.equals( commit ).should.equal true
@@ -247,14 +279,27 @@ for type in storageTypes
             arg.equals(argument).should.equal true
             done()
 
+    describe 'getArguments( hashes, callback )', ->
+      it 'should retrieve stored arguments by hashes', (done) ->
+        withArgument (user1, commit1, argument1) ->
+          withArgument (user2, commit2, argument2) ->
+            hashes = [argument1.sha1(), argument2.sha1()]
+            storage.getArguments hashes, (err, args) ->
+              should.not.exist err
+              args.length.should.equal 2
+              args[0].equals(argument1).should.equal true
+              args[1].equals(argument2).should.equal true
+              done()
+
     #### Commits ####
 
     describe 'addCommit( commit, callback )', ->
       it 'should store a valid commit', (done) ->
-        commit = fixtures.validCommit()
-        storage.addCommit commit, (err) ->
-          should.not.exist err
-          done()
+        withArgument (user, commit1, arg) ->
+          commit = new Commit 'argument', arg.sha1(), user.username
+          storage.addCommit commit, (err) ->
+            should.not.exist err
+            done()
 
       it 'should not store an invalid commit', (done) ->
         badCommit = fixtures.invalidCommit()
@@ -265,25 +310,22 @@ for type in storageTypes
 
     describe 'getCommit( hash, callback )', ->
       it 'should retrieve a stored commit', (done) ->
-        commit = fixtures.validCommit()
-        storage.addCommit commit, (err) ->
-          should.not.exist err
-          storage.getCommit [commit.sha1()], (err, retrievedCommit) ->
+        withCommit (user, arg, commit) ->
+          storage.getCommit commit.sha1(), (err, retrievedCommit) ->
             should.not.exist err
             retrievedCommit.equals(commit).should.equal true
             done()
 
     describe 'getCommits( hashes, callback )', ->
       it 'should retrieve a stored commit', (done) ->
-        commitA = fixtures.validCommit()
-        storage.addCommit commitA, (err) ->
-          should.not.exist err
-          storage.getCommits [commitA.sha1()], (err, commits) ->
-            should.not.exist err
-            commits.length.should.equal 1
-            commitB = commits[0]
-            commitB.equals( commitA ).should.equal true
-            done()
+        withCommit (user1, arg1, commit1) ->
+          withCommit (user2, arg2, commit2) ->
+            storage.getCommits [commit1.sha1(), commit2.sha1()], (err, commits) ->
+              should.not.exist err
+              commits.length.should.equal 2
+              commit1.equals(commits[0]).should.equal true
+              commit2.equals(commits[1]).should.equal true
+              done()
 
     describe 'getCommitsFor( hashes, callback )', ->
       it 'should retrieve stored commits by target hash', (done) ->
@@ -300,18 +342,21 @@ for type in storageTypes
     #### Tags ####
 
     describe 'addTag( tag, callback )', ->
-      afterEach clearStorage
+      afterEach clearStorageQuick
 
       it 'should store a valid tag successfully', (done) ->
-        validTag = fixtures.validTag()
-        storage.addTag validTag, (err) ->
-          should.not.exist err
-          storage.getTags [validTag.sha1()], (err, tags) ->
-            should.not.exist err
-            tags.length.should.equal 1
-            tag = tags[0]
-            should.ok tag.equals validTag
-            done()
+        withArgument (user1, commit1, argument1) ->
+          withArgument (user2, commit2, argument2) ->
+            tag = new Tag 'support',
+              'proposition', argument1.propositions[0].sha1(),
+              'argument', argument2.sha1()
+            storage.addTag tag, (err) ->
+              should.not.exist err
+              storage.getTags [tag.sha1()], (err, tags) ->
+                should.not.exist err
+                tags.length.should.equal 1
+                tags[0].equals(tag).should.equal true
+                done()
 
       it 'should not store an invalid tag', (done) ->
         badTag = fixtures.invalidTag()
@@ -325,45 +370,31 @@ for type in storageTypes
 
     describe 'getTag( hash, callback )', ->
       it 'should retrieve a stored tag', (done) ->
-        tag = fixtures.validTag()
-        storage.addTag tag, (err) ->
-          should.not.exist err
-          storage.getTag [tag.sha1()], (err, retrievedTag) ->
+        withSupportTag (user, target, source, commit, tag) ->
+          storage.getTag tag.sha1(), (err, retrievedTag) ->
             should.not.exist err
             retrievedTag.equals(tag).should.equal true
             done()
 
     describe 'getTags( hashes, callback )', ->
       it 'should retrieve stored support & dispute tags', (done) ->
-        tagA = fixtures.validSupportTag()
-        tagB = fixtures.validDisputeTag()
-        storage.addTag tagA, (err) ->
-          should.not.exist err
-          storage.addTag tagB, (err) ->
-            should.not.exist err
-            storage.getTags [tagA.sha1(), tagB.sha1()], (err, tags) ->
+        withSupportTag (user1, target1, source1, commit1, tag1) ->
+          withDisputeTag (user2, target2, source2, commit2, tag2) ->
+            storage.getTags [tag1.sha1(), tag2.sha1()], (err, tags) ->
               should.not.exist err
               tags.length.should.equal 2
-              tag1 = tags[0]
-              tag2 = tags[1]
-              should.ok tag1.equals tagA
-              should.ok tag2.equals tagB
+              should.ok tags[0].equals tag1
+              should.ok tags[1].equals tag2
               done()
 
       it 'should retrieve stored citation & commentary tags', (done) ->
-        tagA = fixtures.validCitationTag()
-        tagB = fixtures.validCommentaryTag()
-        storage.addTag tagA, (err) ->
-          should.not.exist err
-          storage.addTag tagB, (err) ->
-            should.not.exist err
-            storage.getTags [tagA.sha1(), tagB.sha1()], (err, tags) ->
+        withCitationTag (user1, target1, commit1, tag1) ->
+          withCommentaryTag (user2, target2, commit2, tag2) ->
+            storage.getTags [tag1.sha1(), tag2.sha1()], (err, tags) ->
               should.not.exist err
               tags.length.should.equal 2
-              tag1 = tags[0]
-              tag2 = tags[1]
-              should.ok tag1.equals tagA
-              should.ok tag2.equals tagB
+              should.ok tags[0].equals tag1
+              should.ok tags[1].equals tag2
               done()
 
     describe 'getTagsFor( hashes, callback )', ->
@@ -416,7 +447,12 @@ for type in storageTypes
         ]
         storage.addPropositions props, (err) ->
           should.not.exist err
-          done()
+
+          hashes = props.map (p) -> p.sha1()
+          storage.getPropositions hashes, (err, storedProps) ->
+            should.not.exist err
+            storedProps.length.should.equal props.length
+            done()
 
       it 'should refuse to add anything but propositions', (done) ->
         props = [ 'Just a string' ]
@@ -435,7 +471,7 @@ for type in storageTypes
         proposition = fixtures.validProposition()
         storage.addPropositions [proposition], (err) ->
           should.not.exist err
-          storage.getProposition [proposition.sha1()], (err, retrievedProposition) ->
+          storage.getProposition proposition.sha1(), (err, retrievedProposition) ->
             should.not.exist err
             retrievedProposition.equals(proposition).should.equal true
             done()
@@ -499,3 +535,5 @@ for type in storageTypes
               p1.metadata.tag_sha1s.citation[0].should.equal tag1.sha1()
               p2.metadata.tag_sha1s.support[0].should.equal tag2.sha1()
               done()
+
+describeAllTests()
