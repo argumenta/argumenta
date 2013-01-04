@@ -1,5 +1,0 @@
-module.exports = Development =
-
-  appSecret:   'SECRET'
-  storageType: 'postgres'
-  postgresUrl: 'postgres://argumenta_development:PASSWORD@localhost:5432/argumenta_development'
