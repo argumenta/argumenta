@@ -61,19 +61,29 @@ getOpts() {
 }
 
 #
+# Generates an appSecret as a 60 character random hex string.
+#
+generateAppSecret() {
+  local secret=`node -p -e "require('crypto').randomBytes(30).toString('hex');"`
+  echo "$secret"
+}
+
+#
 # Main program.
 #
 main() {
   getOpts "$@"
 
-  # Copy the example configs and generate an appSecret for each
-  for file in "${SRC}/config/deploy/"*".coffee.example"; do
-    local realname="${file%.example}"
+  # Copy the config for each mode and generate an appSecret
+  for mode in development testing production staging; do
+    local config="${SRC}/config/modes/${mode}.coffee"
+    local deploy="${SRC}/config/deploy/${mode}.coffee"
 
-    if [[ ! -f "$realname" ]]; then
-      local secret=`node -p -e "require('crypto').randomBytes(30).toString('hex');"`
-      run cp "$file" "$realname"
-      run sed -i -r "s/(appSecret.*)SECRET(.*)/\1${secret}\2/" "$realname"
+    if [[ ! -f "$deploy" ]]; then
+      local secret=$(generateAppSecret);
+      run cp "$config" "$deploy"
+      run sed -i -r "s/^( +)([^ #])/\1# \2/" "$deploy"
+      run sed -i -r "s/# (appSecret.*)SECRET(.*)/\1${secret}\2/" "$deploy"
     fi
   done
 }
