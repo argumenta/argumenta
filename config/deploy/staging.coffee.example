@@ -1,0 +1,5 @@
+module.exports = Staging =
+
+  appSecret:   'SECRET'
+  storageType: 'postgres'
+  postgresUrl: 'postgres://argumenta_staging:PASSWORD@localhost:5432/argumenta_staging'
