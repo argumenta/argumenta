@@ -1,4 +1,4 @@
-module.exports = Production =
+module.exports = Development =
 
   appSecret:   'SECRET'
   storageType: 'postgres'
