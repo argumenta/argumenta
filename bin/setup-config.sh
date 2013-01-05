@@ -74,18 +74,26 @@ generateAppSecret() {
 main() {
   getOpts "$@"
 
+  run echo "Initializing config/deploy"
+
   # Copy the config for each mode and generate an appSecret
-  for mode in development testing production staging; do
+  for mode in development testing staging production; do
     local config="${SRC}/config/modes/${mode}.coffee"
     local deploy="${SRC}/config/deploy/${mode}.coffee"
 
     if [[ ! -f "$deploy" ]]; then
-      local secret=$(generateAppSecret);
+      run echo "Creating '$deploy'"
       run cp "$config" "$deploy"
+
+      local secret=$(generateAppSecret);
       run sed -i -r "s/^( +)([^ #])/\1# \2/" "$deploy"
       run sed -i -r "s/# (appSecret.*)SECRET(.*)/\1${secret}\2/" "$deploy"
+    else
+      run echo "Found '$deploy'"
     fi
   done
+
+  run echo "Done!"
 }
 
 # Let's do this!
