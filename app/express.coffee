@@ -2,6 +2,7 @@ express    = require 'express'
 flash      = require 'connect-flash'
 http       = require 'http'
 _          = require 'underscore'
+pkg        = require '../package.json'
 middleware = require '../app/middleware'
 routes     = require '../routes'
 config     = require '../config'
@@ -96,4 +97,4 @@ app.get  '/:name/:repo.:format?',                          routes.repos.show
 # Http
 http.createServer(app).listen(3000)
 
-console.log "Express server listening on port 3000"
+console.log "Argumenta #{pkg.version} (#{config.appMode} mode) | http://localhost:3000"
