@@ -13,7 +13,7 @@ module.exports = Staging =
   siteName:     'Argumenta'
 
   # Storage
-  storageType:  'local'
+  storageType:  'postgres'
 
   # Postgres
   postgresUrl: 'postgres://argumenta_staging:PASSWORD@localhost:5432/argumenta_staging'

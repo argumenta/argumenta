@@ -13,7 +13,7 @@ module.exports = Development =
   siteName:     'Argumenta'
 
   # Storage
-  storageType:  'local'
+  storageType:  'postgres'
 
   # Postgres
   postgresUrl:  'postgres://argumenta_development:PASSWORD@localhost:5432/argumenta_development'
