@@ -31,7 +31,7 @@ class SupportTag extends Tag
   # @param [String] sourceSha1 The source object's sha1 hash.
   constructor: (@targetType, @targetSha1, @sourceType, @sourceSha1) ->
     if arguments.length is 1
-      opts = arguments[0]
+      opts = arguments[0] ? {}
       @targetType = opts.targetType or opts.target_type
       @targetSha1 = opts.targetSha1 or opts.target_sha1
       @sourceType = opts.sourceType or opts.source_type

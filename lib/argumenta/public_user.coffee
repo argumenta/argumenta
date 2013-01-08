@@ -22,7 +22,7 @@ class PublicUser extends User
   # @see User
   # @param [String] username The user's login name.
   constructor: (@username, @repos=[]) ->
-    if arguments.length is 1 and arguments[0].username?
+    if arguments.length is 1 and arguments[0]?.username?
       params    = arguments[0]
       @username = params.username
       @repos    = params.repos or @repos

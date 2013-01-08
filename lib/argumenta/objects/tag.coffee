@@ -46,7 +46,7 @@ class Tag
     Tags = require './tags'
 
     if arguments.length is 1
-      opts = arguments[0]
+      opts = arguments[0] ? {}
       tagType = opts.tagType or opts.tag_type
 
     switch tagType

@@ -30,7 +30,7 @@ class Repo
   # @param [Commit] commit The repo's commit.
   # @param [Argument] target The repo commit's target.
   constructor: (@user, @reponame, @commit, @target) ->
-    if arguments.length is 1 and arguments[0].reponame
+    if arguments.length is 1 and arguments[0]?.reponame
       opts = arguments[0]
       return new Repo opts.user, opts.reponame, opts.commit, opts.target
 
