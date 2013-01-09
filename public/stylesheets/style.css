@@ -27,7 +27,7 @@ body.argumenta .wrapper {
   background-image: linear-gradient(left, rgba(135,251,234,0.5), rgba(61,116,194,0.5)), url("/images/dark-stripes.svg");
 }
 *.argumenta {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Monda", "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 *.argumenta * {
   margin: 0px;
@@ -148,6 +148,7 @@ body.argumenta .wrapper {
 *.argumenta input,
 *.argumenta select,
 *.argumenta textarea {
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
   font-size: 100%;
 }
 *.argumenta a {
