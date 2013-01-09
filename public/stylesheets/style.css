@@ -144,6 +144,17 @@ body.argumenta .wrapper {
 *.argumenta .content-pane .content-pane {
   margin: 0px;
 }
+*.argumenta .inline-block {
+  display: inline-block;
+}
+*.argumenta .relative {
+  position: relative;
+}
+*.argumenta .wrap {
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
+}
 *.argumenta button,
 *.argumenta input,
 *.argumenta select,
@@ -268,13 +279,11 @@ body.argumenta .wrapper {
 *.argumenta form.edit .conclusion .counter {
   color: #aaa;
   color: rgba(0,0,0,0.3);
-  margin-left: -2em;
-  margin-right: 10px;
-  vertical-align: bottom;
-  padding-bottom: 5px;
   font-weight: bold;
   font-size: 20px;
-  width: 2em;
+  position: absolute;
+  bottom: 2px;
+  right: 7px;
 }
 *.argumenta form.edit .premise .warning,
 *.argumenta form.edit .title .warning,

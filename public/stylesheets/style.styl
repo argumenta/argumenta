@@ -242,6 +242,16 @@ body.argumenta
     .title-pane, .content-pane
       margin: 0px
 
+  .inline-block
+    display: inline-block
+
+  .relative
+    position: relative
+
+  .wrap
+    border: 0px
+    margin: 0px
+    padding: 0px
 
   // Typography
 
@@ -287,7 +297,6 @@ body.argumenta
     color: #333
 
   .wrapper
-
     > h1, > h2, > h3, > h4, > h5, > h6
       darkGlass()
       pane()
@@ -359,13 +368,11 @@ body.argumenta
       .counter
         color: #aaa
         color: rgba(0, 0, 0, 0.3)
-        margin-left: -2em
-        margin-right: 10px
-        vertical-align: bottom
-        padding-bottom: 5px
         font-weight: bold
         font-size: 20px
-        width: 2em
+        position: absolute
+        bottom: 2px
+        right: 7px
 
       .warning
         color: #333
