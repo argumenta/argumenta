@@ -35,4 +35,7 @@ exports.show = (req, res) ->
       return res.failed '/', err.message,
         status: Errors.statusFor err
     else
-      return res.reply "tags/tag", {tag}
+      if /^json/.test req.param 'format'
+        return res.reply 'tags/tag', {tag}
+      else
+        return res.redirect "#{tag.targetType}s/#{tag.targetSha1}"
