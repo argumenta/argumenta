@@ -1,4 +1,5 @@
 .proposition-widget('data-proposition'=proposition.data())
   .proposition-main
+    index = index || 'P'
     span.index #{index}.
     span.text(title="Proposition") #{proposition.text}
