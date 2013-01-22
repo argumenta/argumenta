@@ -32,6 +32,7 @@ configure = () ->
         errors:   req.flash 'errors'
         messages: req.flash 'messages'
     app.locals.pretty = true
+    app.set 'json spaces', '  '
     app.use middleware.reply
       processor: (opts, req) ->
         format = req.param 'format'
