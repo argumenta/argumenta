@@ -14,7 +14,7 @@ Planned resources include Follows, Activity, and Search.
 <a name="features"></a>
 ## Features
 
-The current version (0.0.1alpha4) provides the following features:
+The current version (0.0.1alpha5) provides the following features:
 
 + Read access for general use by unauthenticated clients.
 + Cookie-based authenticated sessions for account creation, login, and publishing.
@@ -350,15 +350,20 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 
 + sha1 - The argument's sha1.
 
+#### Notes
+
++ Includes the argument's original commit for convenience.
+
 #### Example
 
-    curl -i http://localhost:3000/arguments/675f1c4a2a2bec4fa1e5b745a4b9432dda294e6.json
+    curl -i http://localhost:3000/arguments/675f1c4a2a2bec4fa1e5b745a4b94322dda294e6.json
 
     HTTP/1.1 200 OK
     X-Powered-By: Express
     Content-Type: application/json; charset=utf-8
-    Content-Length: 302
-    Set-Cookie: connect.sess=j%3A%7B%22flash%22%3A%7B%7D%7D.uie4zyZwXs1gm4wy8hoWGGj7yp%2BR4XiEkv%2FIoxw5GoQ; path=/; httpOnly
+    Content-Length: 508
+    Set-Cookie: connect.sess=j%3A%7B%22flash%22%3A%7B%7D%7D.EcmoJHT43tIGS9rnCixW62gZt2dKDZ0QZ%2BTl7O20dQI; path=/; httpOnly
+    Date: Sat, 19 Jan 2013 19:24:36 GMT
     Connection: keep-alive
 
     {
@@ -372,6 +377,13 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
         "object_type": "argument",
         "sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
         "repo": "my-argument-^_^"
+      },
+      "commit": {
+        "target_type": "argument",
+        "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
+        "committer": "tester",
+        "commit_date": "2013-01-19T19:24:35Z",
+        "parent_sha1s": []
       },
       "error": null
     }
@@ -925,6 +937,10 @@ Required for **commentary** tags:
 
 <a name="changes"></a>
 # Changes
+
+## 0.0.1alpha5
+
+Include original commit with argument.
 
 ## 0.0.1alpha4
 

@@ -369,6 +369,8 @@ describeAppTests = (type, app) ->
               json = res.body
               should.not.exist json.error
               json.argument.should.eql argument
+              json.commit.committer.should.equal user.username
+              json.commit.target_sha1.should.equal argument.sha1
               done()
 
         it 'should return an argument as jsonp', (done) ->

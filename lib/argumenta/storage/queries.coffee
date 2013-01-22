@@ -159,7 +159,8 @@ class Queries
         SELECT commit_sha1, committer, commit_date,
                target_type, target_sha1, parent_sha1s
         FROM Commits
-        WHERE commit_sha1 IN (#{ placeholders });
+        WHERE commit_sha1 IN (#{ placeholders })
+        ORDER BY commit_date ASC;
         """
       values: hashes
 
