@@ -93,11 +93,12 @@ class Commit
   # @return [Object] The commit data.
   data: () ->
     return {
-      target_type: @targetType
-      target_sha1: @targetSha1
-      committer:   @committer
-      commit_date: @commitDate
-      parent_sha1s: @parentSha1s
+      sha1          : @sha1()
+      target_type   : @targetType
+      target_sha1   : @targetSha1
+      committer     : @committer
+      commit_date   : @commitDate
+      parent_sha1s  : @parentSha1s
     }
 
   # Checks for equality with another commit.
