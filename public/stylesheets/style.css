@@ -95,7 +95,11 @@ body.argumenta .wrapper {
   padding: 5px;
 }
 *.argumenta .notifications {
-  margin: 5px;
+  position: fixed;
+  width: 50%;
+  top: 10px;
+  left: 25%;
+  right: 25%;
 }
 *.argumenta .error {
   border: 2px solid rgba(255,255,255,0.5);
@@ -105,7 +109,7 @@ body.argumenta .wrapper {
   margin: auto;
   padding: 5px;
   color: #fff;
-  width: 50%;
+  width: 100%;
   border-radius: 5px;
   background-color: rgba(255,143,162,0.8);
 }
@@ -117,7 +121,7 @@ body.argumenta .wrapper {
   margin: auto;
   padding: 5px;
   color: #fff;
-  width: 50%;
+  width: 100%;
   border-radius: 5px;
   background-color: rgba(0,189,179,0.8);
 }
