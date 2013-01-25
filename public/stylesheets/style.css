@@ -94,37 +94,6 @@ body.argumenta .wrapper {
   background: rgba(255,255,255,0.3);
   padding: 5px;
 }
-*.argumenta .notifications {
-  position: fixed;
-  width: 50%;
-  top: 10px;
-  left: 25%;
-  right: 25%;
-}
-*.argumenta .error {
-  border: 2px solid rgba(255,255,255,0.5);
-  background-color: rgba(255,143,162,0.8);
-  text-align: center;
-  font-weight: bold;
-  margin: auto;
-  padding: 5px;
-  color: #fff;
-  width: 100%;
-  border-radius: 5px;
-  background-color: rgba(255,143,162,0.8);
-}
-*.argumenta .info {
-  border: 2px solid rgba(255,255,255,0.5);
-  background-color: rgba(255,143,162,0.8);
-  text-align: center;
-  font-weight: bold;
-  margin: auto;
-  padding: 5px;
-  color: #fff;
-  width: 100%;
-  border-radius: 5px;
-  background-color: rgba(0,189,179,0.8);
-}
 *.argumenta .column {
   width: 49.5%;
 }
