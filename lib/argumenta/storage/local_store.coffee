@@ -9,8 +9,9 @@ class LocalStore extends Base
   Error: @Error = @Errors.LocalStore
 
   constructor: () ->
-    # Init users hash
+    # Init users and repos hashes
     @users = {}
+    @repos = {}
 
     # Init object hashes
     @arguments = { bySha1: {} }
@@ -49,8 +50,7 @@ class LocalStore extends Base
       return cb new @Error("No user for username: " + username), null
 
     publicUser = new PublicUser
-      username: u.username,
-      repos:    u.repos
+      username: u.username
 
     return cb null, publicUser
 
@@ -78,13 +78,14 @@ class LocalStore extends Base
 
   # Add a user repo for a given commit hash.
   addRepo: (username, reponame, commitHash, callback) ->
-    @users[username].repos ?= {}
-    @users[username].repos[reponame] = commitHash
+    @repos[username] ?= {}
+    @repos[username][reponame] = commitHash
+
     return callback null
 
   # Get the commit hash for a given user repo.
   getRepoHash: (username, reponame, callback) ->
-    hash = @users[username].repos?[reponame]
+    hash = @repos[username]?[reponame]
     return callback null, hash
 
   # Get repos for an array of [username, reponame] key pairs.
@@ -94,10 +95,12 @@ class LocalStore extends Base
       [username, reponame] = key
 
       user = new PublicUser @users[username]
-      commit = @commits.bySha1[ user.repos?[reponame] ]
+      commit = @commits.bySha1[ @repos[username]?[reponame] ]
       target = @arguments.bySha1[ commit?.targetSha1 ]
+      repo = new Repo( user, reponame, commit, target )
 
-      repos.push new Repo( user, reponame, commit, target )
+      if repo.validate()
+        repos.push repo
 
     return callback null, repos
 

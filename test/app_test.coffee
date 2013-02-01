@@ -213,7 +213,7 @@ describeAppTests = (type, app) ->
             res.type.should.equal 'application/json'
             res.text.should.match /tester/
             res.body.should.be.an.instanceof Object
-            res.body.user.should.eql { username: 'tester', repos: [] }
+            res.body.user.should.eql { username: 'tester' }
             should.not.exist res.body.error
             done()
 

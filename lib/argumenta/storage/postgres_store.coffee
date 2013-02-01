@@ -227,7 +227,8 @@ class PostgresStore extends Base
         for pair in keypairs
           repoData = data.byKey[keyFor(pair[0], pair[1])]
           repo = new Repo( repoData )
-          repos.push repo
+          if repo.validate()
+            repos.push repo
 
         return callback null, repos
 
