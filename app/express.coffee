@@ -94,6 +94,7 @@ app.post '/tags.:format?',                                 routes.tags.create
 
 app.get  '/:name.:format?',                                routes.users.public
 app.get  '/:name/:repo.:format?',                          routes.repos.show
+app.delete '/:name/:repo.:format?',                        routes.repos.delete
 
 # Http
 http.createServer(app).listen(3000)

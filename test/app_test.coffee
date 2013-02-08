@@ -672,4 +672,43 @@ describeAppTests = (type, app) ->
                 done()
               eval jsonp
 
+      describe 'DELETE /:name/:repo.:format', ->
+        it 'should delete a given repo', (done) ->
+          sessionWithArgument (user, argument, get, post, put, del) ->
+            del "/#{user.username}/#{argument.repo}.json", (err, res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              res.body.message.should.match /Deleted repo '.*'./
+              done()
+
+        it 'should not exist after deletion', (done) ->
+          sessionWithArgument (user, argument, get, post, put, del) ->
+            username = user.username
+            reponame = argument.repo
+            path = "/#{username}/#{reponame}.json"
+            del path, (err, res) ->
+              get path, (err, res) ->
+                res.status.should.equal 404
+                res.redirects.should.eql []
+                res.body.error.should.match /Repo '.*' not found./
+                done()
+
+        it 'should fail with 401 status if not logged in', (done) ->
+          sessionWithArgument (user, argument, get, post, put, del) ->
+            get '/logout', (err, res) ->
+              del "/#{user.username}/#{argument.repo}.json", (err, res) ->
+                res.status.should.equal 401
+                res.redirects.should.eql []
+                res.body.error.should.match /Login to delete repos./
+                done()
+
+        it 'should fail with 403 status if not repo owner', (done) ->
+          sessionWithArgument (user1, argument) ->
+            session (user2, get, post, put, del) ->
+              del "/#{user1.username}/#{argument.repo}.json", (err, res) ->
+                res.status.should.equal 403
+                res.redirects.should.eql []
+                res.body.error.should.match /Only the repo owner may delete a repo./
+                done()
+
 describeTests()

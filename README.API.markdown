@@ -14,7 +14,7 @@ Planned resources include Follows, Activity, and Search.
 <a name="features"></a>
 ## Features
 
-The current version (0.0.1alpha5) provides the following features:
+The current version (0.0.1alpha6) provides the following features:
 
 + Read access for general use by unauthenticated clients.
 + Cookie-based authenticated sessions for account creation, login, and publishing.
@@ -119,6 +119,15 @@ The current version (0.0.1alpha5) provides the following features:
   <tr>
     <td width="300px"><a href="#post-tags">POST /tags.json</td>
     <td width="300px">Create a new tag (support, dispute, citation, or commentary).</td>
+  </tr>
+</table>
+
+### [Delete](#delete)
+
+<table class="routes" width="600px">
+  <tr>
+    <td width="300px"><a href="#delete-repo">DELETE /:name/:repo.json</td>
+    <td width="300px">Delete a repo.</td>
   </tr>
 </table>
 
@@ -935,8 +944,53 @@ Required for **commentary** tags:
       "error": null
     }
 
+<a name="delete"></a>
+## Delete [&para;](#delete)
+
+<a name="delete-repo"></a>
+### DELETE /:name/:repo.json
+
+*Delete a repo.*
+
+#### Notes
+
+Users may only delete their own repos.
+
+#### Params
+
++ name: The repo owner's username.
++ repo: The repo name.
+
+#### Returns
+
++ Success: 200 (OK)
++ Error: 401 (Unauthorized)
++ Error: 403 (Forbidden)
+
+#### Example
+
+    curl -i -X DELETE http://localhost:3000/tester/arg-to-delete.json \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    HTTP/1.1 200 OK
+    X-Powered-By: Express
+    Content-Type: application/json; charset=utf-8
+    Content-Length: 86
+    Date: Fri, 08 Feb 2013 15:14:03 GMT
+    Connection: keep-alive
+
+    {
+      "url": "/",
+      "message": "Deleted repo 'tester/arg-to-delete'.",
+      "error": null
+    }
+
 <a name="changes"></a>
 # Changes
+
+## 0.0.1alpha6
+
+Add route to delete a repo.
 
 ## 0.0.1alpha5
 
