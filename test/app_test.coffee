@@ -8,38 +8,38 @@ Objects    = require '../lib/argumenta/objects'
 
 base = 'http://localhost:3000'
 
-# Url helper prepends `base` to a relative `path`.
-abs_url = (path) ->
-  if ~path.search /https?:\/\// then path else base + path
+class HttpHelper
 
-# Creates custom get helper.
-getFor = (agent) ->
-  return (path, cb) ->
-    agent.get( abs_url path ).end( cb )
+  constructor: (@agent, @basepath) ->
 
-# Creates custom post helper.
-postFor = (agent) ->
-  return (path, data, cb) ->
-    agent.post( abs_url path ).send( data ).end( cb )
+  absUrl: (path) ->
+    if ~path.search /https?:\/\// then path else @basepath + path
 
-# Creates custom put helper.
-putFor = (agent) ->
-  return (path, data, cb) ->
-    agent.put( abs_url path ).end( cb )
+  get: (path, cb) ->
+    @agent.get( @absUrl path ).end( cb )
 
-# Creates custom delete helper.
-deleteFor = (agent) ->
-  return (path, cb) ->
-    agent.del( abs_url path ).end( cb )
+  post: (path, data, cb) ->
+    @agent.post( @absUrl path ).send( data ).end( cb )
+
+  put: (path, data, cb) ->
+    @agent.put( @absUrl path ).send( data ).end( cb )
+
+  del: (path, cb) ->
+    @agent.del( @absUrl path ).end( cb )
+
+# Http helper - provides http methods with agent & base url.
+httpHelper = (callback) ->
+  agent = superagent.agent()
+  callback new HttpHelper( agent, base )
 
 # Temp agent helper - provides callback with get, post, put, delete.
 tempAgent = (callback) ->
-  temp = superagent.agent()
-  post = postFor temp
-  get  = getFor temp
-  put  = putFor temp
-  del  = deleteFor temp
-  callback get, post, put, del
+  httpHelper (http) ->
+    post = http.post.bind http
+    get  = http.get.bind http
+    put  = http.put.bind http
+    del  = http.del.bind http
+    callback get, post, put, del
 
 # Session helper - provides logged in user with new account, get, post.
 session = (callback) ->
@@ -102,10 +102,10 @@ verifyJSONP = (res, callback) ->
     callback(json)
   eval jsonp
 
-# Superagent helpers.
-agent = superagent.agent()
-get = getFor agent
-post = postFor agent
+# Http helpers.
+http = new HttpHelper( superagent.agent(), base )
+get = http.get.bind http
+post = http.post.bind http
 
 # Request helpers.
 req_get = (path, cb) ->
