@@ -83,6 +83,16 @@ class LocalStore extends Base
 
     return callback null
 
+  # Delete a repo by owner and name.
+  deleteRepo: (username, reponame, callback) ->
+    key = [username, reponame]
+    @getRepos [key], (err, repos) =>
+      return callback err if err
+      return callback null if repos.length == 0
+
+      delete @repos[username][reponame]
+      return callback null
+
   # Get the commit hash for a given user repo.
   getRepoHash: (username, reponame, callback) ->
     hash = @repos[username]?[reponame]

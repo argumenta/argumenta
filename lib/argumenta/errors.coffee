@@ -15,6 +15,7 @@ class Errors
   @Storage:          class StorageError extends BaseError
   @NotFound:         class NotFoundError extends StorageError
   @StorageConflict:  class ConflictError extends StorageError
+  @StorageDeletion:  class StorageDeletionError extends StorageError
   @StorageInput:     class StorageInputError extends StorageError
   @StorageRetrieval: class StorageRetrievalError extends StorageError
   @LocalStore:       class LocalStoreError extends StorageError
@@ -34,6 +35,7 @@ class Errors
     'NotFoundError'         : 404
     'ConflictError'         : 409
     'StorageInputError'     : 400
+    'StorageDeletionError'  : 500
     'StorageRetrievalError' : 500
     'LocalStoreError'       : 500
     'UserError'             : 500

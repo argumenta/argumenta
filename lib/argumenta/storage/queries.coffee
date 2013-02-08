@@ -326,6 +326,15 @@ class Queries
         tag.citationText, tag.commentaryText
       ]
 
+  # Deletes a repo by owner and name.
+  @deleteRepo: (username, reponame) ->
+    return deleteRepoQuery =
+      text: """
+        DELETE FROM Repos
+        WHERE (username, reponame) = ($1, $2);
+        """
+      values: [ username, reponame ]
+
   # Delete all rows from the database.
   # @note Faster than truncation for small tables; useful for tests.
   @deleteAll: () ->

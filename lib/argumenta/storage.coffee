@@ -61,6 +61,9 @@ class Storage extends Base
   # Indicates error retrieving the requested items.
   RetrievalError: @RetrievalError = @Errors.StorageRetrieval
 
+  # Indicates error deleting an item.
+  DeletionError: @DeletionError = @Errors.StorageDeletion
+
   # Instance Methods
   # ----------------
 
@@ -154,6 +157,20 @@ class Storage extends Base
         return callback new @NotFoundError "User required to create repo. Got: #{user}"
       @store.addRepo username, reponame, commitHash, (err) ->
         return callback err
+
+  # Delete a repo by owner and name.
+  #
+  # @param [String] username The repo owner.
+  # @param [String] reponame The repo name.
+  # @param [Function] cb(err) Called on success or error.
+  # @param [Error] err Any error.
+  deleteRepo: (username, reponame, cb) ->
+    @store.deleteRepo username, reponame, (err) =>
+      if err
+        message = "Error deleting repo '#{username}/#{reponame}'."
+        return cb new @DeletionError message, err
+      else
+        return cb null
 
   # Get the commit hash for a given user repo.
   #

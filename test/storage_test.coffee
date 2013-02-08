@@ -237,6 +237,18 @@ describeStorageTests = (storage, type) ->
             retrievedTarget.equals( argument ).should.equal true
             done()
 
+    describe 'deleteRepo( username, reponame, callback )', ->
+      it 'should delete a given repo', (done) ->
+        withArgumentRepo (user, reponame, commit, argument) ->
+          username = user.username
+          key = [username, reponame]
+          storage.deleteRepo username, reponame, (err) ->
+            should.not.exist err
+            storage.getRepos [key], (err, repos) ->
+              should.not.exist err
+              repos.length.should.equal 0
+              done()
+
     #### Arguments ####
 
     describe 'addArgument( argument, callback )', ->

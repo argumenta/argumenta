@@ -180,6 +180,21 @@ class PostgresStore extends Base
       session.query query, (err) ->
         session.finalize err, callback
 
+  # Delete a repo by owner and name.
+  # @api public
+  deleteRepo: (username, reponame, callback) ->
+    @session (err, session) =>
+      return callback err if err
+
+      key = [username, reponame]
+      @getRepos [key], (err, repos) ->
+        return callback err if err
+        return callback null if repos.length == 0
+
+        query = Queries.deleteRepo(username, reponame)
+        session.query query, (err) ->
+          session.finalize err, callback
+
   # Get the commit hash for a given user repo.
   # @api public
   getRepoHash: (username, reponame, callback) ->
