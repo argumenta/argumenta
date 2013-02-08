@@ -22,36 +22,48 @@ postFor = (agent) ->
   return (path, data, cb) ->
     agent.post( abs_url path ).send( data ).end( cb )
 
-# Temp agent helper - provides callback with get, post.
+# Creates custom put helper.
+putFor = (agent) ->
+  return (path, data, cb) ->
+    agent.put( abs_url path ).end( cb )
+
+# Creates custom delete helper.
+deleteFor = (agent) ->
+  return (path, cb) ->
+    agent.del( abs_url path ).end( cb )
+
+# Temp agent helper - provides callback with get, post, put, delete.
 tempAgent = (callback) ->
   temp = superagent.agent()
   post = postFor temp
   get  = getFor temp
-  callback get, post
+  put  = putFor temp
+  del  = deleteFor temp
+  callback get, post, put, del
 
 # Session helper - provides logged in user with new account, get, post.
 session = (callback) ->
-  tempAgent (get, post) ->
+  tempAgent (get, post, put, del) ->
     user = fixtures.uniqueUserData()
     post '/users', user, (err, res) ->
       should.not.exist err
       res.status.should.equal 200
       res.text.should.match new RegExp 'Logged in as <a href="/'+user.username+'">'+user.username+'</a>'
-      callback user, get, post
+      callback user, get, post, put, del
 
 # Logged out session helper - provides a user session just after logout, get, post.
 loggedOutSession = (callback) ->
-  session (user, get, post) ->
+  session (user, get, post, put, del) ->
     get '/logout', (err, res) ->
       should.not.exist err
       res.status.should.equal 200
-      callback user, get, post
+      callback user, get, post, put, del
 
 # No session helper - provides user without account, get, post.
 noSession = (callback) ->
   user = fixtures.uniqueUser()
-  tempAgent (get, post) ->
-    callback user, get, post
+  tempAgent (get, post, put, del) ->
+    callback user, get, post, put, del
 
 # Assertion helper - checks if text matches argument
 matchesArgument = (text, arg) ->
@@ -60,16 +72,16 @@ matchesArgument = (text, arg) ->
 
 # Session with argument helper - provides user, argument data, get, post
 sessionWithArgument = (callback) ->
-  session (user, get, post) ->
+  session (user, get, post, put, del) ->
     data = fixtures.uniqueArgumentData()
     post '/arguments', data, (err, res) ->
       should.not.exist err
       res.status.should.equal 200
-      callback user, data, get, post
+      callback user, data, get, post, put, del
 
 # Session with tag helper - provides user, argument, tag, get, post
 sessionWithTag = (callback) ->
-  sessionWithArgument (user, argumentData, get, post) ->
+  sessionWithArgument (user, argumentData, get, post, put, del) ->
     argument = new Argument argumentData
     tag = fixtures.validSupportTag()
     tag.targetType = 'proposition'
@@ -79,7 +91,7 @@ sessionWithTag = (callback) ->
     tagData = tag.data()
     post '/tags.json', tagData, (res) ->
       res.status.should.equal 201
-      callback user, argumentData, tagData, get, post
+      callback user, argumentData, tagData, get, post, put, del
 
 # Verify JSONP Helper - Given a JSONP response, invokes callback with json.
 verifyJSONP = (res, callback) ->
