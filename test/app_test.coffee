@@ -127,9 +127,6 @@ describeAppTests = (type, app) ->
   describe "App with #{type} store", ->
 
     before (done) ->
-      unless app.config.appMode is 'testing'
-        return console.log "Won't drop non-testing database"
-
       app.argumenta.storage.clearAll null, (err) ->
         should.not.exist err
         done()
