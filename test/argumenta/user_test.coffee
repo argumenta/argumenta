@@ -12,10 +12,11 @@ describe 'User', ->
       hash = fixtures.validPasswordHash()
 
       user = new User username, email, hash
+
       user.should.be.an.instanceOf User
       user.username.should.equal username
       user.email.should.equal email
-      user.password_hash.should.equal hash
+      user.passwordHash.should.equal hash
       user.validate().should.equal true
 
   describe 'new User( params )', ->

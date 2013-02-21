@@ -26,8 +26,7 @@ describe 'PublicUser', ->
       hash = fixtures.validPasswordHash()
       user = new PublicUser username: username, email: email, password_hash: hash
       should.not.exist user.email
-      should.not.exist user.password_hash
-
+      should.not.exist user.passwordHash
 
   describe 'data()', ->
     it 'should return the user info as a plain object', ->

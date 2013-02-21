@@ -249,7 +249,7 @@ class Queries
         INSERT INTO Users (username, email, password_hash)
         VALUES ($1, $2, $3);
         """
-      values: [ user.username, user.email, user.password_hash ]
+      values: [ user.username, user.email, user.passwordHash ]
 
   # Insert a given Object.
   @insertObject: (object) ->

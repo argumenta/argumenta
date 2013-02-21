@@ -60,7 +60,7 @@ class LocalStore extends Base
     unless u
       return cb new @Error("No user for username: " + username), null
 
-    return cb null, u.password_hash
+    return cb null, u.passwordHash
 
   # Gets the *public* properties of all users.
   getAllUsers: (cb) ->

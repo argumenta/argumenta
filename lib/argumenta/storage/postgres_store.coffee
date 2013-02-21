@@ -165,8 +165,8 @@ class PostgresStore extends Base
         return callback new @Error "No user for username: '#{username}'"
 
       row = res.rows[0]
-      password_hash = row.password_hash
-      return callback null, password_hash
+      passwordHash = row.password_hash
+      return callback null, passwordHash
 
   #### Repos ####
 
