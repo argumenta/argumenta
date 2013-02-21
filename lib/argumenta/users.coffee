@@ -50,7 +50,7 @@ class Users extends Base
     Auth.hashPassword password, (err, hash) =>
       return callback err, null if err
 
-      user = new User { username, password_hash: hash, email }
+      user = new User { username, passwordHash: hash, email }
 
       @storage.addUser user, (err) =>
         return callback err, null if err

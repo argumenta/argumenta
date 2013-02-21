@@ -24,7 +24,7 @@ describe 'PublicUser', ->
       username = fixtures.validUsername()
       email = fixtures.validEmail()
       hash = fixtures.validPasswordHash()
-      user = new PublicUser username: username, email: email, password_hash: hash
+      user = new PublicUser username: username, email: email, passwordHash: hash
       should.not.exist user.email
       should.not.exist user.passwordHash
 

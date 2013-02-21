@@ -5,7 +5,7 @@ should = require 'should'
 
 describe 'User', ->
 
-  describe 'new User( username, email, password_hash )', ->
+  describe 'new User( username, email, passwordHash )', ->
     it 'should create a new user instance', ->
       username = fixtures.validUsername()
       email = fixtures.validEmail()
@@ -24,7 +24,7 @@ describe 'User', ->
       username = fixtures.validUsername()
       email = fixtures.validEmail()
       hash = fixtures.validPasswordHash()
-      params = username: username, email: email, password_hash: hash
+      params = username: username, email: email, passwordHash: hash
       user1 = new User params
       user2 = new User username, email, hash
       should.ok user1.equals( user2 )
@@ -53,25 +53,25 @@ describe 'User', ->
 
   describe 'validate()', ->
     username      = fixtures.validUsername()
-    password_hash = fixtures.validPasswordHash()
+    passwordHash  = fixtures.validPasswordHash()
     email         = fixtures.validEmail()
 
     it 'should return true if the user is valid', ->
-      user = new User {username, password_hash, email}
+      user = new User {username, passwordHash, email}
       user.validate().should.equal true
 
     it 'should return false if the username is missing', ->
-      user = new User {password_hash, email}
+      user = new User {passwordHash, email}
       user.validate().should.equal false
 
     it 'should return false if the username is blank', ->
-      user = new User {username: '', password_hash, email}
+      user = new User {username: '', passwordHash, email}
       user.validate().should.equal false
 
-    it 'should return false if the password_hash is missing', ->
+    it 'should return false if the passwordHash is missing', ->
       user = new User {username, email}
       user.validate().should.equal false
 
     it 'should return false if the email is invalid', ->
-      user = new User {username, password_hash, email: 'bad-email'}
+      user = new User {username, passwordHash, email: 'bad-email'}
       user.validate().should.equal false

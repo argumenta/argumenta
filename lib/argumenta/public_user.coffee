@@ -2,7 +2,7 @@ User = require '../argumenta/user'
 
 #
 # PublicUser models a user account's public properties.  
-# It omits sensitive fields, such as password_hash and email.
+# It omits sensitive fields, such as passwordHash and email.
 #
 class PublicUser extends User
 
