@@ -31,7 +31,8 @@ sweeten-docco:
 	./node_modules/.bin/sweeten-docco
 
 test: coffee
-	NODE_ENV=testing ./node_modules/.bin/mocha $(TESTS)
+	NODE_ENV=testing BCRYPT_COST=$(BCRYPT_COST) \
+		./node_modules/.bin/mocha $(TESTS)
 
 test_forever: coffee_forever
 	@while inotifywait -e close_write -r $(COFFEE_PATHS); do sleep 1; \

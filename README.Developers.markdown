@@ -87,9 +87,10 @@ $ REPORTER='dot' make test_forever
 ### BCRYPT_COST
 
 The bcrypt cost determines how many times passwords will be hashed.  
-The default cost of 10 increases the cost of reversing password hashes, but slows down tests.  
-Change the bcrypt cost from '10' to '1' for faster tests.
+The default cost of '10' increases the cost of reversing password hashes, but slows down account creation and login.  
+When testing, the value is lowered to '1' for faster tests.  
+Raise the bcrypt cost above '10' to experiment with higher values.
 
 ```shell
-$ BCRYPT_COST=1 make test
+$ BCRYPT_COST='12' make test
 ```
