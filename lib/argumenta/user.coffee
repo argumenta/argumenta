@@ -17,20 +17,20 @@ class User
   #     user = new User
   #       username:      'demosthenes'
   #       email:         'demos@athens.net'
-  #       password_hash: '$2a$12$6nZyzVgeCmBK9JkZb9rNG.9s/d/i/g2Tbyf4vk318XQLQKi4GXXZ2'
+  #       passwordHash:  '$2a$12$6nZyzVgeCmBK9JkZb9rNG.9s/d/i/g2Tbyf4vk318XQLQKi4GXXZ2'
   #
   # @api public
   # @see Users#create()
   # @param [Object] params A hash of user params.
   # @param [String] params.username The user's login name.
   # @param [String] params.email    The user's email adress.
-  # @param [String] params.password_hash The user's password hash.
-  constructor: (@username, @email, @password_hash) ->
-    if arguments.length == 1
+  # @param [String] params.passwordHash The user's password hash.
+  constructor: (@username, @email, @passwordHash) ->
+    if arguments.length == 1 and arguments[0].username
       params = arguments[0]
       @username      = params.username
       @email         = params.email
-      @password_hash = params.password_hash
+      @passwordHash  = params.passwordHash or params.password_hash
 
   ### Instance Methods ###
 
@@ -45,7 +45,7 @@ class User
     return user instanceof User and
       user.username == @username and
       user.email == @email and
-      user.password_hash == @password_hash
+      user.passwordHash == @passwordHash
 
   #### Validation ####
 
@@ -87,7 +87,7 @@ class User
     User.validateUsername @username
 
   validatePasswordHash: () ->
-    User.validatePasswordHash @password_hash
+    User.validatePasswordHash @passwordHash
 
   validateEmail: () ->
     User.validateEmail @email
@@ -131,11 +131,11 @@ class User
 
     return true
 
-  @validatePasswordHash: (password_hash) ->
-    unless password_hash?
+  @validatePasswordHash: (passwordHash) ->
+    unless passwordHash?
       throw new @ValidationError "Password hash must exist"
 
-    unless /\S+/.test password_hash
+    unless /\S+/.test passwordHash
       throw new @ValidationError "Password hash must not be blank"
 
     return true
