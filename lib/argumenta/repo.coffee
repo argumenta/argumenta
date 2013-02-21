@@ -126,7 +126,7 @@ class Repo
       throw new ValidationError "Repo user must be a public user instance."
 
     unless user.validate()
-      throw new ValidateionError "Repo user must be valid."
+      throw new ValidationError "Repo user must be valid."
 
     return true
 
