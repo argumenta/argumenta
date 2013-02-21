@@ -45,7 +45,7 @@ class User
     return user instanceof User and
       user.username == @username and
       user.email == @email and
-      user.passwordHash == @passwordHash
+      user.password_hash == @password_hash
 
   #### Validation ####
 
