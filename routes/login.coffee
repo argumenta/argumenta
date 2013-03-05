@@ -15,7 +15,7 @@ exports.verify = (req, res) ->
   argumenta.auth.verifyLogin params.username, params.password, (err, result) ->
     if err
       req.flash 'username', params.username
-      res.failed "/login", "Error verifying login."
+      res.failed "/login", "Error verifying login.",
         status: 401
     else
       if result

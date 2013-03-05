@@ -16,7 +16,7 @@ exports.create = (req, res) ->
   argumenta.arguments.commit username, argument, (err, commit) ->
     if err
       req.flash 'argument', req.body
-      return res.reply "arguments/new"
+      return res.reply "arguments/new",
         error: err.message
         status: Errors.statusFor err
     else
@@ -35,13 +35,13 @@ exports.show = (req, res) ->
   keys = [key]
   argumenta.storage.getRepos keys, (err, repos) ->
     if err
-      return res.failed "/"
+      return res.failed "/",
         error: err.message
         status: Errors.statusFor err
     if repos.length == 0
       return res.notFound "Repo '#{name}/#{repo}' not found."
 
-    return res.reply 'users/repo'
+    return res.reply 'users/repo',
       repo: repos[0]
 
 # Delete a repo via DELETE
