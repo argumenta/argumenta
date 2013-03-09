@@ -1,4 +1,6 @@
 express    = require 'express'
+stylus     = require 'stylus'
+nib        = require 'nib'
 flash      = require 'connect-flash'
 http       = require 'http'
 _          = require 'underscore'
@@ -18,7 +20,14 @@ configure = () ->
     app.set 'view engine', 'jade'
     app.set 'view options', {layout: false}
     app.use express.favicon()
-    app.use require('stylus').middleware({ src: __dirname + '/../public' })
+    app.use stylus.middleware
+      src: __dirname + '/../public'
+      compile: (str, path) ->
+        return stylus(str)
+          .set('filename', path)
+          .set('compress', false)
+          .use(nib())
+          .import('nib')
     app.use express.static(__dirname + '/../public')
     app.use express.bodyParser()
     app.use express.cookieParser( config.appSecret )
