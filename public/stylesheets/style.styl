@@ -15,17 +15,6 @@ bgRadialGradient()
   background-image:      -o-radial-gradient(arguments)
   background-image:         radial-gradient(arguments)
 
-bgStripedGradient()
-  // Fallback
-  background-image: url('/images/horiz-grad-bluegreen.png');
-
-  // Gradient + Pattern
-  background-image: -webkit-linear-gradient(arguments), url("/images/dark-stripes.svg")
-  background-image:    -moz-linear-gradient(arguments), url("/images/dark-stripes.svg")
-  background-image:     -ms-linear-gradient(arguments), url("/images/dark-stripes.svg")
-  background-image:      -o-linear-gradient(arguments), url("/images/dark-stripes.svg")
-  background-image:         linear-gradient(arguments), url("/images/dark-stripes.svg")
-
 
 // Html
 
@@ -49,7 +38,10 @@ body.argumenta
     min-width: 900px
     max-width: 950px
     margin: 0px auto
-    bgStripedGradient left, rgba(135, 251, 234, 0.5), rgba(61, 116, 194, 0.5)
+    background-image: url('/images/horiz-grad-bluegreen.png');
+    background-image:
+      linear-gradient(left, rgba(135, 251, 234, 0.5), rgba(61, 116, 194, 0.5))
+    , url("/images/dark-stripes.svg");
 
 
 // Argumenta Namespace
