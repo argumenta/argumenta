@@ -1,6 +1,6 @@
 async        = require 'async'
 pg           = require 'pg'
-Transaction  = require 'pg-transaction'
+Transaction  = require 'pg-nest'
 _            = require 'underscore'
 Base         = require '../../argumenta/base'
 Objects      = require '../../argumenta/objects'
@@ -57,7 +57,7 @@ class PostgresStore extends Base
   #             console.log "Done!" unless err
   #
   # @api private
-  # @see PostgresSession, pg-transaction
+  # @see PostgresSession, pg-nest
   session: (callback) ->
     @client (err, client) =>
       return callback err if err

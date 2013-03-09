@@ -1,5 +1,5 @@
 {delegate}    = require 'class-delegator'
-Transaction   = require 'pg-transaction'
+Transaction   = require 'pg-nest'
 PostgresStore = require './postgres_store'
 
 # PostgresSession provides store functionality within a transaction.

@@ -16,7 +16,7 @@
     "express": "3.0.0alpha2",
     "jade": "*",
     "pg": "0.8.7",
-    "pg-transaction": "~0.0.0",
+    "pg-nest": "~0.1.0",
     "stylus": "*",
     "underscore": "1.4.2"
   },
