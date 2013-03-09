@@ -11,7 +11,7 @@
     "argumenta-widgets": "~0.0.0",
     "async": "0.1.22",
     "bcrypt": "0.5.x",
-    "class-delegator": "~0.0.0",
+    "class-delegator": "0.0.3",
     "connect-flash": "0.1.0",
     "express": "3.0.0alpha2",
     "jade": "*",
