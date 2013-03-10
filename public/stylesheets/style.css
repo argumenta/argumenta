@@ -27,9 +27,6 @@ body.argumenta .wrapper {
   background-image: -ms-linear-gradient(left, rgba(135,251,234,0.5) 0%, rgba(61,116,194,0.5) 100%), url("/images/dark-stripes.svg");
   background-image: linear-gradient(left, rgba(135,251,234,0.5) 0%, rgba(61,116,194,0.5) 100%), url("/images/dark-stripes.svg");
 }
-*.argumenta {
-  font: 14px "Monda", "Lucida Grande", Helvetica, Arial, sans-serif;
-}
 *.argumenta * {
   margin: 0px;
   padding: 0px;
@@ -145,6 +142,9 @@ body.argumenta .wrapper {
   border: 0px;
   margin: 0px;
   padding: 0px;
+}
+*.argumenta font:fontSans() {
+  font-size: 14px;
 }
 *.argumenta button,
 *.argumenta input,
@@ -317,4 +317,8 @@ body.argumenta .wrapper {
 *.argumenta form.edit .title .removePremise,
 *.argumenta form.edit .conclusion .removePremise {
   background: #f06;
+}
+*.argumenta form.edit .sha1 {
+  font-family: "Lucida Console", Monaco, "DejaVu Sans Mono", monospace;
+  background: none;
 }

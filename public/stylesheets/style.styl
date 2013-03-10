@@ -226,9 +226,18 @@ body.argumenta
     margin: 0px
     padding: 0px
 
+
   // Typography
 
-  font: 14px "Monda", "Lucida Grande", Helvetica, Arial, sans-serif
+  fontMono()
+    font-family: "Lucida Console", Monaco, "DejaVu Sans Mono", monospace
+
+  fontSans()
+    font-family: "Monda", "Lucida Grande", Helvetica, Arial, sans-serif
+
+  font:
+    fontSans()
+    font-size: 14px
 
   // Fix for font-size inheritance
   button, input, select, textarea
@@ -371,3 +380,7 @@ body.argumenta
 
       .removePremise
         background: #f06
+
+    .sha1
+      fontMono()
+      background: none
