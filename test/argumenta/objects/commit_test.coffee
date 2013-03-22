@@ -70,6 +70,7 @@ describe 'Commit', ->
       commit = new Commit( targetType, targetSha1, committer, commitDate )
       data = commit.data()
       data.should.eql {
+        object_type: 'commit'
         sha1: commit.sha1()
         target_type: commit.targetType
         target_sha1: commit.targetSha1

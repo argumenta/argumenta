@@ -93,6 +93,7 @@ class Commit
   # @return [Object] The commit data.
   data: () ->
     return {
+      object_type   : 'commit'
       sha1          : @sha1()
       target_type   : @targetType
       target_sha1   : @targetSha1
