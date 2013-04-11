@@ -1,112 +1,92 @@
 
 ## Argumenta Setup
 
+
 ### 1. Install Node (0.8+)
 
-Download node.js from [the official site][Nodejs], or using your OS package manager.  
-[Current versions][Downloads] of node.js include the excellent [npm][Npm] package manager.
+Download Node.js from [the official site][Nodejs], or using your OS package manager.  
+[Current versions][Downloads] of Node.js include the excellent [npm][Npm] package manager.
 
 [Nodejs]: http://nodejs.org/
 [Npm]: https://npmjs.org/
-[Downloads]: http://nodejs.org/download/ 
+[Downloads]: http://nodejs.org/download/
+
 
 ### 2. Install Postgres (9.2+)
 
-Download PostgreSQL from [postgresql.org][Postgres], or using your package manager (recommended).
+Download PostgreSQL from [postgresql.org][Postgres], or using your package manager.
 
 [Postgres]: http://www.postgresql.org/
 
+
 ### 3. Install Argumenta
 
-Download Argumenta from [the github repo][Argumenta-repo].
+Install Argumenta with npm:
 
-You may checkout the source with git (recommended):
-
-```shell
-$ git checkout git://github.com/qualiabyte/argumenta.git
+```bash
+$ npm install -g argumenta
 ```
 
-Or download the latest zip archive:
+This provides the `argumenta` command, which starts the app:
 
-```shell
-$ wget https://github.com/qualiabyte/argumenta/archive/master.zip
+```bash
+$ argumenta
+Argumenta 0.0.1 (development mode) | http://localhost:3000
 ```
 
-[Argumenta-repo]: https://github.com/qualiabyte/argumenta
-[master.zip]: https://github.com/qualiabyte/argumenta/archive/master.zip
+It also provides `argumenta-setup`, which sets up a server install of Argumenta.
 
-### 4. Install Argumenta Modules
-
-With npm installed (it's bundled with node), install Argumenta's dependencies:
-
-```shell
-$ cd argumenta
-$ npm install
+```bash
+$ sudo argumenta-setup
 ```
 
-### 5. Argumenta Database and Roles
+This installs the app in `/usr/local/argumenta`, configuration files in `/etc/argumenta`, and creates an `argumenta` Upstart service and user account.
+
+
+### 4. Argumenta Database and Roles
 
 #### Quick Setup
 
-Argumenta includes the script `bin/setup-postgres.sh` for convenience.  
-Run these commands to setup databases for each mode automatically:
+Argumenta provides `argumenta-setup-postgres` for database setup.  
+Run these commands with a password of your choice to configure each mode:
 
-```shell
+```bash
 $ # Note the space before each command.
 $ # It will omit the command from your bash history if `HISTCONTROL` includes `ignorespace`.
-$  sudo ./bin/setup-postgres.sh --user 'argumenta_development' --pass '<PASSWORD>' 'argumenta_development'
-$  sudo ./bin/setup-postgres.sh --user 'argumenta_testing' --pass '<PASSWORD>' 'argumenta_testing'
-$  sudo ./bin/setup-postgres.sh --user 'argumenta_staging' --pass '<PASSWORD>' 'argumenta_staging'
-$  sudo ./bin/setup-postgres.sh --user 'argumenta' --pass '<PASSWORD>' 'argumenta'
+$  sudo argumenta-setup-postgres --user 'argumenta_development' --pass '<PASSWORD>' 'argumenta_development'
+$  sudo argumenta-setup-postgres --user 'argumenta_testing'     --pass '<PASSWORD>' 'argumenta_testing'
+$  sudo argumenta-setup-postgres --user 'argumenta_staging'     --pass '<PASSWORD>' 'argumenta_staging'
+$  sudo argumenta-setup-postgres --user 'argumenta'             --pass '<PASSWORD>' 'argumenta'
 ```
 
 #### Setup Details
 
 See [postgres setup][Postgres-setup] for details on automatic and manual setup.
 
-### 6. Argumenta Config
 
-Next, we'll customize Argumenta's configuration for this deploy.  
-Run the script `bin/setup-config.sh`:
+### 5. Argumenta Config
 
-```shell
-$ ./bin/setup-config.sh
-Initializing config/deploy
-Creating './config/deploy/development.coffee'
-Creating './config/deploy/testing.coffee'
-Creating './config/deploy/staging.coffee'
-Creating './config/deploy/production.coffee'
-Done!
+Edit the configuration file for each mode in `/etc/argumenta`. In particular, uncomment the `postgresUrl` setting and change its `PASSWORD` placeholder to match the database password for each mode. The other settings can be safely left commented out, and Argumenta will use each mode's defaults.
+
+
+### 6. Run the App!
+
+The `CONFIG_DIR` and `NODE_ENV` environment variables set the configuration directory and mode when running Argumenta:
+
+```bash
+$ CONFIG_DIR='/etc/argumenta' NODE_ENV='production' argumenta
 ```
 
-In addition to copying the defaults for each mode from `config/modes/*`, this generates a random `appSecret` for each mode. It won't overwrite any existing config files, for example if run previously.
+The Argumenta Upstart service uses `/etc/argumenta` and `production` by default, so you can simply run:
 
-You should now edit these files. In particular, uncomment the `postgresUrl` setting and change its `PASSWORD` placeholder to match the database password for each mode. The other settings can be safely left commented out, and Argumenta will simply use each mode's defaults.
-
-### 7. Run the App!
-
-Run the `build` make target to compile the client and server:
-
-```shell
-$ make build
+```bash
+$ sudo start argumenta
 ```
 
-Run the test suite to make sure everything is ok:
-
-```shell
-$ make test
-```
-
-Argumenta should now be ready to run!
-
-```shell
-$ node app
-Argumenta 0.0.1 (development mode) | http://localhost:3000
-```
 
 ## Further Resources
 
-See [Developer notes][Developers] for details on running, building, and testing Argumenta.  
+See [Developer notes][Developers] for details on running, building, and testing Argumenta from source.  
 See [Postgres setup][Postgres-setup] for details on setting up Postgres databases.  
 See [Web API][API] for details on using Argumenta's Web API.
 
