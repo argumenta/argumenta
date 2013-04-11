@@ -30,6 +30,11 @@
     "superagent": "~0.9.4",
     "sweeten-docco": ">=0.3.1"
   },
+  "bin": {
+    "argumenta": "./bin/argumenta.sh",
+    "argumenta-setup": "./bin/setup-server.sh",
+    "argumenta-setup-postgres": "./bin/setup-postgres.sh"
+  },
   "engines": {
     "node": ">= 0.8.15"
   }
