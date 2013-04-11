@@ -14,7 +14,7 @@
     "class-delegator": "0.0.3",
     "connect-flash": "0.1.0",
     "express": "3.0.0alpha2",
-    "jade": "*",
+    "jade": "0.28.2",
     "nib": "0.9.1",
     "pg": "0.8.7",
     "pg-nest": "~0.1.0",
