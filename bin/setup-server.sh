@@ -55,6 +55,7 @@ END
 # Adds an `argumenta` user account.
 #
 addUser() {
+  echo "Adding 'argumenta' user account."
   adduser \
     --quiet \
     --system \
@@ -70,13 +71,15 @@ addUser() {
 # Generates app config files.
 #
 genAppConfig() {
-  "$SOURCE_DIR"/bin/setup-config.sh
+  echo "Generating app config."
+  "$SOURCE_DIR"/bin/setup-config.sh > /dev/null
 }
 
 #
 # Installs the Argumenta app.
 #
 installApp() {
+  echo "Installing app to '$INSTALL_DIR'."
   cp -a -T "$SOURCE_DIR" "$INSTALL_DIR"
   chown -R root:argumenta "$INSTALL_DIR"
   chmod -R 0740 "$INSTALL_DIR"
@@ -88,6 +91,7 @@ installApp() {
 # Creates deployment config files.
 #
 createDeployConfig() {
+  echo "Creating deploy config in '$CONFIG_DIR'."
   cp -a --no-clobber -T "${INSTALL_DIR}/config/deploy" "$CONFIG_DIR"
   chown -R root:argumenta "$CONFIG_DIR"
   chmod -R 0740 "$CONFIG_DIR"
@@ -98,6 +102,7 @@ createDeployConfig() {
 # Creates an Upstart config file.
 #
 createUpstartConfig() {
+  echo "Creating Upstart config '$UPSTART_CONFIG_FILE'."
   echo "$UPSTART_CONFIG" > $UPSTART_CONFIG_FILE
   chmod 0644 $UPSTART_CONFIG_FILE
 }
@@ -145,6 +150,7 @@ main() {
   installApp
   createDeployConfig
   createUpstartConfig
+  echo "Done!"
 }
 
 # Let's do this!
