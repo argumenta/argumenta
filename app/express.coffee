@@ -20,14 +20,6 @@ configure = () ->
     app.set 'view engine', 'jade'
     app.set 'view options', {layout: false}
     app.use express.favicon()
-    app.use stylus.middleware
-      src: __dirname + '/../public'
-      compile: (str, path) ->
-        return stylus(str)
-          .set('filename', path)
-          .set('compress', false)
-          .use(nib())
-          .import('nib')
     app.use express.static(__dirname + '/../public')
     app.use express.bodyParser()
     app.use express.cookieParser( config.appSecret )
@@ -68,6 +60,14 @@ app.configure 'testing', ->
 
 app.configure 'development', ->
   app.use express.logger('dev')
+  app.use stylus.middleware
+    src: __dirname + '/../public'
+    compile: (str, path) ->
+      return stylus(str)
+        .set('filename', path)
+        .set('compress', false)
+        .use(nib())
+        .import('nib')
   configure()
   app.use express.errorHandler()
 
