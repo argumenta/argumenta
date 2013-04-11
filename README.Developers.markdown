@@ -1,14 +1,72 @@
 
 # Developer Notes
 
-## Running
+These developer notes show how to install, configure, build, run, and test Argumenta from source.
 
-Run the app!
+## Install
+
+### 1. Get the Source
+
+To get started with Argumenta development, clone the git repo:
+
+```shell
+$ git clone https://github.com/argumenta/argumenta.git
+```
+
+Even better, fork our repo on GitHub and clone that. This way you can push your changes, and send us a pull request!
+
+### 2. Install Dependencies
+
+Change into the source directory, and install Argumenta's dependencies with npm:
 
 ```shell
 $ cd argumenta
-$ make all
+$ npm install
+```
+### 4. Database Setup
+
+Setup databases in the same way you would for a normal install, but using `./bin/setup-postgres.sh`.  
+See the [Install instructions][Install].
+
+[Install]: ./README.Install.markdown
+
+### 3. Configure
+
+Run the command `./bin/setup-config.sh` to generate local config files:
+
+```bash
+$ argumenta-setup-config
+Initializing config/deploy
+Creating './config/deploy/development.coffee'
+Creating './config/deploy/testing.coffee'
+Creating './config/deploy/staging.coffee'
+Creating './config/deploy/production.coffee'
+Done!
+```
+
+This copies defaults for each mode, and generates a random app secret. It won't overwrite existing config files.
+
+You should now edit these files. In particular, uncomment the `postgresUrl` setting and change its `PASSWORD` placeholder to match the database password for each mode. The other settings can be safely left commented out, and Argumenta will simply use each mode's defaults.
+
+### 4. Run
+
+Run the `build` make target to compile the client and server:
+
+```shell
+$ make build
+```
+
+Run the test suite to make sure everything is ok:
+
+```shell
+$ make test
+```
+
+Argumenta should now be ready to run!
+
+```shell
 $ node app
+Argumenta 0.0.1 (development mode) | http://localhost:3000
 ```
 
 ## Building
