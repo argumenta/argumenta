@@ -9,13 +9,16 @@ all: build docs
 
 build: server client
 
-server: coffee
+server: coffee stylus
 
 coffee:
 	coffee -c $(COFFEE_PATHS)
 
 coffee_forever:
 	@coffee -c -w $(COFFEE_PATHS) &
+
+stylus:
+	./node_modules/.bin/stylus --use ./node_modules/nib public/stylesheets
 
 client:
 	mkdir -p build/client
@@ -59,4 +62,4 @@ clean_coffee:
 clean_docs:
 	-rm -rf docs
 
-.PHONY: all build server client coffee coffee_forever test test_forever clean clean_build clean_coffee clean_docs
+.PHONY: all build server client coffee coffee_forever stylus test test_forever clean clean_build clean_coffee clean_docs
