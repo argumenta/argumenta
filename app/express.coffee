@@ -67,7 +67,6 @@ app.configure 'development', ->
         .set('filename', path)
         .set('compress', false)
         .use(nib())
-        .import('nib')
   configure()
   app.use express.errorHandler()
 
