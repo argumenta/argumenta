@@ -26,14 +26,14 @@ UPSTART_CONFIG=$(cat <<-"END"
 	description "Argumenta (Node.js)"
 	author "Argumenta.io"
 
-	start on startup
-	stop on shutdown
+	start on (local-filesystems and net-device-up IFACE!=lo)
+	stop on runlevel [016]
 
 	respawn
 	respawn limit 10 5  # Default respawns per second.
 
 	script
-	  if [[ -f /usr/bin/node ]]; then
+	  if [ -f /usr/bin/node ]; then
 	    NODE=/usr/bin/node
 	  else
 	    NODE=`which node`
