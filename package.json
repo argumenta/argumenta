@@ -12,6 +12,7 @@
     "async": "0.1.22",
     "bcrypt": "0.5.x",
     "class-delegator": "0.0.3",
+    "coffee-script": "~1.6.2",
     "connect-flash": "0.1.0",
     "express": "3.0.0alpha2",
     "jade": "0.28.2",
@@ -23,7 +24,6 @@
   },
   "devDependencies": {
     "browserify": "~1.15.4",
-    "coffee-script": "~1.6.2",
     "mocha": "1.0.x",
     "request": "~2.9.202",
     "should": "0.6.x",
