@@ -2,7 +2,20 @@
   "name": "argumenta",
   "description": "A web app for social argument collaboration",
   "version": "0.0.1",
+  "author": "Tyler Florez <qualiabyte@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/argumenta/argumenta.git"
+  },
   "private": true,
+  "bin": {
+    "argumenta": "./bin/argumenta.sh",
+    "argumenta-setup": "./bin/setup-server.sh",
+    "argumenta-setup-postgres": "./bin/setup-postgres.sh"
+  },
+  "engines": {
+    "node": ">= 0.8.15"
+  },
   "scripts": {
     "start": "node app",
     "test": "make test"
@@ -29,13 +42,5 @@
     "should": "0.6.x",
     "superagent": "~0.9.4",
     "sweeten-docco": ">=0.3.1"
-  },
-  "bin": {
-    "argumenta": "./bin/argumenta.sh",
-    "argumenta-setup": "./bin/setup-server.sh",
-    "argumenta-setup-postgres": "./bin/setup-postgres.sh"
-  },
-  "engines": {
-    "node": ">= 0.8.15"
   }
 }
