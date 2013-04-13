@@ -18,7 +18,8 @@
   },
   "scripts": {
     "start": "node app",
-    "test": "make test"
+    "test": "make test",
+    "prepublish": "make build"
   },
   "dependencies": {
     "argumenta-widgets": "0.0.3",
