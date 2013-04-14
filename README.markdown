@@ -38,7 +38,7 @@ See [Install][Install] for server configuration details, and [Developers][Develo
 
 ## Documentation
 
-+ [Web API][WebAPI] - Argumenta's REST API.
++ [API][API] - Argumenta's REST API.
 + [Install][Install] - Install Argumenta for command-line or server use.
 + [Developers][Developers] - Developer notes for Argumenta.
 
@@ -46,7 +46,7 @@ See [Install][Install] for server configuration details, and [Developers][Develo
 [Blog.Argumenta.io]: https://blog.argumenta.io
 [@ArgumentaIO]: https://twitter.com/ArgumentaIO
 
-[WebAPI]: ./README.WebAPI.markdown
+[API]: ./README.API.markdown
 [Install]: ./README.Install.markdown
 [Developers]: ./README.Developers.markdown
 
