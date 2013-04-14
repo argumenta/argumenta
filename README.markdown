@@ -42,8 +42,8 @@ See [Install][Install] for server configuration details, and [Developers][Develo
 + [Install][Install] - Install Argumenta for command-line or server use.
 + [Developers][Developers] - Developer notes for Argumenta.
 
-[Argumenta.io]: https://blog.argumenta.io
-[Blog.Argumenta.io]: https://blog.argumenta.io
+[Argumenta.io]: http://blog.argumenta.io
+[Blog.Argumenta.io]: http://blog.argumenta.io
 [@ArgumentaIO]: https://twitter.com/ArgumentaIO
 
 [API]: ./README.API.markdown
