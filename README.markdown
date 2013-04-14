@@ -32,15 +32,15 @@ Argumenta 0.0.1 (development mode) | http://localhost:3000
 
 See [Install][Install] for server configuration details, and [Developers][Developers] for notes on working from source.
 
+## Modules
+
++ [Argumenta-Widgets][Widgets] - JavaScript Widgets for Argumenta. Share arguments anywhere on the web!
+
 ## Documentation
 
 + [Web API][WebAPI] - Argumenta's REST API.
 + [Install][Install] - Install Argumenta for command-line or server use.
 + [Developers][Developers] - Developer notes for Argumenta.
-
-## Modules
-
-+ [Argumenta-Widgets][Widgets] - JavaScript Widgets for Argumenta. Share arguments anywhere on the web!
 
 [Argumenta.io]: https://blog.argumenta.io
 [Blog.Argumenta.io]: https://blog.argumenta.io
@@ -51,3 +51,7 @@ See [Install][Install] for server configuration details, and [Developers][Develo
 [Developers]: ./README.Developers.markdown
 
 [Widgets]: https://github.com/argumenta/argumenta-widgets
+
+## License
+
+MIT
