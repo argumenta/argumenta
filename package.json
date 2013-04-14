@@ -1,6 +1,6 @@
 {
   "name": "argumenta",
-  "description": "A web app for social argument collaboration",
+  "description": "Social argument collaboration for the web.",
   "version": "0.0.1",
   "author": "Tyler Florez <qualiabyte@gmail.com>",
   "repository": {
@@ -8,7 +8,6 @@
     "url": "https://github.com/argumenta/argumenta.git"
   },
   "license": "MIT",
-  "private": true,
   "bin": {
     "argumenta": "./bin/argumenta.sh",
     "argumenta-setup": "./bin/setup-server.sh",
