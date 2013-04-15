@@ -23,7 +23,7 @@
     "postinstall": "make production"
   },
   "dependencies": {
-    "argumenta-widgets": "0.0.3",
+    "argumenta-widgets": "0.0.4",
     "async": "0.1.22",
     "bcrypt": "0.5.x",
     "class-delegator": "0.0.3",
