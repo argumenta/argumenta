@@ -75,6 +75,7 @@ main() {
   getOpts "$@"
 
   run echo "Initializing config/deploy"
+  mkdir -p "${SOURCE_DIR}/config/deploy"
 
   # Copy the config for each mode and generate an appSecret
   for mode in development testing staging production; do
