@@ -7,7 +7,15 @@ BCRYPT_COST ?= 1
 
 all: build docs
 
-build: server client
+build: server client production
+
+production:
+	ln -sf -T '../../build/client/objects.js' public/javascripts/objects.js
+	ln -sf -T '../node_modules/argumenta-widgets/production' public/widgets
+
+development:
+	ln -sf -T '../../build/client/objects.js' public/javascripts/objects.js
+	ln -sf -T '../node_modules/argumenta-widgets/development' public/widgets
 
 server: coffee stylus
 
@@ -62,4 +70,4 @@ clean_coffee:
 clean_docs:
 	-rm -rf docs
 
-.PHONY: all build server client coffee coffee_forever stylus test test_forever clean clean_build clean_coffee clean_docs
+.PHONY: all build production development server client coffee coffee_forever stylus test test_forever clean clean_build clean_coffee clean_docs
