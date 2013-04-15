@@ -71,14 +71,6 @@ addUser() {
 }
 
 #
-# Generates app config files.
-#
-genAppConfig() {
-  echo "Generating app config."
-  "$SOURCE_DIR"/bin/setup-config.sh > /dev/null
-}
-
-#
 # Installs the Argumenta app.
 #
 installApp() {
@@ -88,6 +80,14 @@ installApp() {
   chmod -R 0740 "$INSTALL_DIR"
   chmod -R 0750 "${INSTALL_DIR}/bin"
   find "$INSTALL_DIR" -type d -print0 | xargs -0 chmod -R 0750
+}
+
+#
+# Generates app config files.
+#
+genAppConfig() {
+  echo "Generating app config."
+  "$INSTALL_DIR"/bin/setup-config.sh > /dev/null
 }
 
 #
@@ -149,8 +149,8 @@ getOpts() {
 main() {
   getOpts "$@"
   addUser
-  genAppConfig
   installApp
+  genAppConfig
   createDeployConfig
   createUpstartConfig
   echo "Done!"
