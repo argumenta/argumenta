@@ -19,7 +19,8 @@
   "scripts": {
     "start": "node app",
     "test": "make test",
-    "prepublish": "make build"
+    "prepublish": "make build",
+    "postinstall": "make production"
   },
   "dependencies": {
     "argumenta-widgets": "0.0.3",
