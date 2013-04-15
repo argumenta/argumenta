@@ -3,11 +3,11 @@
 # setup-config.sh
 # Sets up deployment config files for further customization.
 
-# Script dir
-BASEDIR=$(dirname "$0")
+# This script's real path.
+SCRIPT_FILE=$(readlink -f "$0")
 
-# Source path
-SRC=$(dirname "$BASEDIR")
+# This script's source directory.
+SOURCE_DIR=$(readlink -f `dirname "$SCRIPT_FILE"`/..)
 
 # Debug mode
 DEBUG=0
@@ -78,8 +78,8 @@ main() {
 
   # Copy the config for each mode and generate an appSecret
   for mode in development testing staging production; do
-    local config="${SRC}/config/modes/${mode}.coffee"
-    local deploy="${SRC}/config/deploy/${mode}.coffee"
+    local config="${SOURCE_DIR}/config/modes/${mode}.coffee"
+    local deploy="${SOURCE_DIR}/config/deploy/${mode}.coffee"
 
     if [[ ! -f "$deploy" ]]; then
       run echo "Creating '$deploy'"

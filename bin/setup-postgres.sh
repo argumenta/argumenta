@@ -3,11 +3,11 @@
 # setup-postgres.sh
 # Sets up Postgres by creating a user, db, and initializing the schema.
 
-# Script path
-BASEDIR=$(dirname "$0")
+# This script's real path.
+SCRIPT_FILE=$(readlink -f "$0")
 
-# Source path
-SRC=$(dirname "$BASEDIR")
+# This script's source directory.
+SOURCE_DIR=$(readlink -f `dirname "$SCRIPT_FILE"`/..)
 
 # Database Name
 DB=${DB:="argumenta"}
@@ -89,7 +89,7 @@ main() {
 
   # Init schema
   psql -U $DB_USER -h localhost \
-       -f "${SRC}/db/schema.sql" $DB
+       -f "${SOURCE_DIR}/db/schema.sql" $DB
 
   # Check status and exit
   psql -U $DB_USER -h localhost \

@@ -6,8 +6,11 @@
 # Exit if any command exits with non-zero status.
 set -e
 
+# This script's real path.
+SCRIPT_FILE=$(readlink -f "$0")
+
 # This script's source directory.
-SOURCE_DIR=$(readlink -f `dirname "$0"`/..)
+SOURCE_DIR=$(readlink -f `dirname "$SCRIPT_FILE"`/..)
 
 # The target install directory.
 INSTALL_DIR='/usr/local/argumenta'
