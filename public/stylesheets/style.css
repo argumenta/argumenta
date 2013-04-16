@@ -220,6 +220,9 @@ body.argumenta .wrapper {
 *.argumenta form.join li {
   text-align: right;
 }
+*.argumenta form.join label {
+  display: inline-block;
+}
 *.argumenta form.login {
   display: inline-block;
   text-align: center;
