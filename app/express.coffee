@@ -6,6 +6,7 @@ http       = require 'http'
 _          = require 'underscore'
 pkg        = require '../package.json'
 middleware = require '../app/middleware'
+helpers    = require '../app/helpers'
 routes     = require '../routes'
 config     = require '../config'
 Objects    = require '../lib/argumenta/objects'
@@ -60,13 +61,16 @@ app.configure 'testing', ->
 
 app.configure 'development', ->
   app.use express.logger('dev')
-  app.use stylus.middleware
-    src: __dirname + '/../public'
-    compile: (str, path) ->
-      return stylus(str)
-        .set('filename', path)
-        .set('compress', false)
-        .use(nib())
+  cssDir = __dirname + '/../public'
+  cssWritable = helpers.writableSync cssDir
+  if cssWritable
+    app.use stylus.middleware
+      src: cssDir
+      compile: (str, path) ->
+        return stylus(str)
+          .set('filename', path)
+          .set('compress', false)
+          .use(nib())
   configure()
   app.use express.errorHandler()
 
