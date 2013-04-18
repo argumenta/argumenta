@@ -10,13 +10,13 @@ class Helpers
     )
 
   @canWriteBy = (proc, stat) ->
-    return Util.canWrite(
+    return Helpers.canWrite(
       proc.getuid() == stat.uid,
       proc.getgid() == stat.gid,
       stat.mode
     )
 
   @writableSync = (path) ->
-    return Util.canWriteBy process, fs.statSync(path)
+    return Helpers.canWriteBy process, fs.statSync(path)
 
 module.exports = Helpers
