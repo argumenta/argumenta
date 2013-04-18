@@ -140,6 +140,15 @@ describeAppTests = (type, app) ->
             res.text.should.match /Sign in.*or.*Join now!/
             done()
 
+    describe '/stylesheets', ->
+      describe 'GET /stylesheets/style.css', ->
+        it 'should serve gzipped css', (done) ->
+          get '/stylesheets/style.css', (res) ->
+            res.status.should.equal 200
+            res.header['content-encoding'].should.equal('gzip')
+            res.header['content-type'].should.equal('text/css')
+            done()
+
     describe '/users', () ->
 
       describe 'POST /users', () ->
