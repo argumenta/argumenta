@@ -20,15 +20,8 @@ configure = () ->
     app.set 'views', __dirname + '/../views'
     app.set 'view engine', 'jade'
     app.set 'view options', {layout: false}
+    app.use middleware.gzipped /^\/(images|stylesheets|javascripts|widgets)/
     app.use express.favicon(__dirname + '/../public/images/favicon.ico')
-    app.use (req, res, next) ->
-      if req.url.match /images|stylesheets|javascripts|widgets/
-        matches = req.path.match /\.(\w+)$/
-        ext = matches[0]
-        res.type(ext)
-        res.set('Content-Encoding', 'gzip')
-        req.url = req.url + '.gz'
-      next()
     app.use express.static(__dirname + '/../public')
     app.use express.bodyParser()
     app.use express.cookieParser( config.appSecret )
