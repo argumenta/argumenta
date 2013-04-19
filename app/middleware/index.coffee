@@ -1,5 +1,6 @@
 
 Middleware =
+  gzipped  : require './gzipped'
   globals  : require './globals'
   locals   : require './locals'
   reply    : require './reply'
