@@ -185,6 +185,7 @@ body.argumenta .wrapper {
   font-size: 1.1em;
 }
 *.argumenta .header {
+  position: relative;
   background-color: #fff;
   padding: 2px 5px;
 }
@@ -210,7 +211,10 @@ body.argumenta .wrapper {
 }
 *.argumenta .nav-login,
 *.argumenta .nav-logout {
-  float: right;
+  position: absolute;
+  margin: 10px 5px;
+  right: 0px;
+  top: 0px;
   color: #999;
 }
 *.argumenta form.join {
