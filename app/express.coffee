@@ -20,7 +20,8 @@ configure = () ->
     app.set 'views', __dirname + '/../views'
     app.set 'view engine', 'jade'
     app.set 'view options', {layout: false}
-    app.use middleware.gzipped /^\/(images|stylesheets|javascripts|widgets)/
+    gzipDirs = /^\/(images|stylesheets|javascripts|widgets)/
+    app.use middleware.gzipped gzipDirs if config.gzip
     app.use express.favicon(__dirname + '/../public/images/favicon.ico')
     app.use express.static(__dirname + '/../public')
     app.use express.bodyParser()
