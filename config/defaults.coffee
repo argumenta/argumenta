@@ -14,3 +14,6 @@ module.exports = Defaults =
 
   # Postgres
   postgresUrl: 'postgres://argumenta:PASSWORD@localhost:5432/argumenta'
+
+  # Gzip
+  gzip:        true

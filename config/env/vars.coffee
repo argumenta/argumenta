@@ -4,5 +4,6 @@ EnvVars =
   LOG_LEVEL:    'logLevel'
   STORAGE_TYPE: 'storageType'
   POSTGRES_URL: 'postgresUrl'
+  GZIP:         'gzip'
 
 module.exports = EnvVars

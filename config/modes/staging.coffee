@@ -17,3 +17,6 @@ module.exports = Staging =
 
   # Postgres
   postgresUrl: 'postgres://argumenta_staging:PASSWORD@localhost:5432/argumenta_staging'
+
+  # Gzip
+  gzip:         true

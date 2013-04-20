@@ -17,3 +17,6 @@ module.exports = Testing =
 
   # Postgres Config
   postgresUrl:  'postgres://argumenta_testing:PASSWORD@localhost:5432/argumenta_testing'
+
+  # Gzip
+  gzip:         true

@@ -17,3 +17,6 @@ module.exports = Development =
 
   # Postgres
   postgresUrl:  'postgres://argumenta_development:PASSWORD@localhost:5432/argumenta_development'
+
+  # Gzip
+  gzip:         false
