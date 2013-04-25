@@ -28,7 +28,7 @@ NGINX_CONFIG=$(cat <<-END
 	}
 
 	http {
-	  include mime.types;
+	  include /etc/nginx/mime.types;
 
 	  upstream node_app {
 	    server 127.0.0.1:8080;
