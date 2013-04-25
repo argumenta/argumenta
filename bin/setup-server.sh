@@ -77,9 +77,14 @@ installApp() {
   echo "Installing app to '$INSTALL_DIR'."
   cp -a -T "$SOURCE_DIR" "$INSTALL_DIR"
   chown -R root:argumenta "$INSTALL_DIR"
-  chmod -R 0740 "$INSTALL_DIR"
+  chmod -R 0640 "$INSTALL_DIR"
   chmod -R 0750 "${INSTALL_DIR}/bin"
-  find "$INSTALL_DIR" -type d -print0 | xargs -0 chmod -R 0750
+  find "$INSTALL_DIR" -type d -print0 | xargs -0 chmod 0750
+
+  # Allow Nginx to serve static files.
+  chmod 0755 "$INSTALL_DIR"
+  find "$INSTALL_DIR"/public -type f -print0 | xargs -0 chmod 0644
+  find "$INSTALL_DIR"/public -type d -print0 | xargs -0 chmod 0755
 }
 
 #
