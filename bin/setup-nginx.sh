@@ -12,6 +12,9 @@ SOURCE_DIR=$(readlink -f `dirname "$SCRIPT_FILE"`/..)
 # SSL directory.
 SSL_DIR="/etc/argumenta/ssl"
 
+# MIME types file.
+MIME_FILE="/etc/argumenta/nginx.mime.types"
+
 # Nginx config defaults file.
 DEFAULT_FILE="/etc/argumenta/nginx.conf.defaults"
 
@@ -28,7 +31,7 @@ NGINX_CONFIG=$(cat <<-END
 	}
 
 	http {
-	  include /etc/nginx/mime.types;
+	  include /etc/argumenta/nginx.mime.types;
 
 	  upstream node_app {
 	    server 127.0.0.1:8080;
@@ -60,6 +63,59 @@ NGINX_CONFIG=$(cat <<-END
 END
 )
 
+MIME_TYPES='
+types {
+  text/html                             html htm shtml;
+  text/css                              css;
+  text/xml                              xml rss;
+  text/mathml                           mml;
+  text/plain                            txt;
+  image/gif                             gif;
+  image/jpeg                            jpeg jpg;
+  application/x-javascript              js;
+  application/atom+xml                  atom;
+
+  image/png                             png;
+  image/svg+xml                         svg;
+  image/tiff                            tif tiff;
+  image/x-icon                          ico;
+  image/x-ms-bmp                        bmp;
+
+  application/java-archive              jar war ear;
+  application/msword                    doc;
+  application/pdf                       pdf;
+  application/postscript                ps eps ai;
+  application/rtf                       rtf;
+  application/vnd.ms-excel              xls;
+  application/vnd.ms-powerpoint         ppt;
+  application/vnd.wap.xhtml+xml         xhtml;
+  application/x-rar-compressed          rar;
+  application/x-shockwave-flash         swf;
+  application/x-x509-ca-cert            der pem crt;
+  application/zip                       zip;
+
+  application/octet-stream              bin exe dll;
+  application/octet-stream              deb;
+  application/octet-stream              dmg;
+  application/octet-stream              eot;
+  application/octet-stream              iso img;
+  application/octet-stream              msi msp msm;
+
+  audio/midi                            mid midi kar;
+  audio/mpeg                            mp3;
+  audio/x-realaudio                     ra;
+
+  video/3gpp                            3gpp 3gp;
+  video/mpeg                            mpeg mpg;
+  video/quicktime                       mov;
+  video/x-flv                           flv;
+  video/x-mng                           mng;
+  video/x-ms-asf                        asx asf;
+  video/x-ms-wmv                        wmv;
+  video/x-msvideo                       avi;
+}
+'
+
 #
 # Creates Nginx config and defaults.
 #
@@ -70,10 +126,19 @@ createNginxConfig() {
 }
 
 #
+# Creates a MIME types file.
+#
+createMimeTypes() {
+  echo "Creating MIME types."
+  echo "$MIME_TYPES" > "$MIME_FILE"
+}
+
+#
 # Main script.
 #
 main() {
   createNginxConfig
+  createMimeTypes
 }
 
 # Let's do this!
