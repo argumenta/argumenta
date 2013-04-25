@@ -111,6 +111,10 @@ app.get  '/:name/:repo.:format?',                          routes.repos.show
 app.delete '/:name/:repo.:format?',                        routes.repos.delete
 
 # Http
-http.createServer(app).listen(3000)
+http.createServer(app).listen(config.port)
 
-console.log "Argumenta #{pkg.version} (#{config.appMode} mode) | http://localhost:3000"
+version = pkg.version
+mode    = config.appMode
+port    = config.port
+
+console.log "Argumenta #{version} (#{mode} mode) | http://localhost:#{port}"

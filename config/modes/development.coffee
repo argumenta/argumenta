@@ -3,6 +3,9 @@ module.exports = Development =
   # Mode
   appMode:      'development'
 
+  # Port
+  port:         3000
+
   # Security
   appSecret:    'SECRET'
 

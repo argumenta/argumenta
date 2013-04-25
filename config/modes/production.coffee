@@ -3,6 +3,9 @@ module.exports = Production =
   # Mode
   appMode:      'production'
 
+  # Port
+  port:         8080
+
   # Security
   appSecret:    'SECRET'
 

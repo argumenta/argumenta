@@ -3,6 +3,9 @@ module.exports = Staging =
   # Mode
   appMode:      'staging'
 
+  # Port
+  port:         8080
+
   # Security
   appSecret:    'SECRET'
 

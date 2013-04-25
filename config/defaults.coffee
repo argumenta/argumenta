@@ -1,5 +1,8 @@
 module.exports = Defaults =
 
+  # Port
+  port:        8080
+
   # Security
   appSecret:   'SECRET'
 
