@@ -111,6 +111,26 @@ createUpstartConfig() {
 }
 
 #
+# Creates SSL config directory.
+#
+createSSLConfig() {
+  if [ ! -d "$CONFIG_DIR"/ssl ]; then
+    echo "Creating SSL config directory '$CONFIG_DIR/ssl'."
+    mkdir -p "$CONFIG_DIR"/ssl
+    ln -s '/etc/ssl/certs/argumenta.crt' "$CONFIG_DIR"/ssl/argumenta.crt
+    ln -s '/etc/ssl/private/argumenta.key' "$CONFIG_DIR"/ssl/argumenta.key
+  fi
+}
+
+#
+# Creates Nginx configuration files.
+#
+createNginxConfig() {
+  echo "Creating Nginx config '/etc/argumenta/nginx.conf'."
+  "$INSTALL_DIR"/bin/setup-nginx.sh > /dev/null
+}
+
+#
 # Prints usage information.
 #
 usage() {
@@ -153,6 +173,8 @@ main() {
   genAppConfig
   createDeployConfig
   createUpstartConfig
+  createSSLConfig
+  createNginxConfig
   echo "Done!"
 }
 
