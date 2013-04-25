@@ -75,7 +75,7 @@ addUser() {
 #
 installApp() {
   echo "Installing app to '$INSTALL_DIR'."
-  cp -a -T "$SOURCE_DIR" "$INSTALL_DIR"
+  cp -a -L -T "$SOURCE_DIR" "$INSTALL_DIR"
   chown -R root:argumenta "$INSTALL_DIR"
   chmod -R 0640 "$INSTALL_DIR"
   chmod -R 0750 "${INSTALL_DIR}/bin"
