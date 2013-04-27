@@ -113,6 +113,13 @@ app.delete '/:name/:repo.:format?',                        routes.repos.delete
 # Http
 http.createServer(app).listen(config.port)
 
+# Exceptions
+process.on 'uncaughtException', (err) ->
+  date = new Date()
+  timestamp = '[' + date.toISOString().slice(0, -5) + ']'
+  console.error timestamp, "Uncaught exception: " + err
+  process.exit()
+
 version = pkg.version
 mode    = config.appMode
 port    = config.port
