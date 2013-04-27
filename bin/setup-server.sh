@@ -21,6 +21,9 @@ CONFIG_DIR='/etc/argumenta'
 # The upstart config file.
 UPSTART_CONFIG_FILE='/etc/init/argumenta.conf'
 
+# The Nginx upstart file.
+NGINX_UPSTART_FILE='/etc/init/argumenta-nginx.conf'
+
 #
 # Upstart config for the `argumenta` service.
 #
@@ -49,6 +52,33 @@ UPSTART_CONFIG=$(cat <<-"END"
 	    "$NODE" /usr/local/argumenta/app \
 	    1>> /var/log/argumenta.log \
 	    2>> /var/log/argumenta.err
+	end script
+
+END
+)
+
+#
+# Upstart config for `argumenta-nginx` reverse proxy.
+#
+NGINX_UPSTART=$(cat <<-"END"
+
+	description "Nginx (Argumenta)"
+	author "Argumenta.io"
+
+	start on starting argumenta
+	stop on stopping argumenta
+
+	respawn
+	respawn limit 10 5  # Default respawns per second.
+
+	script
+	  NGINX="/usr/sbin/nginx"
+	  CONFIG="/etc/argumenta/nginx.conf"
+
+	  echo $$ > /var/run/argumenta-nginx.pid
+	  exec "$NGINX" -c "$CONFIG" -g "daemon off;" \
+	    1>> /var/log/argumenta-nginx.log \
+	    2>> /var/log/argumenta-nginx.err
 	end script
 
 END
@@ -136,6 +166,15 @@ createNginxConfig() {
 }
 
 #
+# Creates an Nginx Upstart service.
+#
+createNginxUpstart() {
+  echo "Creating Nginx Upstart '$NGINX_UPSTART_FILE'"
+  echo "$NGINX_UPSTART" > "$NGINX_UPSTART_FILE"
+  sudo chmod 0644 "$NGINX_UPSTART_FILE"
+}
+
+#
 # Prints usage information.
 #
 usage() {
@@ -180,6 +219,7 @@ main() {
   createUpstartConfig
   createSSLConfig
   createNginxConfig
+  createNginxUpstart
   echo "Done!"
 }
 
