@@ -1,6 +1,14 @@
 
 # Changes
 
+## 0.0.4 / 2013-04-26
+
++ Add options: gzip, port.
++ Add Upstart service for Nginx.
++ Configure Nginx and SSL on setup.
++ Handle uncaught exceptions.
++ Update `argumenta-widgets` to 0.0.5.
+
 ## 0.0.3 / 2013-04-18
 
 + Add favicon.
