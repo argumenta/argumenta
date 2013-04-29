@@ -57,6 +57,7 @@ NGINX_CONFIG=$(cat <<-END
 	    location ~* ^/(images|javascripts|stylesheets|widgets)/ {
 	      root ${SOURCE_DIR}/public;
 	      add_header Cache-Control public;
+	      gzip_static on;
 	    }
 	  }
 	}
