@@ -101,6 +101,22 @@ addUser() {
 }
 
 #
+# Adds an `argumenta-backup` user for database backups.
+#
+addBackupUser() {
+  echo "Adding 'argumenta-backup' user account."
+  adduser \
+    --quiet \
+    --system \
+    --shell /bin/bash \
+    --gecos 'Argumenta backups' \
+    --group \
+    --disabled-password \
+    --home /home/argumenta-backup \
+    argumenta-backup
+}
+
+#
 # Installs the Argumenta app.
 #
 installApp() {
@@ -213,6 +229,7 @@ getOpts() {
 main() {
   getOpts "$@"
   addUser
+  addBackupUser
   installApp
   genAppConfig
   createDeployConfig
