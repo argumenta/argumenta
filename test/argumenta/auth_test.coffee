@@ -28,11 +28,11 @@ describe 'Auth', ->
 
     it 'should deny an incorrect password', (done) ->
       hash = '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
-      password = 'tester12'
+      password = 'wrong!'
       Auth.verifyPassword password, hash, (err, status) ->
         should.not.exist err
         should.exist status
-        status.should.equal true
+        status.should.equal false
         done()
 
   describe 'auth.verifyLogin()', ->
