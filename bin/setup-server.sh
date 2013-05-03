@@ -24,6 +24,9 @@ UPSTART_CONFIG_FILE='/etc/init/argumenta.conf'
 # The Nginx upstart file.
 NGINX_UPSTART_FILE='/etc/init/argumenta-nginx.conf'
 
+# The daily backup cron.d file.
+BACKUP_CRON_FILE='/etc/cron.d/argumenta-backup'
+
 #
 # Upstart config for the `argumenta` service.
 #
@@ -80,6 +83,30 @@ NGINX_UPSTART=$(cat <<-"END"
 	    1>> /var/log/argumenta-nginx.log \
 	    2>> /var/log/argumenta-nginx.err
 	end script
+
+END
+)
+
+#
+# Cron.d file for daily backups.
+#
+BACKUP_CRON=$(cat <<-"END"
+
+	# /etc/cron.d/argumenta-backup
+
+	# Cron.d format:
+	# m h d M D  user   command
+
+	SHELL=/bin/bash
+
+	# Creates rotated database backups.
+	ARGUMENTA_BACKUP=/usr/bin/argumenta-backup
+
+	# Log file.
+	BACKUP_LOG=/var/log/argumenta-backup.log
+
+	# Daily at 12:01 am, backup the production database.
+	01 00 * * *  root    $ARGUMENTA_BACKUP >> $BACKUP_LOG 2>&1
 
 END
 )
@@ -191,6 +218,15 @@ createNginxUpstart() {
 }
 
 #
+# Creates a daily backup cron.d file.
+#
+createBackupCron() {
+  echo "Creating Backup cron.d file: '$BACKUP_CRON_FILE'."
+  echo "$BACKUP_CRON" > "$BACKUP_CRON_FILE"
+  sudo chmod 0644 "$BACKUP_CRON_FILE"
+}
+
+#
 # Prints usage information.
 #
 usage() {
@@ -237,6 +273,7 @@ main() {
   createSSLConfig
   createNginxConfig
   createNginxUpstart
+  createBackupCron
   echo "Done!"
 }
 
