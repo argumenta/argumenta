@@ -88,8 +88,10 @@ $ sudo start argumenta
 
 See [Developer notes][Developers] for details on running, building, and testing Argumenta from source.  
 See [Postgres setup][Postgres-setup] for details on setting up Postgres databases.  
+See [Admin notes][Admin] for details on creating and restoring backups.  
 See [Web API][API] for details on using Argumenta's Web API.
 
+[Admin]: ./README.Admin.markdown
 [Developers]: ./README.Developers.markdown
 [Postgres-setup]: ./README.Postgres.markdown
 [API]: ./README.API.markdown
