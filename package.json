@@ -11,6 +11,7 @@
   "bin": {
     "argumenta": "./bin/argumenta.sh",
     "argumenta-backup": "./bin/backup.sh",
+    "argumenta-restore": "./bin/restore.sh",
     "argumenta-setup": "./bin/setup-server.sh",
     "argumenta-setup-postgres": "./bin/setup-postgres.sh"
   },
