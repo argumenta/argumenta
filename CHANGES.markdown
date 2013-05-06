@@ -1,6 +1,12 @@
 
 # Changes
 
+## 0.0.5 / 2013-05-05
+
++ Add command `argumenta-backup`.
++ Add command `argumenta-restore`.
++ Automatic backups daily, weekly, monthly.
+
 ## 0.0.4 / 2013-04-26
 
 + Add options: gzip, port.
