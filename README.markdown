@@ -46,9 +46,9 @@ See [Install][Install] for server configuration details, and [Developers][Develo
 [Blog.Argumenta.io]: http://blog.argumenta.io
 [@ArgumentaIO]: https://twitter.com/ArgumentaIO
 
-[API]: ./README.API.markdown
-[Install]: ./README.Install.markdown
-[Developers]: ./README.Developers.markdown
+[API]: ./doc/README.API.markdown
+[Install]: ./doc/README.Install.markdown
+[Developers]: ./doc/README.Developers.markdown
 
 [Widgets]: https://github.com/argumenta/argumenta-widgets
 
