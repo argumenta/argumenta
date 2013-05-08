@@ -1,7 +1,7 @@
 
 # Argumenta Admin
 
-These notes on server administration show how to create and restore database backups.
+These notes on server administration show how to backup, restore, and migrate the database.
 
 ## Backup
 
@@ -38,7 +38,37 @@ $ sudo -u postgres psql -c 'DROP DATABASE "argumenta";'
 ```
 
 You may now load a database backup file with `argumenta-restore`:
-```shell
+```bash
 # Restores the production database from a daily backup.
 $ sudo argumenta-restore 'argumenta' /home/argumenta-backup/backups/daily/argumenta_2013.05.03.sql.Fri
 ```
+
+## Migrate
+
+The `argumenta-migrate` command provides a way to update the database schema between releases.
+
+It's a light wrapper for the [db-migrate][Db-Migrate] executable.
+Here's the most useful options:
+
+```bash
+$ argumenta-migrate -h
+
+Usage: db-migrate [up|down|create] migrationName [options]
+
+Options:
+  --count, -c           Max number of migrations to run.
+  --dry-run             Prints the SQL but doesn't run it.
+  --verbose, -v         Verbose mode.
+  --version, -i         Print version info.
+```
+
+To migrate the production database up after installing a new release, run:
+
+```bash
+$ NODE_ENV=production argumenta-migrate up
+[INFO] Processed migration 20130507094551-initial
+[INFO] Done
+```
+The wrapper will load the database url for the application mode from your config files.
+
+[Db-Migrate]: https://github.com/nearinfinity/node-db-migrate
