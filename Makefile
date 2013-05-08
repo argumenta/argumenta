@@ -1,4 +1,4 @@
-COFFEE_PATHS := app config lib routes test
+COFFEE_PATHS := app config db lib routes test
 DOC_SOURCES := lib
 TEST_PATHS := test
 TESTS ?= $(shell find $(TEST_PATHS) -name '*.coffee' | sed 's/coffee$$/js/')
