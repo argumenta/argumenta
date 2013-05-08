@@ -27,6 +27,11 @@ export DATABASE_URL=$(
   "
 )
 
+# Export config dir for server installs.
+if [[ -d '/etc/argumenta' ]]; then
+  export CONFIG_DIR='/etc/argumenta'
+fi
+
 #
 # Gets command line options.
 #
