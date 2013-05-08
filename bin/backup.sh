@@ -3,25 +3,8 @@
 # argumenta-backup.sh
 # Creates a backup of the argumenta database.
 
-# Today's date.
-DATE=$(date +%Y.%m.%d)
-
-# The postgres database name.
-DB_NAME='argumenta'
-
-# The backups directory.
-BACKUP_DIR='/home/argumenta-backup/backups'
-
-# The backup name.
-BACKUP_NAME="${DB_NAME}_${DATE}.sql"
-
-# The backup file.
-BACKUP_FILE="${BACKUP_DIR}/${BACKUP_NAME}"
-
-# Backup rotation directories.
-DAILY_DIR="${BACKUP_DIR}/daily"
-WEEKLY_DIR="${BACKUP_DIR}/weekly"
-MONTHLY_DIR="${BACKUP_DIR}/monthly"
+# Exit on any command failure.
+set -e
 
 #
 # Prints usage information.
@@ -29,7 +12,9 @@ MONTHLY_DIR="${BACKUP_DIR}/monthly"
 usage() {
   cat <<-End
 
-  Usage: $0 [options]
+  Usage: $0 [options] [db]
+
+    db : The database to backup; default is 'argumenta'.
 
   Options:
     -d, --debug : Show additional debug info.
@@ -54,6 +39,33 @@ getOpts() {
     echo "Debug mode enabled."
     set -x
   fi
+
+  # Today's date.
+  DATE=$(date +%Y.%m.%d)
+
+  # The postgres database name.
+  DB_NAME='argumenta'
+
+  if [[ ${#@} -eq 1 ]]; then
+    DB_NAME="$1"; shift
+  fi
+
+  # The backup root directory for all databases.
+  BACKUP_ROOT="/home/argumenta-backup/backups"
+
+  # The backup directory for this database.
+  BACKUP_DIR="${BACKUP_ROOT}/${DB_NAME}"
+
+  # Backup rotation directories.
+  DAILY_DIR="${BACKUP_DIR}/daily"
+  WEEKLY_DIR="${BACKUP_DIR}/weekly"
+  MONTHLY_DIR="${BACKUP_DIR}/monthly"
+
+  # The backup name.
+  BACKUP_NAME="${DB_NAME}_${DATE}.sql"
+
+  # The backup file.
+  BACKUP_FILE="${BACKUP_DIR}/${BACKUP_NAME}"
 }
 
 #
@@ -63,7 +75,7 @@ createBackupDirs() {
   echo "Creating backup dir: '$BACKUP_DIR'."
   mkdir -p "$BACKUP_DIR"
   mkdir -p "$BACKUP_DIR/"{daily,monthly,weekly}
-  chown -R argumenta-backup:argumenta-backup "$BACKUP_DIR"
+  chown -R argumenta-backup:argumenta-backup "$BACKUP_ROOT"
 }
 
 #
