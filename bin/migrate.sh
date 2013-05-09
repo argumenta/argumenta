@@ -27,7 +27,12 @@ export DATABASE_URL=$(
   "
 )
 
-# Export config dir for server installs.
+# Prefer local migration dir, if present.
+if [[ -d './db/migrations' ]]; then
+  MIGRATIONS_DIR="./db/migrations"
+fi
+
+# Prefer system config dir, if present.
 if [[ -d '/etc/argumenta' ]]; then
   export CONFIG_DIR='/etc/argumenta'
 fi
@@ -54,7 +59,7 @@ getOpts() {
 # Main script wraps db-migrate.
 #
 main() {
-  db-migrate -m "$MIGRATIONS_DIR" "$@"
+  db-migrate "$@" -m "$MIGRATIONS_DIR"
 }
 
 # Let's do this!
