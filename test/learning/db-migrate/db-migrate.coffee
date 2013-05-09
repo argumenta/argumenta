@@ -1,13 +1,30 @@
 
 should        = require 'should'
 child_process = require 'child_process'
+path          = require 'path'
 config        = require '../../../config'
 exec          = child_process.exec
 
+appDir = path.join __dirname, '../../../'
+dbDir  = path.join appDir, 'db'
 process.env.DATABASE_URL = config.postgresUrl
-process.env.PATH = '../../../node_modules/.bin:' + process.env.PATH
+process.env.PATH = path.join(appDir, 'node_modules/.bin:') + process.env.PATH
 
 describe 'db-migrate', ->
+
+  before (done) ->
+    process.chdir dbDir
+    exec 'db-migrate down -c 9001', (err, stdout, stderr) ->
+      should.not.exist err
+      stdout.should.match /\[INFO\] Done/
+      done()
+
+  after (done) ->
+    process.chdir dbDir
+    exec 'db-migrate up', (err, stdout, stderr) ->
+      should.not.exist err
+      stdout.should.match /\[INFO\] Done/
+      done()
 
   reset = (done) ->
     process.chdir __dirname
