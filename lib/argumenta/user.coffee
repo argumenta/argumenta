@@ -18,6 +18,8 @@ class User
   #       username:      'demosthenes'
   #       email:         'demos@athens.net'
   #       passwordHash:  '$2a$12$6nZyzVgeCmBK9JkZb9rNG.9s/d/i/g2Tbyf4vk318XQLQKi4GXXZ2'
+  #       joinDate:      new Date()
+  #       joinIp:        '127.0.0.1'
   #
   # @api public
   # @see Users#create()
@@ -25,12 +27,14 @@ class User
   # @param [String] params.username The user's login name.
   # @param [String] params.email    The user's email adress.
   # @param [String] params.passwordHash The user's password hash.
-  constructor: (@username, @email, @passwordHash) ->
+  constructor: (@username, @email, @passwordHash, @joinDate, @joinIp) ->
     if arguments.length == 1 and arguments[0].username
       params = arguments[0]
       @username      = params.username
       @email         = params.email
       @passwordHash  = params.passwordHash or params.password_hash
+      @joinDate      = params.joinDate or params.join_date
+      @joinIp        = params.joinIp or params.join_ip
 
   ### Instance Methods ###
 

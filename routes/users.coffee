@@ -11,14 +11,20 @@ exports.index = (req, res) ->
 
 # Create a user via POST
 exports.create = (req, res) ->
-  {username, password, email} = req.body
+  options = {
+    username:  req.body.username
+    password:  req.body.password
+    email:     req.body.email
+    join_date: new Date()
+    join_ip:   req.ip
+  }
 
-  argumenta.users.create username, password, email, (err, user) ->
+  argumenta.users.create options, (err, user) ->
     if err
       return res.failed '/join', err.message,
         status: Errors.statusFor err
     else
-      req.session.username = username
+      req.session.username = user.username
       return res.created "/users/#{user.username}",
         "Welcome aboard, #{user.username}!",
         user: user

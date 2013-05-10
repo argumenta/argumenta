@@ -27,21 +27,23 @@ class Users extends Base
 
   ### Instance Methods ###
 
-  # Creates a user account.
+  # Creates a user account for the given `options`.
   #
-  # Example:
-  #
-  #     users.create username, password, email, (err, user) ->
+  #     users.create options, (err, user) ->
   #       console.log "created account for #{user.username}!" unless err
   #
   # @api public
-  # @param [String] username The user's username.
-  # @param [String] password The user's password.
-  # @param [String] email The user's email.
-  # @param [Function] callback(err, user) Called on error or success.
-  # @param [Error] err Any error.
+  # @param [Object]     options
+  # @param [String]     options.username
+  # @param [String]     options.password
+  # @param [String]     options.email
+  # @param [Date]       options.join_date
+  # @param [String]     options.join_ip
+  # @param [Function]   callback(err, user) Called on error or success.
+  # @param [Error]      err Any error.
   # @param [PublicUser] publicUser A public representation of the new user.
-  create: (username, password, email, callback) ->
+  create: (options, callback) ->
+    {username, password} = options
 
     try User.validatePassword password
     catch err
@@ -50,7 +52,13 @@ class Users extends Base
     Auth.hashPassword password, (err, hash) =>
       return callback err, null if err
 
-      user = new User { username, passwordHash: hash, email }
+      user = new User {
+        username:      username
+        password_hash: hash
+        email:         options.email
+        join_date:     options.join_date
+        join_ip:       options.join_ip
+      }
 
       @storage.addUser user, (err) =>
         return callback err, null if err

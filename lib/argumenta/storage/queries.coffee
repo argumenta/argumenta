@@ -246,10 +246,12 @@ class Queries
   @insertUser: (user) ->
     return userQuery =
       text: """
-        INSERT INTO Users (username, email, password_hash)
-        VALUES ($1, $2, $3);
+        INSERT INTO Users (username, email, password_hash,
+                           join_date, join_ip)
+        VALUES ($1, $2, $3, $4, $5);
         """
-      values: [ user.username, user.email, user.passwordHash ]
+      values: [ user.username, user.email, user.passwordHash,
+                user.joinDate, user.joinIp ]
 
   # Insert a given Object.
   @insertObject: (object) ->
