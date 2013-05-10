@@ -4,7 +4,7 @@ CREATE TABLE Users (
   username          VARCHAR(20)   PRIMARY KEY,
   email             VARCHAR(100)  NOT NULL,
   password_hash     CHAR(60)      NOT NULL,
-  join_date         DATE          NOT NULL,
+  join_date         TIMESTAMP     NOT NULL,
   join_ip           INET          NOT NULL
 );
 
