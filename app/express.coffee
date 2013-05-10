@@ -118,7 +118,7 @@ process.on 'uncaughtException', (err) ->
   date = new Date()
   timestamp = '[' + date.toISOString().slice(0, -5) + ']'
   console.error timestamp, "Uncaught exception: " + err
-  process.exit()
+  process.exit() unless config.appMode is 'testing'
 
 version = pkg.version
 mode    = config.appMode
