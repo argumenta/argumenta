@@ -25,10 +25,12 @@ class Fixtures
 
   @validUserData: () ->
     return {
-      username: @validUsername()
-      email: @validEmail()
-      password: @validPassword()
+      username:      @validUsername()
+      email:         @validEmail()
+      password:      @validPassword()
       password_hash: @validPasswordHash()
+      join_date:     @validJoinDate()
+      join_ip:       @validJoinIp()
     }
 
   @invalidUserData: () ->
@@ -37,28 +39,33 @@ class Fixtures
       email: ''
       password: ''
       password_hash: ''
+      join_date: ''
+      join_ip: ''
     }
 
   @uniqueUserData: () ->
     user = @uniqueUser()
     return {
-      username: user.username
-      email: user.email
-      password: @validPassword()
+      username:      user.username
+      email:         user.email
+      password:      @validPassword()
       password_hash: @validPasswordHash()
+      join_date:     @validJoinDate()
+      join_ip:       @validJoinIp()
     }
 
   #### Users ####
 
   @validUser: () ->
-    return new User @validUsername(), @validEmail(), @validPasswordHash()
+    return new User @validUserData()
 
   uniqueUserCount = 0
 
   @uniqueUser: () ->
-    return new User( "user#{++uniqueUserCount}",
-                     "user#{uniqueUserCount}@xyz.com",
-                     @validPasswordHash() )
+    options = @validUserData()
+    options.username = "user#{++uniqueUserCount}"
+    options.email = "user#{uniqueUserCount}@xyz.com"
+    return new User( options )
 
   @validUsername: () ->
     return 'tester'
@@ -71,6 +78,12 @@ class Fixtures
 
   @validPasswordHash: () ->
     return '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
+
+  @validJoinDate: () ->
+    return new Date '1970-01-01T00:00:00.000Z'
+
+  @validJoinIp: () ->
+    return '127.0.0.1'
 
   @invalidUser: () ->
     return new User '', '', ''

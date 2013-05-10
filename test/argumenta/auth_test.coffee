@@ -1,12 +1,13 @@
 Argumenta = require '../../lib/argumenta'
 Auth      = require '../../lib/argumenta/auth'
 User      = require '../../lib/argumenta/user'
+fixtures  = require '../../test/fixtures'
 should = require 'should'
 
 describe 'Auth', ->
 
   describe 'Auth.hashPassword()', ->
-    
+
     it 'should hash a password successfully', (done) ->
       password = 'secret'
       Auth.hashPassword password, (err, hash) ->
@@ -40,10 +41,10 @@ describe 'Auth', ->
     argumenta = new Argumenta storageType: 'local'
 
     before (done) ->
-      username = 'tester'
-      password = 'tester12'
-      email = 'tester@xyz.com'
-      argumenta.users.create username, password, email, (err, user) ->
+      data = fixtures.validUserData()
+      data.username = 'tester'
+      data.password = 'tester12'
+      argumenta.users.create data, (err, user) ->
         should.not.exist err
         done()
 

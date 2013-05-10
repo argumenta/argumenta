@@ -3,6 +3,7 @@ Storage     = require '../../lib/argumenta/storage'
 User        = require '../../lib/argumenta/user'
 PublicUser  = require '../../lib/argumenta/public_user'
 Users       = require '../../lib/argumenta/users'
+fixtures    = require '../../test/fixtures'
 bcrypt      = require 'bcrypt'
 should      = require 'should'
 
@@ -16,14 +17,12 @@ describe 'Users', ->
       users.argumenta.should.be.an.instanceOf Argumenta
       users.storage.should.be.an.instanceOf Storage
 
-  describe 'users.create( username, password, email, callback )', ->
+  describe 'users.create( options, callback )', ->
     it 'should create a new user account', (done) ->
       argumenta = new Argumenta(storageType: 'local')
       users = new Users( argumenta, argumenta.storage )
-      username = 'tester'
-      password = 'tester12'
-      email = 'tester@xyz.com'
-      users.create username, password, email, (err, publicUser) ->
+      {username} = data = fixtures.validUserData()
+      users.create data, (err, publicUser) ->
         should.not.exist err
         should.ok publicUser instanceof PublicUser
         should.ok publicUser.validate()

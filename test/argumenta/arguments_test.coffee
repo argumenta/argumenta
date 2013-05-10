@@ -19,7 +19,7 @@ describe 'Arguments', ->
       {username} = data = fixtures.validUserData()
       argument = fixtures.validArgument()
       a = new Argumenta(storageType: 'local')
-      a.users.create username, data.password, data.email, (er1, user) ->
+      a.users.create data, (er1, user) ->
         a.arguments.commit username, argument, (er2, commit) ->
           a.storage.getCommit commit.sha1(), (er3, retrievedCommit) ->
             a.storage.getArgument argument.sha1(), (er4, retrievedArgument) ->
