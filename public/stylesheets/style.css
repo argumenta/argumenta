@@ -298,7 +298,7 @@ body.argumenta .wrapper {
 *.argumenta form.edit .premise .buttons,
 *.argumenta form.edit .title .buttons,
 *.argumenta form.edit .conclusion .buttons {
-  margin: 0px -7px;
+  margin: 0px 5px;
   display: inline-block;
 }
 *.argumenta form.edit .premise .addPremise,

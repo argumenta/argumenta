@@ -25,6 +25,6 @@
         textarea(name="conclusion", value=argument.conclusion.text, placeholder=placeholder.conclusion.text)
           | #{argument.conclusion.text}
     h6.digest
-      b sha1 
+      b SHA1 
       code.sha1(title=argument.objectRecord())= argument.sha1()
     button(type="submit") Create!
