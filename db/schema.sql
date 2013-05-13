@@ -8,6 +8,12 @@ CREATE TABLE Users (
   join_ip           INET          NOT NULL
 );
 
+CREATE VIEW PublicUsers AS
+  SELECT username,
+         join_date,
+         MD5(LOWER(email)) AS gravatar_id
+  FROM Users;
+
 CREATE TABLE Objects (
   id                SERIAL        UNIQUE,
   sha1              CHAR(40)      PRIMARY KEY,
