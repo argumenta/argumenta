@@ -54,6 +54,13 @@ class Fixtures
       join_ip:       @validJoinIp()
     }
 
+  @validPublicUserData: () ->
+    return {
+      username:      @validUsername()
+      join_date:     @validJoinDate()
+      gravatar_id:   @validGravatarId()
+    }
+
   #### Users ####
 
   @validUser: () ->
@@ -90,13 +97,18 @@ class Fixtures
 
   #### Public Users ####
 
+  @validGravatarId: () ->
+    return 'c3867313f531ffaa672598c9adc8c1d9'
+
   @validPublicUser: () ->
-    return new PublicUser @validUsername()
+    return new PublicUser @validPublicUserData()
 
   uniquePublicUserCount = 0
 
   @uniquePublicUser: () ->
-    return new PublicUser "publicUser#{++uniquePublicUserCount}"
+    data = @validPublicUserData()
+    data.username = "publicUser#{++uniquePublicUserCount}"
+    return new PublicUser data
 
   #### Repos ####
 

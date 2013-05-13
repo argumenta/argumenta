@@ -4,27 +4,28 @@ should = require 'should'
 
 describe 'PublicUser', ->
 
-  describe 'new PublicUser( username )', ->
+  describe 'new PublicUser( username, joinDate, gravatarId )', ->
     it 'should create a new public user instance', ->
-      username = fixtures.validUsername()
-      user = new PublicUser username
+      data = fixtures.validPublicUserData()
+      user = new PublicUser data.username, data.join_date, data.gravatar_id
       user.should.be.an.instanceOf PublicUser
-      user.username.should.equal username
+      user.username.should.equal data.username
+      user.joinDate.should.equal data.join_date
+      user.gravatarId.should.equal data.gravatar_id
       user.validate().should.equal true
 
   describe 'new PublicUser( params )', ->
     it 'should create a new public user instance', ->
-      username = fixtures.validUsername()
-      params = username: username
-      user1 = new PublicUser params
-      user2 = new PublicUser username
+      data = fixtures.validPublicUserData()
+      user1 = new PublicUser data
+      user2 = new PublicUser data.username, data.join_date, data.gravatar_id
       should.ok user1.equals( user2 )
 
     it 'should not contain private fields', ->
-      username = fixtures.validUsername()
-      email = fixtures.validEmail()
-      hash = fixtures.validPasswordHash()
-      user = new PublicUser username: username, email: email, passwordHash: hash
+      data = fixtures.validPublicUserData()
+      data.email = fixtures.validEmail()
+      data.passwordHash = fixtures.validPasswordHash()
+      user = new PublicUser data
       should.not.exist user.email
       should.not.exist user.passwordHash
 
@@ -33,7 +34,9 @@ describe 'PublicUser', ->
       user = fixtures.validPublicUser()
       data = user.data()
       data.should.eql {
-        username: user.username
+        username:     user.username
+        join_date:    user.joinDate.toISOString()
+        gravatar_id:  user.gravatarId
       }
 
   describe 'equals( user )', ->

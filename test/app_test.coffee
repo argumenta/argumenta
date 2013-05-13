@@ -231,8 +231,11 @@ describeAppTests = (type, app) ->
             res.type.should.equal 'application/json'
             res.text.should.match /tester/
             res.body.should.be.an.instanceof Object
-            res.body.user.should.eql { username: 'tester' }
-            should.not.exist res.body.error
+            json = res.body
+            json.user.username.should.equal 'tester'
+            json.user.join_date.should.match /^\d{4}-\d{2}-\d{2}.\d{2}:\d{2}:\d{2}.\d{3}Z$/
+            json.user.gravatar_id.should.match /^[0-9,a-f]{32}$/
+            should.not.exist json.error
             done()
 
         it 'should show an error when user not found', (done) ->
@@ -620,6 +623,8 @@ describeAppTests = (type, app) ->
               res.type.should.equal 'application/json'
               json = res.body
               json.user.username.should.equal user.username
+              json.user.join_date.should.match /^\d{4}-\d{2}-\d{2}.\d{2}:\d{2}:\d{2}.\d{3}Z$/
+              json.user.gravatar_id.should.match /^[0-9,a-f]{32}$/
               json.repos[0].username.should.equal user.username
               json.repos[0].target.should.eql argument
               done()
