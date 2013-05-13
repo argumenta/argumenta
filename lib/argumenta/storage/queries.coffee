@@ -64,7 +64,8 @@ class Queries
   @selectUser: (username) ->
     return selectUserQuery =
       text: """
-        SELECT username FROM Users
+        SELECT username, join_date, gravatar_id
+        FROM PublicUsers
         WHERE username = $1;
         """
       values: [username]
@@ -75,9 +76,9 @@ class Queries
     offset = opts.offset ? 0
     return listUsersQuery =
       text: """
-        SELECT username
-        FROM Users
-        ORDER BY user_id DESC
+        SELECT username, join_date, gravatar_id
+        FROM PublicUsers
+        ORDER BY join_date DESC
         LIMIT $1 OFFSET $2;
         """
       values: [limit, offset]
@@ -120,9 +121,10 @@ class Queries
   @selectRepo: (username, reponame) ->
     return selectRepoQuery =
       text: """
-        SELECT username, reponame, commit_sha1, c.*
+        SELECT username, reponame, commit_sha1, p.*, c.*
         FROM Repos r
         JOIN Commits c USING (commit_sha1)
+        JOIN PublicUsers p USING (username)
         WHERE (username, reponame) = ($1, $2)
         """
       values: [ username, reponame ]
@@ -132,9 +134,10 @@ class Queries
     pairPlaceholders = pairPlaceholdersFor( keypairs )
     return selectReposQuery =
       text: """
-        SELECT username, reponame, commit_sha1, c.*
+        SELECT username, reponame, commit_sha1, p.*, c.*
         FROM Repos r
         JOIN Commits c USING (commit_sha1)
+        JOIN PublicUsers p USING (username)
         WHERE (username, reponame) IN (VALUES #{ pairPlaceholders } );
         """
       values: _.flatten keypairs

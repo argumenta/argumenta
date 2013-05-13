@@ -13,6 +13,16 @@ class ObjectUtils
       .update( string, 'utf8' )
       .digest('hex')
 
+  # Computes the MD5 hash of a UTF-8 string.
+  #
+  # @api private
+  # @param [String] string The string to hash.
+  # @return [String] The MD5 hex value.
+  @MD5: (string) ->
+    return crypto.createHash('md5')
+      .update( string, 'utf8' )
+      .digest('hex')
+
   # Determines if a value is a valid SHA1 string.
   #
   # @param [Object] value The value to test.

@@ -1,5 +1,6 @@
 Base        = require '../../argumenta/base'
 Proposition = require '../../argumenta/objects/proposition'
+ObjectUtils = require '../../argumenta/objects/object_utils'
 PublicUser  = require '../../argumenta/public_user'
 Repo        = require '../../argumenta/repo'
 
@@ -49,8 +50,11 @@ class LocalStore extends Base
     unless u
       return cb new @Error("No user for username: " + username), null
 
-    publicUser = new PublicUser
-      username: u.username
+    publicUser = new PublicUser(
+      username:     u.username
+      join_date:    u.joinDate
+      gravatar_id:  ObjectUtils.MD5(u.email.toLowerCase())
+    )
 
     return cb null, publicUser
 
@@ -104,7 +108,12 @@ class LocalStore extends Base
     for key in keys
       [username, reponame] = key
 
-      user = new PublicUser @users[username]
+      u = @users[username]
+      user = new PublicUser(
+        username:     u.username
+        join_date:    u.joinDate
+        gravatar_id:  ObjectUtils.MD5(u.email.toLowerCase())
+      )
       commit = @commits.bySha1[ @repos[username]?[reponame] ]
       target = @arguments.bySha1[ commit?.targetSha1 ]
       repo = new Repo( user, reponame, commit, target )

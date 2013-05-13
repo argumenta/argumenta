@@ -125,7 +125,7 @@ class PostgresStore extends Base
       return callback err if err
 
       users = []
-      users.push new PublicUser row.username for row in res.rows
+      users.push new PublicUser( row ) for row in res.rows
       return callback null, users
 
   # Gets the *public* properties of a user by name.
@@ -137,7 +137,7 @@ class PostgresStore extends Base
         return callback new @Errors.NotFound "No user for username: '#{username}'"
 
       row = res.rows[0]
-      publicUser = new PublicUser row.username
+      publicUser = new PublicUser( row )
       return callback null, publicUser
 
   # Gets a list of repos for the given user.
@@ -222,7 +222,7 @@ class PostgresStore extends Base
         repoData = {
           username: row.username
           reponame: row.reponame
-          user:     new PublicUser( row.username )
+          user:     new PublicUser( row )
           commit:   new Commit( row )
           target:   null
         }

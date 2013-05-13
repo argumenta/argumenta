@@ -1,3 +1,4 @@
+_    = require 'underscore'
 User = require '../argumenta/user'
 
 #
@@ -20,11 +21,18 @@ class PublicUser extends User
   #
   # @api public
   # @see User
-  # @param [String] username The user's login name.
-  constructor: (@username) ->
+  # @param [String]       username
+  # @param [String|Date]  joinDate
+  # @param [String]       gravatarId
+  constructor: (@username, @joinDate, @gravatarId) ->
     if arguments.length is 1 and arguments[0]?.username?
-      params    = arguments[0]
-      @username = params.username
+      params      = arguments[0]
+      @username   = params.username
+      @joinDate   = params.joinDate ? params.join_date
+      @gravatarId = params.gravatarId ? params.gravatar_id
+
+    if _.isString @joinDate
+      @joinDate = new Date( @joinDate )
 
   ### Instance Methods ###
 
@@ -34,7 +42,9 @@ class PublicUser extends User
   # @return [Object] The user data.
   data: () ->
     return {
-      username: @username
+      username:     @username
+      join_date:    @joinDate.toISOString()
+      gravatar_id:  @gravatarId
     }
 
   # Checks for equality with another user instance.
