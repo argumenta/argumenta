@@ -1,6 +1,14 @@
 
 # Changes
 
+## 0.0.6 / 2013-05-15
+
++ Add command `argumenta-migrate`.
++ Add initial migration.
++ Add migration for join date and ip.
++ Add migration for public users view and gravatar id.
++ Allow database argument for `argumenta-backup`.
+
 ## 0.0.5 / 2013-05-05
 
 + Add command `argumenta-backup`.
