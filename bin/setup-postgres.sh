@@ -9,6 +9,9 @@ SCRIPT_FILE=$(readlink -f "$0")
 # This script's source directory.
 SOURCE_DIR=$(readlink -f `dirname "$SCRIPT_FILE"`/..)
 
+# The migration script.
+MIGRATE="${SOURCE_DIR}/bin/migrate.sh"
+
 # Database Name
 DB=${DB:="argumenta"}
 
@@ -17,6 +20,13 @@ DB_USER=${DB_USER:="argumenta"}
 
 # Database User's Password
 DB_USER_PASSWORD=${DB_USER_PASSWORD:=""}
+
+# The app mode for selected database.
+if [[ $DB == 'argumenta' ]]; then
+  APP_MODE='production'
+else
+  APP_MODE=${DB#argumenta_}
+fi
 
 # Test only mode
 TEST_ONLY=0
@@ -87,9 +97,8 @@ main() {
   export PGOPTIONS='--client-min-messages=warning' \
          PGPASSWORD="$DB_USER_PASSWORD"
 
-  # Init schema
-  psql -U $DB_USER -h localhost \
-       -f "${SOURCE_DIR}/db/schema.sql" $DB
+  # Run all migrations
+  NODE_ENV="$APP_MODE" "$MIGRATE" up
 
   # Check status and exit
   psql -U $DB_USER -h localhost \
