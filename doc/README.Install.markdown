@@ -40,15 +40,20 @@ It also provides `argumenta-setup`, which sets up a server install of Argumenta.
 $ sudo argumenta-setup
 ```
 
-This installs the app in `/usr/local/argumenta`, configuration files in `/etc/argumenta`, and creates an `argumenta` Upstart service and user account.
+This installs the app in `/usr/local/argumenta`, configuration files in `/etc/argumenta`, and creates an `argumenta` Upstart service and user account. It also creates an `argumenta-backup` user, and cron job in `/etc/cron.d` for [nightly backups][Admin].
 
 
-### 4. Argumenta Database and Roles
+### 4. Argumenta Config
+
+Edit the configuration file for each mode in `/etc/argumenta`. In particular, uncomment the `postgresUrl` setting and change its `PASSWORD` placeholder to a password of your choice for each mode. The other settings can be safely left commented out, and Argumenta will use each mode's defaults.
+
+
+### 5. Argumenta Database and Roles
 
 #### Quick Setup
 
 Argumenta provides `argumenta-setup-postgres` for database setup.  
-Run these commands with a password of your choice to configure each mode:
+Run these commands with your chosen password to configure each mode:
 
 ```bash
 $ # Note the space before each command.
@@ -62,11 +67,6 @@ $  sudo argumenta-setup-postgres --user 'argumenta'             --pass '<PASSWOR
 #### Setup Details
 
 See [postgres setup][Postgres-setup] for details on automatic and manual setup.
-
-
-### 5. Argumenta Config
-
-Edit the configuration file for each mode in `/etc/argumenta`. In particular, uncomment the `postgresUrl` setting and change its `PASSWORD` placeholder to match the database password for each mode. The other settings can be safely left commented out, and Argumenta will use each mode's defaults.
 
 
 ### 6. Run the App!

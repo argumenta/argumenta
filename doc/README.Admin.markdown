@@ -20,9 +20,9 @@ removed to make room for the new one.
 You can also generate a backup manually with `argumenta-backup`:
 ```bash
 $ sudo argumenta-backup
-Creating backup dir: '/home/argumenta-backup/backups'.
-Creating backup: '/home/argumenta-backup/backups/argumenta_2013.05.03.sql'.
-Creating daily backup: '/home/argumenta-backup/backups/daily/argumenta_2013.05.03.sql.Fri'.
+Creating backup dir: '/home/argumenta-backup/backups/argumenta'.
+Creating backup: '/home/argumenta-backup/backups/argumenta/argumenta_2013.05.16.sql'.
+Creating daily backup: '/home/argumenta-backup/backups/argumenta/daily/argumenta_2013.05.16.sql.Thu'.
 ```
 
 ## Restore
