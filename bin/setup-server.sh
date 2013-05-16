@@ -177,7 +177,7 @@ createDeployConfig() {
   chown -R root:argumenta "$CONFIG_DIR"
   chmod -R 0740 "$CONFIG_DIR"
   find "$CONFIG_DIR" -type d -print0 | xargs -0 chmod -R 0750
-  rm "${CONFIG_DIR}/"{production,staging,testing,development}".js"
+  rm -f "${CONFIG_DIR}/"{production,staging,testing,development}".js"
 }
 
 #
