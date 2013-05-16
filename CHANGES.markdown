@@ -1,6 +1,12 @@
 
 # Changes
 
+## 0.0.7 / 2013-05-16
+
++ Use migrations for Postgres setup.
++ Remove compiled JS from system config.
++ Update install docs.
+
 ## 0.0.6 / 2013-05-15
 
 + Add command `argumenta-migrate`.
