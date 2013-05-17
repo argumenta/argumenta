@@ -1,3 +1,4 @@
+COFFEE := ./node_modules/.bin/coffee
 COFFEE_PATHS := app config db lib routes test
 DOC_SOURCES := lib
 TEST_PATHS := test
@@ -38,7 +39,12 @@ gzip:
 	GZIP='gzip -9 -c "$$1" > "$${1}.gz"'; \
 	find -L . -type f -not -name '*.gz' -exec bash -c "$$GZIP" GZIP '{}' \;
 
-docs: docco sweeten-docco
+docs: api_doc source_doc
+
+api_doc:
+	$(COFFEE) ./bin/build-api-doc.coffee
+
+source_doc: docco sweeten-docco
 
 docco:
 	find $(DOC_SOURCES) -name '*.coffee' | xargs docco
@@ -78,4 +84,4 @@ clean_gzip:
 clean_docs:
 	-rm -rf docs
 
-.PHONY: all build production development server client coffee coffee_forever stylus gzip test test_forever clean clean_build clean_coffee clean_gzip clean_docs
+.PHONY: all build production development server client coffee coffee_forever stylus gzip api_doc source_doc test test_forever clean clean_build clean_coffee clean_gzip clean_docs
