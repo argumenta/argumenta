@@ -1,4 +1,42 @@
 
+<!--
+
+    # These requests run first when building API docs.
+
+    # POST /users.json
+    curl -i -X POST http://localhost:3000/users.json \
+      -d 'username=tester' \
+      -d 'password=tester12' \
+      -d 'email=tester@xyz.com' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    # POST /arguments.json
+    curl -i -X POST http://localhost:3000/arguments.json \
+      -d 'title=My Argument ^_^' \
+      -d 'premises=First premise.' \
+      -d 'premises=Second premise.' \
+      -d 'conclusion=The conclusion! :D' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    # POST /tags.json
+    curl -i -X POST http://localhost:3000/tags.json \
+      -d 'tag_type=citation' \
+      -d 'target_type=proposition' \
+      -d 'target_sha1=30be8f3b68d20f5c3898265e33c583ddee374a6a' \
+      -d 'citation_text=The citation text, with url: http://wikipedia.org/wiki/Citation' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    # POST /tags.json
+    curl -i -X POST http://localhost:3000/tags.json \
+      -d 'tag_type=support' \
+      -d 'target_type=proposition' \
+      -d 'target_sha1=30be8f3b68d20f5c3898265e33c583ddee374a6a' \
+      -d 'source_type=proposition' \
+      -d 'source_sha1=dfe2394f3cdad27e56023cd0574be36b9a5f9e6e' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+-->
+
 # Argumenta API
 
 ## [Overview](#overview) / [Features](#features) / [Routes](#routes) / [Usage](#usage) / [Changes](#changes)
@@ -155,7 +193,7 @@ To make a JSONP request, use the extension `.jsonp`.
 
 Here, we access the user `tester`, replacing the regular `.json` extension with `.jsonp`:
 
-    $ curl -i 'http://localhost:3000/users/tester.jsonp'
+    curl -i 'http://localhost:3000/users/tester.jsonp'
 
 Note the response is padded with a call to our default callback, `jsonpCallback()`.
 
@@ -165,7 +203,7 @@ You can change the callback name by adding a `callback` parameter to the url.
 
 Here we set the callback to `myCb` by adding `?callback=myCb`:
 
-    $ curl -i 'http://localhost:3000/users/tester.jsonp?callback=myCb'
+    curl -i 'http://localhost:3000/users/tester.jsonp?callback=myCb'
 
 <a name="users"></a>
 ## Users [&para;](#users)
@@ -325,6 +363,24 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 
     curl -i http://localhost:3000/tags/412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae.json
 
+<!--
+
+    # These requests run after public routes when building API docs.
+
+    # DELETE (Setup)
+    curl -i -X POST http://localhost:3000/arguments.json \
+      -d 'title=Arg to Delete' \
+      -d 'premises=First premise.' \
+      -d 'premises=Second premise.' \
+      -d 'conclusion=The conclusion! :D' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    # DELETE /:name/:repo.json
+    curl -i -X DELETE http://localhost:3000/tester/arg-to-delete.json \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+-->
+
 # Session Routes (Authenticated)
 
 <a name="join"></a>
@@ -350,10 +406,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 #### Example
 
     curl -i -X POST http://localhost:3000/users.json \
-        -d 'username=tester' \
-        -d 'password=tester12' \
-        -d 'email=tester@xyz.com' \
-        -b ~/tmp/cookies -c ~/tmp/cookies
+      -d 'username=tester' \
+      -d 'password=tester12' \
+      -d 'email=tester@xyz.com' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
 
 <a name="login"></a>
 ## Login [&para;](#login)
