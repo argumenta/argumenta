@@ -18,9 +18,11 @@ main = ->
 
   createDoc templateFile, outFile, (err) ->
     if err
-    then console.log "Error creating API docs: ", err
-    else console.log "Done!"
-    process.exit()
+      console.log "Error creating API docs: ", err
+      process.exit 1
+    else
+      console.log "Done!"
+      process.exit 0
 
 # Creates the API document, given template and output filenames.
 createDoc = (templateFile, outFile, callback) ->
