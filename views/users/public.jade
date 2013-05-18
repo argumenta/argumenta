@@ -8,8 +8,22 @@ block content
         a(href="/#{user.username}")= user.username
     .content-pane
       h2.title-pane
-        b Argument Repos
-      for repo in repos
-        - var argument = repo.target
-        - var commit = repo.commit
-        include ../partials/argument
+        b Arguments &amp; Activity
+      if repos.length
+        for repo in repos
+          - var argument = repo.target
+          - var commit = repo.commit
+          include ../partials/argument
+      else
+        if username == user.username
+          .content-panel
+            p
+              a(href="/arguments/new") Create your first argument!
+        .content-panel
+          p
+            a(href="/#{user.username}") #{user.username}
+            |  hasn't published anything yet.
+      .content-panel
+        p
+          a(href="/#{user.username}") #{user.username}
+          |  joined on #{user.joinDate.toISOString()}.
