@@ -25,7 +25,7 @@ exports.create = (req, res) ->
         status: Errors.statusFor err
     else
       req.session.username = user.username
-      return res.created "/users/#{user.username}",
+      return res.created "/#{user.username}",
         "Welcome aboard, #{user.username}!",
         user: user
 
