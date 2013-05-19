@@ -1,13 +1,15 @@
 extends ../layout
 block content
   .column
-    .title-pane
+    .title-pane.center
       h1
-        b User
-        |  | 
-        a(href="/#{user.username}")= user.username
+        img.avatar(src="https://secure.gravatar.com/avatar/#{user.gravatarId}?rating=pg&default=identicon")
+        div
+          b User
+          |  | 
+          a(href="/#{user.username}")= user.username
     .content-pane
-      h2.title-pane
+      h2.title-pane.center
         b Arguments &amp; Activity
       if repos.length
         for repo in repos
