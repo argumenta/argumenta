@@ -1,0 +1,111 @@
+
+
+// Fonts
+
+fontMono()
+  font-family: "Lucida Console", Monaco, "DejaVu Sans Mono", monospace
+
+fontSans()
+  font-family: "Monda", "Lucida Grande", Helvetica, Arial, sans-serif
+
+
+// Backgrounds
+
+bgLinearGradient()
+  background-image: -webkit-linear-gradient(arguments)
+  background-image:    -moz-linear-gradient(arguments)
+  background-image:     -ms-linear-gradient(arguments)
+  background-image:      -o-linear-gradient(arguments)
+  background-image:         linear-gradient(arguments)
+
+bgRadialGradient()
+  background-image: -webkit-radial-gradient(arguments)
+  background-image:    -moz-radial-gradient(arguments)
+  background-image:     -ms-radial-gradient(arguments)
+  background-image:      -o-radial-gradient(arguments)
+  background-image:         radial-gradient(arguments)
+
+
+// Colors
+
+jade = #0c3
+ruby = #d06
+aluminum = #eee
+
+
+// Gradients
+
+ivoryGradient()
+  bgLinearGradient top, #fff, #fff, #ddd
+
+ebonyGradient()
+  bgLinearGradient top, #888, #000, #000
+
+
+// Mixins
+
+bg(color)
+  background-color: color
+
+frame(size, color)
+  border: size solid color
+
+rounded(r=5px)
+  border-radius: r
+
+darkGlass(alpha=0.5)
+  background: rgba(0, 0, 0, alpha)
+  color: #fff
+
+lightGlass(alpha=0.3)
+  background: rgba(255, 255, 255, alpha)
+
+shadow(offset=2px, blur=2px, color=#aaa)
+  box-shadow: offset offset blur color
+
+textShadow(offset=1px, blur=0px, color=#aaa)
+  text-shadow: offset offset blur color
+
+
+// Styles
+
+light-form()
+  bg(aluminum)
+  frame(10px, #fff)
+  rounded(5px)
+  shadow(2px, 2px, #444)
+
+light-input()
+  shadow(1px, 1px, #ccc)
+  rounded(2px)
+
+button()
+  rounded()
+  shadow(1px, 2px)
+  color: #fff
+
+blue-button()
+  button()
+  bg(#06d)
+
+ruby-button()
+  button()
+  bg(ruby)
+
+ebony-button()
+  button()
+  bg(#222)
+
+ivory-button()
+  button()
+  bg(#f6f6f6)
+  color: #222
+
+form-style = light-form
+input-style = light-input
+button-style = ebony-button
+
+pane()
+  rounded(5px)
+  margin: 5px
+  padding: 5px

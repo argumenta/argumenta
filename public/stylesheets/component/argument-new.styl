@@ -1,0 +1,70 @@
+
+*.argumenta
+
+  // New Argument
+
+  .new-argument
+    min-width: 450px
+    max-width: 600px
+    width: 100%
+
+  form.edit
+    border: 5px solid #fff
+    color: #333
+    margin: 5px
+    padding: 0px
+    text-align: center
+
+    .premise, .title, .conclusion
+      text-align: left
+
+      label
+        display: inline-block
+        margin: 0px
+        width: 75px
+        text-align: right
+        vertical-align: middle
+
+      textarea
+        vertical-align: middle
+        width: 295px
+        min-height: 3em
+        resize: none !important
+
+      .counter
+        color: #aaa
+        color: rgba(0, 0, 0, 0.3)
+        font-weight: bold
+        font-size: 20px
+        position: absolute
+        bottom: 2px
+        right: 7px
+
+      .warning
+        color: #333
+        color: rgba(0, 0, 0, 0.6)
+
+      .exceeded
+        color: #d06
+
+      .buttons
+        margin: 0px 5px
+        display: inline-block
+
+      .addPremise, .removePremise
+        rounded(5)
+        color: #fff
+        font-weight: bold
+        margin: 0px
+        padding: 5px 0px
+        width: 1.3em
+
+      .addPremise
+        background: #08f
+
+      .removePremise
+        background: #f06
+
+    .sha1
+      fontMono()
+      background: none
