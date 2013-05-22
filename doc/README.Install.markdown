@@ -45,7 +45,7 @@ This installs the app in `/usr/local/argumenta`, configuration files in `/etc/ar
 
 ### 4. Argumenta Config
 
-Edit the configuration file for each mode in `/etc/argumenta`. In particular, uncomment the `postgresUrl` setting and change its `PASSWORD` placeholder to a password of your choice for each mode. The other settings can be safely left commented out, and Argumenta will use each mode's defaults.
+Edit the configuration file for each mode in `/etc/argumenta`. In particular, edit the `postgresUrl` setting and change its `PASSWORD` placeholder to a password of your choice for each mode. See `config/modes` for a full list of settings, and the default for each mode.
 
 
 ### 5. Argumenta Database and Roles

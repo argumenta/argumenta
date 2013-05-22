@@ -37,16 +37,16 @@ Run the command `./bin/setup-config.sh` to generate local config files:
 ```bash
 $ argumenta-setup-config
 Initializing config/deploy
-Creating './config/deploy/development.coffee'
-Creating './config/deploy/testing.coffee'
-Creating './config/deploy/staging.coffee'
-Creating './config/deploy/production.coffee'
+Creating './config/deploy/development.json'
+Creating './config/deploy/testing.json'
+Creating './config/deploy/staging.json'
+Creating './config/deploy/production.json'
 Done!
 ```
 
 This copies defaults for each mode, and generates a random app secret. It won't overwrite existing config files.
 
-You should now edit these files. In particular, uncomment the `postgresUrl` setting and change its `PASSWORD` placeholder to match the database password for each mode. The other settings can be safely left commented out, and Argumenta will simply use each mode's defaults.
+You should now edit these files. In particular, edit the `postgresUrl` setting and change its `PASSWORD` placeholder to match the database password for each mode. See `config/modes` for a full list of settings, and the default for each mode.
 
 ### 4. Run
 
@@ -121,8 +121,8 @@ $ NODE_ENV='testing' mocha -g '<pattern>' test/<file>.js
 
 The node env determines the application mode.  
 Current modes include 'production', 'staging', 'development', and 'testing'.  
-Settings for each mode reside in `config/deploy/<mode>.coffee`.  
-These extend the mode defaults in `config/modes/<mode>.coffee`.
+Settings for each mode reside in `config/deploy/<mode>.json`.  
+These extend the mode defaults in `config/modes/<mode>.json`.
 
 ### LOG_LEVEL
 
