@@ -1,0 +1,9 @@
+{
+  "port":        "8080"
+, "appSecret":   "SECRET"
+, "logLevel":    "info"
+, "siteName":    "Argumenta"
+, "storageType": "postgres"
+, "postgresUrl": "postgres://argumenta:PASSWORD@localhost:5432/argumenta"
+, "gzip":        "true"
+}

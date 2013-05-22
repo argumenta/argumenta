@@ -1,0 +1,10 @@
+{
+  "appMode":     "development"
+, "port":        "3000"
+, "appSecret":   "SECRET"
+, "logLevel":    "info"
+, "siteName":    "Argumenta"
+, "storageType": "postgres"
+, "postgresUrl": "postgres://argumenta_development:PASSWORD@localhost:5432/argumenta_development"
+, "gzip":        "false"
+}

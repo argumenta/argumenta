@@ -1,0 +1,10 @@
+{
+  "appMode":     "testing"
+, "port":        "3000"
+, "appSecret":   "SECRET"
+, "logLevel":    "info"
+, "siteName":    "Argumenta"
+, "storageType": "postgres"
+, "postgresUrl": "postgres://argumenta_testing:PASSWORD@localhost:5432/argumenta_testing"
+, "gzip":        "true"
+}
