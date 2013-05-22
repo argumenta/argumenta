@@ -56,7 +56,8 @@ getOpts() {
   done
 
   if [[ $DEBUG -eq 1 ]]; then
-    echo "TEST_ONLY: $TEST_ONLY"
+    echo "Debug mode enabled."
+    set -x
   fi
 }
 
@@ -66,6 +67,21 @@ getOpts() {
 generateAppSecret() {
   local secret=`node -p -e "require('crypto').randomBytes(30).toString('hex');"`
   echo "$secret"
+}
+
+#
+# Renders config file from template and given params.
+#
+renderConfig() {
+  local secret="$1"
+  local user="$2"
+  local db="$3"
+  cat <<-END
+	{
+	  "appSecret":   "${secret}",
+	  "postgresUrl": "postgres://${user}:PASSWORD@localhost:5432/${db}"
+	}
+END
 }
 
 #
@@ -79,16 +95,22 @@ main() {
 
   # Copy the config for each mode and generate an appSecret
   for mode in development testing staging production; do
-    local config="${SOURCE_DIR}/config/modes/${mode}.coffee"
-    local deploy="${SOURCE_DIR}/config/deploy/${mode}.coffee"
+    local config="${SOURCE_DIR}/config/modes/${mode}.json"
+    local deploy="${SOURCE_DIR}/config/deploy/${mode}.json"
 
     if [[ ! -f "$deploy" ]]; then
       run echo "Creating '$deploy'"
       run cp "$config" "$deploy"
 
-      local secret=$(generateAppSecret);
-      run sed -i -r "s/^( +)([^ #])/\1# \2/" "$deploy"
-      run sed -i -r "s/# (appSecret.*)SECRET(.*)/\1${secret}\2/" "$deploy"
+      if [[ $mode == 'production' ]]
+      then local db="argumenta"
+      else local db="argumenta_${mode}"
+      fi
+
+      local user="$db"
+      local secret=$(generateAppSecret)
+      local config=$(renderConfig $secret $user $db)
+      echo "$config" > "$deploy"
     else
       run echo "Found '$deploy'"
     fi
