@@ -1,6 +1,15 @@
 
 # Changes
 
+## 0.0.8 / 2013-05-23
+
++ Automate API doc generation.
++ Add script `build-api-doc.coffee`.
++ Add makefile target `api_doc`.
++ Replace coffee config files with json.
++ Modularize stylesheets.
++ Show avatars on profile page.
+
 ## 0.0.7 / 2013-05-16
 
 + Use migrations for Postgres setup.
