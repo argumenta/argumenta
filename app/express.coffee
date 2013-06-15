@@ -1,6 +1,4 @@
 express    = require 'express'
-stylus     = require 'stylus'
-nib        = require 'nib'
 flash      = require 'connect-flash'
 http       = require 'http'
 _          = require 'underscore'
@@ -65,15 +63,7 @@ app.configure 'testing', ->
 app.configure 'development', ->
   app.use express.logger('dev')
   cssDir = __dirname + '/../public'
-  cssWritable = helpers.writableSync cssDir
-  if cssWritable
-    app.use stylus.middleware
-      src: cssDir
-      compile: (str, path) ->
-        return stylus(str)
-          .set('filename', path)
-          .set('compress', false)
-          .use(nib())
+  helpers.watchCSS app, cssDir
   configure()
   app.use express.errorHandler()
 

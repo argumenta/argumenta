@@ -1,4 +1,6 @@
-fs = require 'fs'
+fs       = require 'fs'
+nib      = require 'nib'
+stylus   = require 'stylus'
 
 class Helpers
 
@@ -18,5 +20,22 @@ class Helpers
 
   @writableSync = (path) ->
     return Helpers.canWriteBy process, fs.statSync(path)
+
+  # This helper uses stylus middleware if possible.
+  #
+  #     helpers.watchCSS( app, cssDir )
+  #
+  # @param [Express] app
+  # @param [Object] cssDir
+  @watchCSS = (app, cssDir) ->
+    cssWritable = Helpers.writableSync cssDir
+    if cssWritable
+      app.use stylus.middleware
+        src: cssDir
+        compile: (str, path) ->
+          return stylus(str)
+            .set('filename', path)
+            .set('compress', false)
+            .use(nib())
 
 module.exports = Helpers
