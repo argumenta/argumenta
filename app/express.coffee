@@ -22,6 +22,7 @@ configure = () ->
     app.set 'view options', {layout: false}
     gzipDirs = /^\/(images|stylesheets|javascripts|widgets)/
     app.use middleware.gzipped gzipDirs if config.gzip
+    app.use middleware.cors( origin: "*", methods: "GET,PUT,POST" )
     app.use express.favicon(__dirname + '/../public/images/favicon.ico')
     app.use express.static(__dirname + '/../public')
     app.use express.bodyParser()

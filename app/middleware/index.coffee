@@ -1,5 +1,6 @@
 
 Middleware =
+  cors     : require './cors'
   gzipped  : require './gzipped'
   globals  : require './globals'
   locals   : require './locals'
