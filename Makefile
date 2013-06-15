@@ -21,10 +21,10 @@ development:
 server: coffee stylus
 
 coffee:
-	coffee -c $(COFFEE_PATHS)
+	$(COFFEE) -c $(COFFEE_PATHS)
 
 coffee_forever:
-	@coffee -c -w $(COFFEE_PATHS) &
+	@ $(COFFEE) -c -w $(COFFEE_PATHS) &
 
 stylus:
 	./node_modules/.bin/stylus --use ./node_modules/nib public/stylesheets
