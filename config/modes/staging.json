@@ -1,5 +1,6 @@
 {
   "appMode":     "staging"
+, "baseUrl":     "https://staging.argumenta.io"
 , "port":        "8080"
 , "appSecret":   "SECRET"
 , "logLevel":    "info"

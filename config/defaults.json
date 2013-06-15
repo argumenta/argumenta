@@ -1,5 +1,6 @@
 {
-  "port":        "8080"
+  "baseUrl":     "https://argumenta.io"
+, "port":        "8080"
 , "appSecret":   "SECRET"
 , "logLevel":    "info"
 , "siteName":    "Argumenta"
