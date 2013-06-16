@@ -39,4 +39,9 @@ html
         var jquery = $.noConflict();
         var browserify = { require: require };
         var require = undefined;
+
+        window.ARGUMENTA_CONFIG = {
+          baseUrl:    "#{baseUrl}",
+          widgetsUrl: "#{baseUrl + '/widgets'}"
+        };
       script(src='/widgets/js/require.js', data-main='/widgets/js/main')

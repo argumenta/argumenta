@@ -28,7 +28,10 @@ configure = () ->
     app.use express.methodOverride()
     app.use express.cookieSession()
     app.use flash()
-    app.use middleware.globals siteName: config.siteName, title: ''
+    app.use middleware.globals
+      baseUrl:  config.baseUrl,
+      siteName: config.siteName,
+      title:    ''
     app.use middleware.locals (req, res) ->
       return extensions =
         username: req.session.username or ''
