@@ -1,6 +1,13 @@
 
 # Changes
 
+## 0.0.9 / 2013-07-03
+
++ Add option for `baseUrl`.
++ Add CORS middleware.
++ Add watchCSS helper.
++ Add widget config to layout.
+
 ## 0.0.8 / 2013-05-23
 
 + Automate API doc generation.
