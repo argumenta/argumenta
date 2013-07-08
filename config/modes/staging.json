@@ -1,11 +1,11 @@
 {
   "appMode":     "staging"
 , "baseUrl":     "https://staging.argumenta.io"
-, "port":        "8080"
+, "port":        8080
 , "appSecret":   "SECRET"
 , "logLevel":    "info"
 , "siteName":    "Argumenta"
 , "storageType": "postgres"
 , "postgresUrl": "postgres://argumenta_staging:PASSWORD@localhost:5432/argumenta_staging"
-, "gzip":        "true"
+, "gzip":        true
 }
