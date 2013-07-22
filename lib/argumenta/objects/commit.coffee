@@ -22,20 +22,24 @@ class Commit
 
   # Inits a new Commit instance, given a target and committer.
   #
-  #     targetType = 'argument'
-  #     targetSha1 = '39cb3925a38f954cf4ca12985f5f948177f6da5e'
-  #     username   = 'demosthenes'
-  #
-  #     commit = new Commit( targetType, targetSha1, username )
+  #     options = {
+  #       targetType: 'argument'
+  #       targetSha1: '39cb3925a38f954cf4ca12985f5f948177f6da5e'
+  #       committer:  'demosthenes'
+  #       host:       'argumenta.io'
+  #     }
+  #     commit = new Commit( options )
   #
   # @api public
   # @see Commit.formatDate()
-  # @param [String] targetType The type of target: 'argument' or 'tag'.
-  # @param [String] targetSha1 The SHA1 of target's object record.
-  # @param [String] committer The username of the committer.
-  # @param [String] commitDate The commit date string (optional; defaults to the current time).
-  # @param [Array<String>] parentSha1s The SHA1s of any parent commits (optional; defaults to none).
-  constructor: (@targetType, @targetSha1, @committer, @commitDate, @parentSha1s=[]) ->
+  # @param [Object]        options             An options object for this commit.
+  # @param [String]        options.targetType  The type of target: 'argument' or 'tag'.
+  # @param [String]        options.targetSha1  The SHA1 of target's object record.
+  # @param [String]        options.committer   The username of the committer.
+  # @param [String]        options.commitDate  The commit date string (default: now).
+  # @param [Array<String>] options.parentSha1s The SHA1s of any parent commits (default: none).
+  # @param [String]        options.host        The host server for user registration and publication.
+  constructor: (@targetType, @targetSha1, @committer, @commitDate, @parentSha1s=[], @host) ->
     if arguments.length is 1 and arguments[0]?.committer
       params = arguments[0]
       @targetType  = params.targetType or params.target_type
@@ -43,6 +47,7 @@ class Commit
       @committer   = params.committer
       @commitDate  = params.commitDate or params.commit_date
       @parentSha1s = params.parentSha1s or params.parent_sha1s
+      @host        = params.host
     @commitDate ?= Commit.formatDate new Date()
 
   ### Instance Methods ###
@@ -78,6 +83,7 @@ class Commit
     body += "parent #{p}\n" for p in @parentSha1s
     body += "committer #{@committer}\n"
     body += "commit_date #{@commitDate}\n"
+    body += "host #{@host}\n" if @host?
     return head + body
 
   # Gets the sha1 of the commit's object record.
@@ -100,6 +106,7 @@ class Commit
       committer     : @committer
       commit_date   : @commitDate
       parent_sha1s  : @parentSha1s
+      host          : @host
     }
 
   # Checks for equality with another commit.
@@ -124,7 +131,8 @@ class Commit
   validate: () ->
     try
       if ( @validateTargetType() and @validateTargetSha1() and
-           @validateCommitter() and @validateCommitDate() and @validateParentSha1s() )
+           @validateCommitter() and @validateCommitDate() and
+           @validateParentSha1s() and @validateHost() )
         @validationError = null
         @validationStatus = true
     catch err
@@ -158,6 +166,9 @@ class Commit
 
   validateParentSha1s: () ->
     return Commit.validateParentSha1s( @parentSha1s )
+
+  validateHost: () ->
+    return Commit.validateHost( @host )
 
   ### Static Methods ###
 
@@ -250,6 +261,30 @@ class Commit
         throw Errors.ObjectValidation "Each parent sha1 must be a string."
       unless parent.match /^[0-9a-f]{40}$/
         throw Errors.ObjectValidation "Each parent sha1 must be valid."
+
+    return true
+
+  # Validates the optional host of a commit
+  #
+  # @api private
+  # @throws ObjectValidationError
+  # @param [String] host The host to validate.
+  # @return [Boolean] True only on success.
+  @validateHost: (host) ->
+    unless host?
+      return true
+
+    unless _.isString host
+      throw Errors.ObjectValidation "Commit host must be a string."
+
+    unless host.length < 255
+      throw Errors.ObjectValidation "Commit host must be less than 255 characters."
+
+    if host.match /\n/
+      throw Errors.ObjectValidation "Commit host must not contain newlines."
+
+    unless host.match /(\S+\.)+\S+/
+      throw Errors.ObjectValidation "Commit host must be a fully qualified domain name."
 
     return true
 

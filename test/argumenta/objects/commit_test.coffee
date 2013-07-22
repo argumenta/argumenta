@@ -10,6 +10,7 @@ describe 'Commit', ->
   commitDate = '1970-01-01T00:00:00Z'
   parentASha1 = '0123456789abcdef000000000000000000000000'
   parentBSha1 = '1a1a1a1a1a1a1a1a000000000000000000000000'
+  host = 'testing.argumenta.io'
 
   describe 'new Commit( targetType, targetSha1, committer )', ->
     it 'should create a new commit instance', ->
@@ -26,6 +27,12 @@ describe 'Commit', ->
       commit1 = fixtures.validCommit()
       commit2 = new Commit( commit1.data() )
       should.ok commit1.equals commit2
+
+    it 'should create a new commit with host', ->
+      data = fixtures.validCommitData()
+      data.host = fixtures.validHost()
+      commit = new Commit( data )
+      commit.host.should.equal data.host
 
   describe 'new Commit( targetType, targetSha1, committer, commitDate, parentSha1s )', ->
     it 'should create a new commit instance', ->
@@ -59,6 +66,19 @@ describe 'Commit', ->
 
       """
 
+    it 'should show the host in object record text', ->
+      commit = new Commit( targetType, targetSha1, committer, commitDate, [], host )
+      record = commit.objectRecord()
+      record.should.equal """
+        commit
+
+        argument 39cb3925a38f954cf4ca12985f5f948177f6da5e
+        committer tester
+        commit_date 1970-01-01T00:00:00Z
+        host testing.argumenta.io
+
+      """
+
   describe 'sha1()', ->
     it 'should return the sha1 sum of the object record', ->
       commit = new Commit( targetType, targetSha1, committer, commitDate )
@@ -67,7 +87,7 @@ describe 'Commit', ->
 
   describe 'data()', ->
     it 'should return a plain object with commit data', ->
-      commit = new Commit( targetType, targetSha1, committer, commitDate )
+      commit = new Commit targetType, targetSha1, committer, commitDate, [], host
       data = commit.data()
       data.should.eql {
         object_type: 'commit'
@@ -77,6 +97,7 @@ describe 'Commit', ->
         committer: commit.committer
         commit_date: commit.commitDate
         parent_sha1s: commit.parentSha1s
+        host: commit.host
       }
 
   describe 'equals()', ->
@@ -115,6 +136,10 @@ describe 'Commit', ->
       commit = new Commit( targetType, targetSha1, committer, null, [ ])
       commit.validate().should.equal true
 
+    it 'should return true if host is valid', ->
+      commit = new Commit( targetType, targetSha1, committer, null, [], host )
+      commit.validate().should.equal true
+
     it 'should return true with one parent sha1', ->
       commit = new Commit( targetType, targetSha1, committer, null, [ parentASha1 ])
       commit.validate().should.equal true
@@ -129,6 +154,10 @@ describe 'Commit', ->
 
     it 'should return false if a parent sha1 is invalid', ->
       commit = new Commit( targetType, targetSha1, committer, null, [ 'bad-sha1' ] )
+      commit.validate().should.equal false
+
+    it 'should return false if host is invalid', ->
+      commit = new Commit( targetType, targetSha1, committer, null, [], 'bad-host' )
       commit.validate().should.equal false
 
   describe 'Commit.formatDate( date )', ->

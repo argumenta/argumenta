@@ -187,6 +187,16 @@ class Fixtures
 
   #### Commits ####
 
+  @validCommitData: () ->
+    return {
+      target_type:  @validCommitTargetType()
+      target_sha1:  @validCommitTargetSha1()
+      committer:    @validCommitter()
+      commit_date:  @validCommitDate()
+      parent_sha1s: []
+      host:         @validHost()
+    }
+
   @validCommit: () ->
     return new Commit( @validCommitTargetType(), @validCommitTargetSha1(), @validCommitter(),
                        @validCommitDate(), @validCommitParents() )
@@ -218,6 +228,9 @@ class Fixtures
 
   @validCommitParentSha1B: () ->
     return '1a1a1a1a1a1a1a1a000000000000000000000000'
+
+  @validHost: () ->
+    return 'testing.argumenta.io'
 
   #### Tags ####
 
