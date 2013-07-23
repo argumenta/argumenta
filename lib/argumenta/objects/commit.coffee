@@ -39,7 +39,7 @@ class Commit
   # @param [String]        options.commitDate  The commit date string (default: now).
   # @param [Array<String>] options.parentSha1s The SHA1s of any parent commits (default: none).
   # @param [String]        options.host        The host server for user registration and publication.
-  constructor: (@targetType, @targetSha1, @committer, @commitDate, @parentSha1s=[], @host) ->
+  constructor: (@targetType, @targetSha1, @committer, @commitDate, @parentSha1s, @host) ->
     if arguments.length is 1 and arguments[0]?.committer
       params = arguments[0]
       @targetType  = params.targetType or params.target_type
@@ -49,6 +49,7 @@ class Commit
       @parentSha1s = params.parentSha1s or params.parent_sha1s
       @host        = params.host
     @commitDate ?= Commit.formatDate new Date()
+    @parentSha1s ?= []
 
   ### Instance Methods ###
 
