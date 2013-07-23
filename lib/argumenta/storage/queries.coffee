@@ -148,7 +148,7 @@ class Queries
       name: "select_commit_by_sha1"
       text: """
         SELECT commit_sha1, committer, commit_date,
-               target_type, target_sha1, parent_sha1s
+               target_type, target_sha1, parent_sha1s, host
         FROM Commits
         WHERE commit_sha1 = $1;
         """
@@ -160,7 +160,7 @@ class Queries
     return selectCommitsQuery =
       text: """
         SELECT commit_sha1, committer, commit_date,
-               target_type, target_sha1, parent_sha1s
+               target_type, target_sha1, parent_sha1s, host
         FROM Commits
         WHERE commit_sha1 IN (#{ placeholders })
         ORDER BY commit_date ASC;
@@ -173,7 +173,7 @@ class Queries
     return selectCommitsQuery =
       text: """
         SELECT commit_sha1, committer, commit_date,
-               target_type, target_sha1, parent_sha1s
+               target_type, target_sha1, parent_sha1s, host
         FROM Commits
         WHERE target_sha1 IN (#{ placeholders });
         """
@@ -273,12 +273,15 @@ class Queries
       name: "insert_commit"
       text: """
         INSERT INTO Commits (commit_sha1, committer, commit_date,
-                             target_type, target_sha1, parent_sha1s)
+                             target_type, target_sha1, parent_sha1s,
+                             host)
         VALUES ($1, $2, $3,
-                $4, $5, $6);
+                $4, $5, $6,
+                $7);
         """
       values: [ commit.sha1(), commit.committer, commit.commitDate,
-                commit.targetType, commit.targetSha1, parentSha1s ]
+                commit.targetType, commit.targetSha1, parentSha1s,
+                commit.host ]
 
   # Insert a given Argument.
   @insertArgument: (argument) ->

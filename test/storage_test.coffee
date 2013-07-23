@@ -322,6 +322,17 @@ describeStorageTests = (storage, type) ->
           err.should.be.an.instanceOf Storage.InputError
           done()
 
+      it 'should store a commit with host', (done) ->
+        withArgument (user, commit1, arg) ->
+          commit = new Commit
+            targetType: 'argument'
+            targetSha1: arg.sha1()
+            committer:  user.username
+            host:       'testing.argumenta.io'
+          storage.addCommit commit, (err) ->
+            should.not.exist err
+            done()
+
     describe 'getCommit( hash, callback )', ->
       it 'should retrieve a stored commit', (done) ->
         withCommit (user, arg, commit) ->
@@ -329,6 +340,19 @@ describeStorageTests = (storage, type) ->
             should.not.exist err
             retrievedCommit.equals(commit).should.equal true
             done()
+
+      it 'should retrieve a commit with host', (done) ->
+        withArgument (user, commit1, arg) ->
+          commit = new Commit
+            targetType: 'argument'
+            targetSha1: arg.sha1()
+            committer:  user.username
+            host:       'testing.argumenta.io'
+          storage.addCommit commit, (err) ->
+            should.not.exist err
+            storage.getCommit commit.sha1(), (err, retrievedCommit) ->
+              retrievedCommit.equals(commit).should.equal true
+              done()
 
     describe 'getCommits( hashes, callback )', ->
       it 'should retrieve a stored commit', (done) ->
