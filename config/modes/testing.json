@@ -1,6 +1,7 @@
 {
   "appMode":     "testing"
 , "baseUrl":     "http://localhost:3000"
+, "host":        "testing.argumenta.io"
 , "port":        3000
 , "appSecret":   "SECRET"
 , "logLevel":    "fatal"

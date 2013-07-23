@@ -1,6 +1,7 @@
 {
   "appMode":     "development"
 , "baseUrl":     "http://localhost:3000"
+, "host":        "development.argumenta.io"
 , "port":        3000
 , "appSecret":   "SECRET"
 , "logLevel":    "info"

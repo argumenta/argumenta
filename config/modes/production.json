@@ -1,6 +1,7 @@
 {
   "appMode":     "production"
 , "baseUrl":     "https://argumenta.io"
+, "host":        "argumenta.io"
 , "port":        8080
 , "appSecret":   "SECRET"
 , "logLevel":    "info"
