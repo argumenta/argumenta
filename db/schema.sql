@@ -29,6 +29,7 @@ CREATE TABLE Commits (
   target_type       VARCHAR(20)   NOT NULL,
   target_sha1       CHAR(40)      NOT NULL,
   parent_sha1s      CHAR(40)[],
+  host              VARCHAR(255)  NULL,
   FOREIGN KEY (committer) REFERENCES Users(username),
   FOREIGN KEY (commit_sha1) REFERENCES Objects(sha1),
   FOREIGN KEY (target_sha1) REFERENCES Objects(sha1)
