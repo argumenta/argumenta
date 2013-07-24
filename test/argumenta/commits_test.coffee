@@ -6,9 +6,13 @@ should    = require 'should'
 
 describe 'Tags', ->
 
+  options =
+    storageType: 'local'
+    host: 'testing.argumenta.io'
+
   describe 'new Tags( argumenta, storage )', ->
     it 'should create a new commits instance', ->
-      argumenta = new Argumenta(storageType: 'local')
+      argumenta = new Argumenta options
       tags = new Tags( argumenta, argumenta.storage )
       tags.should.be.an.instanceOf Tags
       tags.argumenta.should.be.an.instanceOf Argumenta
@@ -19,7 +23,7 @@ describe 'Tags', ->
       {username} = data = fixtures.validUserData()
       tag = fixtures.validSupportTag()
       argument = fixtures.validArgument()
-      a = new Argumenta(storageType: 'local')
+      a = new Argumenta options
       a.users.create data, (er1, user) ->
         a.arguments.commit username, argument, (er2, commit) ->
           a.tags.commit username, tag, (er3, commit) ->
@@ -28,4 +32,5 @@ describe 'Tags', ->
                 [er1, er2, er3, er4, er5].should.eql [1..5].map -> null
                 should.ok tag.equals retrievedTag
                 should.ok commit.equals retrievedCommit
+                commit.host.should.equal 'testing.argumenta.io'
                 done()
