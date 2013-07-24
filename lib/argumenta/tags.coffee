@@ -45,7 +45,11 @@ class Tags extends Base
         new @Error "Valid tag required to create commit.\nGot: #{inspect tag}"
       return callback err, null
 
-    commit = new Commit 'tag', tag.sha1(), username
+    commit = new Commit
+      targetType: 'tag'
+      targetSha1: tag.sha1()
+      committer:  username
+      host:       @argumenta.options.host
 
     @storage.addTag tag, (err) =>
       return callback err, null if err

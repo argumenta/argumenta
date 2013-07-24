@@ -46,9 +46,14 @@ class Arguments extends Base
       return callback err, null
 
     @storage.getRepoHash username, argument.repo(), (err, hash) =>
-      parents = []
-      parents.push hash if hash
-      commit = new Commit 'argument', argument.sha1(), username, null, parents
+      return callback err, null if err
+
+      commit = new Commit
+        targetType: 'argument'
+        targetSha1: argument.sha1()
+        committer:  username
+        parents:    [hash] if hash
+        host:       @argumenta.options.host
 
       @storage.addArgument argument, (err) =>
         return callback err, null if err
