@@ -34,7 +34,7 @@
     "connect-flash": "0.1.0",
     "db-migrate": "~0.4.2",
     "express": "3.1.2",
-    "jade": "0.28.2",
+    "jade": "git://github.com/qualiabyte/jade.git#escape-data-attrs-more",
     "nib": "0.9.1",
     "pg": "0.8.7",
     "pg-nest": "~0.1.0",
