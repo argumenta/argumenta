@@ -1,9 +1,15 @@
 
 # Changes
 
+## 0.0.10 / 2013-08-02
+
++ Add config option for `host`.
++ Add `commit.host` property.
++ Fix data attribute escaping in Jade.
+
 ## 0.0.9 / 2013-07-03
 
-+ Add option for `baseUrl`.
++ Add config option for `baseUrl`.
 + Add CORS middleware.
 + Add watchCSS helper.
 + Add widget config to layout.
@@ -39,7 +45,7 @@
 
 ## 0.0.4 / 2013-04-26
 
-+ Add options: gzip, port.
++ Add config options: gzip, port.
 + Add Upstart service for Nginx.
 + Configure Nginx and SSL on setup.
 + Handle uncaught exceptions.
