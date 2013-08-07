@@ -162,7 +162,8 @@ body.argumenta .wrapper {
 *.argumenta .right {
   text-align: right;
 }
-*.argumenta font:fontSans() {
+*.argumenta {
+  font-family: "Monda", "Lucida Grande", Helvetica, Arial, sans-serif;
   font-size: 14px;
 }
 *.argumenta button,
