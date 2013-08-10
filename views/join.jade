@@ -1,16 +1,17 @@
 extends layout
 
 block content
-  h2 Create your account!
-  form.join(action="/users", method="post")
-    ul
-      li
-        label Username
-        input(name="username", value="")
-      li
-        label Password
-        input(name="password", value="", type="password")
-      li
-        label Email
-        input(name="email", value="")
-    button(type="submit") Join!
+  .column
+    h2 Create your account!
+    form.join(action="/users", method="post")
+      ul
+        li
+          label Username
+          input(name="username", value="")
+        li
+          label Password
+          input(name="password", value="", type="password")
+        li
+          label Email
+          input(name="email", value="")
+      button(type="submit") Join!
