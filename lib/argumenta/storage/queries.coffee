@@ -60,6 +60,19 @@ class Queries
 
   ### Queries ###
 
+  # Search arguments by query.
+  @searchArguments: (query, opts={}) ->
+    limit  = opts.limit ? 20
+    offset = opts.offset ? 0
+    return searchArgumentsQuery =
+      text: """
+        SELECT argument_sha1
+        FROM Arguments a
+        WHERE to_tsvector(a.title) @@ plainto_tsquery( $1 )
+        LIMIT $2 OFFSET $3;
+        """
+      values: [ query, limit, offset ]
+
   # Select a user by username.
   @selectUser: (username) ->
     return selectUserQuery =

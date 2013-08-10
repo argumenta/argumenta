@@ -474,4 +474,23 @@ class PostgresStore extends Base
 
       return callback null, tags
 
+  #### Search ####
+
+  # Search by query for users, arguments, propositions, and tags.
+  # @api public
+  search: (query, options, callback) ->
+    argQuery = Queries.searchArguments query, options
+    @query argQuery, (err, res) =>
+      return callback err if err
+
+      argHashes = []
+      argHashes.push row.argument_sha1 for row in res.rows
+      @getArguments argHashes, (err, args) =>
+        return callback err if err
+
+        results =
+          arguments: args
+
+        return callback null, results
+
 module.exports = PostgresStore

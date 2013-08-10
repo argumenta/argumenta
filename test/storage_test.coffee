@@ -574,4 +574,15 @@ describeStorageTests = (storage, type) ->
               p2.metadata.tag_sha1s.support[0].should.equal tag2.sha1()
               done()
 
+    describe 'search( query, options, callback )', ->
+      it 'should find an argument by title', (done) ->
+        withArgument (user, commit, argument) ->
+          query = argument.title
+          options = {}
+          storage.search query, options, (err, results) ->
+            should.not.exist err
+            results.arguments.length.should.equal 1
+            should.ok results.arguments[0].equals argument
+            done()
+
 describeAllTests()

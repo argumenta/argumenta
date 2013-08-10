@@ -242,4 +242,17 @@ class LocalStore extends Base
 
     return cb null, results
 
+  # Search by query for users, arguments, propositions, and tags.
+  search: (query, options, cb) ->
+    args = []
+    for k, a of @arguments.bySha1
+      regex = new RegExp query, 'i'
+      if a.title.match regex
+        args.push a
+
+    results =
+      arguments: args
+
+    return cb null, results
+
 module.exports = LocalStore
