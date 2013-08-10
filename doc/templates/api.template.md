@@ -123,6 +123,14 @@ The current version (0.0.1alpha6) provides the following features:
   </tr>
 </table>
 
+### [Search](#search)
+
+<table class="routes" width="600px">
+    <td width="300px"><a href="#search-by-query">GET /search/:query.json</td>
+    <td width="300px">Search for users, arguments, props, tags.</td>
+  </tr>
+</table>
+
 ## Session Routes (Authenticated)
 
 ### [Join](#join)
@@ -363,6 +371,27 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 
     curl -i http://localhost:3000/tags/412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae.json
 
+<a name="search"></a>
+## Search [&para;](#search)
+
+<a name="search-by-query"></a>
+### GET /search/:query.json
+
+*Search by query for users, arguments, propositions, and tags.*
+
+#### Params
+
++ query: The search query. (Example: "My Argument")
+
+#### Returns
+
++ Success: 200 (OK)
++ Error: 404 (Not Found)
+
+#### Example
+
+    curl -i http://localhost:3000/search/My%20Argument.json
+
 <!--
 
     # These requests run after public routes when building API docs.
@@ -564,6 +593,10 @@ Users may only delete their own repos.
 
 <a name="changes"></a>
 # Changes
+
+## 0.1.0
+
+Add Search route.
 
 ## 0.0.1alpha6
 
