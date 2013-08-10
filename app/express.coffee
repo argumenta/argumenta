@@ -44,11 +44,7 @@ configure = () ->
         format = req.param 'format'
         # Send argumenta objects with data() methods as plain object data
         if format is 'json' or format is 'jsonp'
-          for key, val of opts
-            if _.isObject(val) and typeof val.data is 'function'
-              opts[key] = val.data()
-            else if _.isArray(val) and typeof val[0]?.data is 'function'
-              opts[key] = val.map (obj) -> obj.data()
+          opts = helpers.data(opts)
         return opts
     app.use middleware.success()
     app.use middleware.failed()

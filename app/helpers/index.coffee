@@ -1,8 +1,25 @@
+_        = require 'underscore'
 fs       = require 'fs'
 nib      = require 'nib'
 stylus   = require 'stylus'
 
 class Helpers
+
+  ### Objects ###
+
+  # Serializes an object dictionary as data.
+  @data = (dict) ->
+    data = {}
+    for key, val of dict
+      if _.isObject(val) and typeof val.data is 'function'
+        data[key] = val.data()
+      else if _.isArray(val) and typeof val[0]?.data is 'function'
+        data[key] = val.map (obj) -> obj.data()
+      else
+        data[key] = dict[key]
+    return data
+
+  ### Filesystem ###
 
   @canWrite = (isOwner, inGroup, mode) ->
     return (
@@ -20,6 +37,8 @@ class Helpers
 
   @writableSync = (path) ->
     return Helpers.canWriteBy process, fs.statSync(path)
+
+  ### CSS ###
 
   # This helper uses stylus middleware if possible.
   #
