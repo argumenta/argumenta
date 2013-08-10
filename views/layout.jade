@@ -24,15 +24,15 @@ html
               a(href="/join") Join now!
       div.toolbar
         a.button(href="/arguments/new") New Argument
+      div.two-columns
+        block content
+        div.sidebar-widget
+          div.search-widget
       div.notifications
         each message in messages
           div.info= "Info: " + message
         each error in errors
           div.error= "Error: " + error
-      div.two-columns
-        block content
-        div.sidebar-widget
-          div.search-widget
     block scripts
       script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js")
       script(src="/javascripts/autosize/jquery.autosize.js")
