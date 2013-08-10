@@ -580,6 +580,21 @@ describeAppTests = (type, app) ->
               json.error.should.exist
               done()
 
+    describe '/search', ->
+
+      describe 'GET /search/:query.json', ->
+        it 'should find an argument by title', (done) ->
+          sessionWithArgument (user, argData, get, post) ->
+            query = encodeURIComponent(argData.title)
+            get '/search/' + query + '.json', (err, res) ->
+              should.not.exist err
+              res.status.should.equal 200
+              json = res.body
+              json.arguments.should.be.an.instanceOf Array
+              json.arguments.length.should.equal 1
+              json.arguments[0].should.eql argData
+              done()
+
     describe '/logout', ->
       describe 'GET /logout', ->
         it 'should clear session cookie and redirect to index', (done) ->

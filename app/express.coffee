@@ -93,6 +93,8 @@ app.get  '/propositions/:hash.:format?',                   routes.propositions.s
 app.get  '/propositions/:hash/tags.:format?',              routes.propositions.tags
 app.get  '/propositions/:hash/tags-plus-sources.:format?', routes.propositions.tagsPlusSources
 
+app.get  '/search/:query?.:format?',                       routes.search.query
+
 app.get  '/tags/:hash.:format?',                           routes.tags.show
 app.post '/tags.:format?',                                 routes.tags.create
 
