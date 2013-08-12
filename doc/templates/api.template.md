@@ -126,6 +126,11 @@ The current version (0.0.1alpha6) provides the following features:
 ### [Search](#search)
 
 <table class="routes" width="600px">
+  <tr>
+    <td width="300px"><a href="#search-by-query">GET /search.json</td>
+    <td width="300px">Search for users, arguments, props, tags.</td>
+  </tr>
+  <tr>
     <td width="300px"><a href="#search-by-query">GET /search/:query.json</td>
     <td width="300px">Search for users, arguments, props, tags.</td>
   </tr>
@@ -375,9 +380,14 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 ## Search [&para;](#search)
 
 <a name="search-by-query"></a>
+### GET /search.json
 ### GET /search/:query.json
 
 *Search by query for users, arguments, propositions, and tags.*
+
+#### Notes
+
+For convenience, you may use the `query` param in the URL's path or query string.
 
 #### Params
 
@@ -388,9 +398,14 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 + Success: 200 (OK)
 + Error: 404 (Not Found)
 
-#### Example
+#### Example with search in query string
+
+    curl -i http://localhost:3000/search.json?query=My+Argument
+
+#### Example with search in path
 
     curl -i http://localhost:3000/search/My%20Argument.json
+
 
 <!--
 
