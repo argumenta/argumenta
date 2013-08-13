@@ -1,14 +1,13 @@
 extends ../index
 
 block content
-  .column
-    .title-pane
-      h2
-        b Proposition
-      p
-        a(href="/propositions", title="Proposition Objects") propositions
-        |  / 
-        hash = proposition.sha1()
-        a(href=hash, title="SHA-1") #{hash}
-    .content-pane
-      include ../partials/proposition
+  .title-pane
+    h2
+      b Proposition
+    p
+      a(href="/propositions", title="Proposition Objects") propositions
+      |  / 
+      hash = proposition.sha1()
+      a(href=hash, title="SHA-1") #{hash}
+  .content-pane
+    include ../partials/proposition

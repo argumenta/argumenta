@@ -1,31 +1,30 @@
 extends ../layout
 block content
-  .column
-    .title-pane.center
-      h1
-        img.avatar(src="https://secure.gravatar.com/avatar/#{user.gravatarId}?rating=pg&default=identicon")
-        div
-          b User
-          |  | 
-          a(href="/#{user.username}")= user.username
-    .content-pane
-      h2.title-pane.center
-        b Arguments &amp; Activity
-      if repos.length
-        for repo in repos
-          - var argument = repo.target
-          - var commit = repo.commit
-          include ../partials/argument
-      else
-        if username == user.username
-          .content-panel
-            p
-              a(href="/arguments/new") Create your first argument!
+  .title-pane.center
+    h1
+      img.avatar(src="https://secure.gravatar.com/avatar/#{user.gravatarId}?rating=pg&default=identicon")
+      div
+        b User
+        |  | 
+        a(href="/#{user.username}")= user.username
+  .content-pane
+    h2.title-pane.center
+      b Arguments &amp; Activity
+    if repos.length
+      for repo in repos
+        - var argument = repo.target
+        - var commit = repo.commit
+        include ../partials/argument
+    else
+      if username == user.username
         .content-panel
           p
-            a(href="/#{user.username}") #{user.username}
-            |  hasn't published anything yet.
+            a(href="/arguments/new") Create your first argument!
       .content-panel
         p
           a(href="/#{user.username}") #{user.username}
-          |  joined on #{user.joinDate.toISOString()}.
+          |  hasn't published anything yet.
+    .content-panel
+      p
+        a(href="/#{user.username}") #{user.username}
+        |  joined on #{user.joinDate.toISOString()}.

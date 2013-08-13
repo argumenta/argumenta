@@ -3,6 +3,8 @@ extends ../index
 block content
   h1 Users
   h2 All current users
+  .content-pane
     ul.users
       each user in users
-        li #{user.username}
+        li
+          a(href="/#{user.username}") #{user.username}

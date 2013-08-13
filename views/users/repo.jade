@@ -1,14 +1,13 @@
 extends ../index
 
 block content
-  .column
-    h2.title-pane
-      b Argument Repo
-      br
-      a(href="/#{repo.user.username}", title="User") #{repo.user.username}
-      |  / 
-      a(href="/#{repo.user.username}/#{repo.reponame}", title="Repo") #{repo.reponame}
-    .content-pane
-      - var argument = repo.target;
-      - var commit = repo.commit;
-      include ../partials/argument
+  h2.title-pane
+    b Argument Repo
+    br
+    a(href="/#{repo.user.username}", title="User") #{repo.user.username}
+    |  / 
+    a(href="/#{repo.user.username}/#{repo.reponame}", title="Repo") #{repo.reponame}
+  .content-pane
+    - var argument = repo.target;
+    - var commit = repo.commit;
+    include ../partials/argument
