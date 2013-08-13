@@ -218,12 +218,12 @@ body.argumenta .wrapper {
   text-decoration: underline;
   color: #333;
 }
-*.argumenta .wrapper > h1,
-*.argumenta .wrapper > h2,
-*.argumenta .wrapper > h3,
-*.argumenta .wrapper > h4,
-*.argumenta .wrapper > h5,
-*.argumenta .wrapper > h6 {
+*.argumenta .wrapper .column > h1,
+*.argumenta .wrapper .column > h2,
+*.argumenta .wrapper .column > h3,
+*.argumenta .wrapper .column > h4,
+*.argumenta .wrapper .column > h5,
+*.argumenta .wrapper .column > h6 {
   background: rgba(0,0,0,0.5);
   color: #fff;
   -webkit-border-radius: 5px;
