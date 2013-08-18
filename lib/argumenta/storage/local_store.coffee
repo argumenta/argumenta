@@ -58,6 +58,22 @@ class LocalStore extends Base
 
     return cb null, publicUser
 
+  # Gets the *public* properties of users by usernames.
+  getUsers: (usernames, cb) ->
+    users = []
+    for username in usernames
+      u = @users[username]
+
+      publicUser = new PublicUser(
+        username:     u.username
+        join_date:    u.joinDate
+        gravatar_id:  ObjectUtils.MD5(u.email.toLowerCase())
+      )
+
+      users.push publicUser
+
+    return cb null, users
+
   # Gets a user's password hash.
   getPasswordHash: (username, cb) ->
     u = @users[username]

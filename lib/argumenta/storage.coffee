@@ -109,6 +109,17 @@ class Storage extends Base
       return cb new @Error("Failed getting user: " + username, err) if err
       return cb null, user
 
+  # Get users by usernames, omitting sensitive fields.
+  #
+  # @param [Array<String>]     usernames
+  # @param [Function]          cb(err, users)
+  # @param [StorageError]      err
+  # @param [Array<PublicUser>] users
+  getUsers: (usernames, cb) ->
+    @store.getUsers usernames, (err, users) ->
+      return cb new @Error "Failed getting users from store." if err
+      return cb null, users
+
   # Get repos for a given user.
   #
   # @param [String] username     The username of the repo owner.

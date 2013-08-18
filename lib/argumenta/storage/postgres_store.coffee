@@ -140,6 +140,16 @@ class PostgresStore extends Base
       publicUser = new PublicUser( row )
       return callback null, publicUser
 
+  # Gets the *public* properties of users by usernames.
+  # @api public
+  getUsers: (usernames, callback) ->
+    @query Queries.selectUsers(usernames), (err, res) =>
+      return callback err if err
+
+      publicUsers = []
+      publicUsers.push new PublicUser( row ) for row in res.rows
+      return callback null, publicUsers
+
   # Gets a list of repos for the given user.
   # @api public
   getUserRepos: (username, opts, callback) ->

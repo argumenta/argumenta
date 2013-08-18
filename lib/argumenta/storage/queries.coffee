@@ -83,6 +83,17 @@ class Queries
         """
       values: [username]
 
+  # Select users by usernames.
+  @selectUsers: (usernames) ->
+    placeholders = placeholdersFor usernames
+    return selectUsersQuery =
+      text: """
+        SELECT username, join_date, gravatar_id
+        FROM PublicUsers
+        WHERE username IN (#{ placeholders });
+        """
+      values: usernames
+
   # List users, starting with the latest.
   @listUsers: (opts={}) ->
     limit  = opts.limit  ? 100

@@ -157,6 +157,20 @@ describeStorageTests = (storage, type) ->
             user.gravatarId.should.match /^[0-9,a-f]{32}$/
             done()
 
+    describe 'getUsers( usernames, callback )', ->
+      it 'should get stored users', (done) ->
+        withUser (user1) ->
+          withUser (user2) ->
+            pubUser1 = new PublicUser( user1 )
+            pubUser2 = new PublicUser( user2 )
+            usernames = [ user1.username, user2.username ]
+            storage.getUsers usernames, (err, users) ->
+              should.not.exist err
+              users.length.should.equal 2
+              should.ok _.some users, (u) -> u.equals pubUser1
+              should.ok _.some users, (u) -> u.equals pubUser2
+              done()
+
     describe 'clearAll( opts, callback )', ->
       it 'should delete all stored users', (done) ->
         tester = fixtures.validUser()
