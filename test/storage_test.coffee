@@ -600,4 +600,15 @@ describeStorageTests = (storage, type) ->
             should.ok results.arguments[0].equals argument
             done()
 
+      it 'should find a user by username', (done) ->
+        withUser (user) ->
+          pubUser = new PublicUser( user )
+          query = user.username
+          options = {}
+          storage.search query, options, (err, results) ->
+            should.not.exist err
+            results.users.length.should.equal 1
+            should.ok results.users[0].equals pubUser
+            done()
+
 describeAllTests()

@@ -1,4 +1,5 @@
 Base        = require '../../argumenta/base'
+Argument    = require '../../argumenta/objects/argument'
 Proposition = require '../../argumenta/objects/proposition'
 ObjectUtils = require '../../argumenta/objects/object_utils'
 PublicUser  = require '../../argumenta/public_user'
@@ -260,14 +261,20 @@ class LocalStore extends Base
 
   # Search by query for users, arguments, propositions, and tags.
   search: (query, options, cb) ->
+    regex = new RegExp query, 'i'
     args = []
     for k, a of @arguments.bySha1
-      regex = new RegExp query, 'i'
       if a.title.match regex
-        args.push a
+        args.push new Argument a.data()
+
+    users = []
+    for k, u of @users
+      if u.username.match regex
+        users.push new PublicUser u
 
     results =
-      arguments: args
+      arguments : args
+      users     : users
 
     return cb null, results
 

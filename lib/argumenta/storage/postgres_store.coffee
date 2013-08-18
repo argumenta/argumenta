@@ -486,9 +486,9 @@ class PostgresStore extends Base
 
   #### Search ####
 
-  # Search by query for users, arguments, propositions, and tags.
-  # @api public
-  search: (query, options, callback) ->
+  # Search by query for arguments.
+  # @api private
+  searchArguments: (query, options, callback) ->
     argQuery = Queries.searchArguments query, options
     @query argQuery, (err, res) =>
       return callback err if err
@@ -497,9 +497,32 @@ class PostgresStore extends Base
       argHashes.push row.argument_sha1 for row in res.rows
       @getArguments argHashes, (err, args) =>
         return callback err if err
+        return callback null, args
+
+  # Search by query for users.
+  # @api private
+  searchUsers: (query, options, callback) ->
+    userQuery = Queries.searchUsers query, options
+    @query userQuery, (err, res) =>
+      return callback err if err
+
+      usernames = []
+      usernames.push row.username for row in res.rows
+      @getUsers usernames, (err, users) =>
+        return callback err if err
+        return callback null, users
+
+  # Search by query for users, arguments, propositions, and tags.
+  # @api public
+  search: (query, options, callback) ->
+    @searchArguments query, options, (er1, args) =>
+      @searchUsers query, options, (er2, users) =>
+        err = er1 or er2
+        return callback err if err
 
         results =
-          arguments: args
+          arguments : args
+          users     : users
 
         return callback null, results
 

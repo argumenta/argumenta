@@ -73,6 +73,19 @@ class Queries
         """
       values: [ query, limit, offset ]
 
+  # Search users by query.
+  @searchUsers: (query, opts={}) ->
+    limit  = opts.limit ? 20
+    offset = opts.offset ? 0
+    return searchUsersQuery =
+      text: """
+        SELECT username
+        FROM PublicUsers u
+        WHERE to_tsvector(u.username) @@ plainto_tsquery( $1 )
+        LIMIT $2 OFFSET $3;
+        """
+      values: [ query, limit, offset ]
+
   # Select a user by username.
   @selectUser: (username) ->
     return selectUserQuery =
