@@ -5,6 +5,7 @@ PublicUser  = require '../lib/argumenta/public_user'
 Repo        = require '../lib/argumenta/repo'
 Objects     = require '../lib/argumenta/objects'
 fixtures    = require '../test/fixtures'
+_           = require 'underscore'
 should      = require 'should'
 
 {Argument, Proposition, Commit, Tag} = Objects
@@ -443,8 +444,8 @@ describeStorageTests = (storage, type) ->
             storage.getTagsFor targetHashes, (err, tags) ->
               should.not.exist err
               tags.length.should.equal 2
-              should.ok tag1.equals tags[0]
-              should.ok tag2.equals tags[1]
+              should.ok _.some tags, (t) -> t.equals tag1
+              should.ok _.some tags, (t) -> t.equals tag2
               done()
 
     describe 'getTagsPlusSources( targetHashes, callback )', ->
@@ -456,10 +457,10 @@ describeStorageTests = (storage, type) ->
               tags.length.should.equal 2
               sources.length.should.equal 0
               commits.length.should.equal 2
-              should.ok tag1.equals tags[0]
-              should.ok tag2.equals tags[1]
-              should.ok tag1Commit.equals commits[0]
-              should.ok tag2Commit.equals commits[1]
+              should.ok _.some tags, (t) -> t.equals tag1
+              should.ok _.some tags, (t) -> t.equals tag2
+              should.ok _.some commits, (c) -> c.equals tag1Commit
+              should.ok _.some commits, (c) -> c.equals tag2Commit
               done()
 
       it 'should retrieve support tags, sources, and commits', (done) ->
