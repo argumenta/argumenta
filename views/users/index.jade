@@ -7,4 +7,6 @@ block content
     ul.users
       each user in users
         li
-          a(href="/#{user.username}") #{user.username}
+          a(href="/#{user.username}")
+            img.avatar(src="https://secure.gravatar.com/avatar/#{user.gravatarId}?rating=pg&default=identicon&size=50px")
+            | #{user.username}
