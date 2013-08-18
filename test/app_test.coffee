@@ -595,6 +595,18 @@ describeAppTests = (type, app) ->
               json.arguments[0].should.eql argData
               done()
 
+        it 'should find a user by username', (done) ->
+          session (user, get, post) ->
+            query = encodeURIComponent(user.username)
+            get '/search/' + query + '.json', (err, res) ->
+              should.not.exist err
+              res.status.should.equal 200
+              json = res.body
+              json.users.should.be.an.instanceOf Array
+              json.users.length.should.equal 1
+              json.users[0].username.should.equal user.username
+              done()
+
     describe '/logout', ->
       describe 'GET /logout', ->
         it 'should clear session cookie and redirect to index', (done) ->
