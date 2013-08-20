@@ -37,6 +37,9 @@ body.argumenta .wrapper {
   background-image: -ms-linear-gradient(left, rgba(135,251,234,0.5) 0%, rgba(61,116,194,0.5) 100%), url("/images/dark-stripes.svg");
   background-image: linear-gradient(left, rgba(135,251,234,0.5) 0%, rgba(61,116,194,0.5) 100%), url("/images/dark-stripes.svg");
 }
+body.argumenta .sidebar-contents {
+  padding: 0 5px;
+}
 *.argumenta form {
   background-color: #eee;
   border: 10px solid #fff;
