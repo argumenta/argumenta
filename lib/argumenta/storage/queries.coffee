@@ -107,6 +107,20 @@ class Queries
         """
       values: usernames
 
+  # Select metadata for users by username.
+  @selectUsersMetadata: (usernames) ->
+    placeholders = placeholdersFor usernames
+    return selectUsersMetadataQuery =
+      text: """
+        SELECT username,
+               COUNT(DISTINCT r.reponame) AS repos_count
+        FROM PublicUsers
+        JOIN Repos r USING (username)
+        WHERE username IN (#{ placeholders })
+        GROUP BY username;
+        """
+      values: usernames
+
   # List users, starting with the latest.
   @listUsers: (opts={}) ->
     limit  = opts.limit  ? 100

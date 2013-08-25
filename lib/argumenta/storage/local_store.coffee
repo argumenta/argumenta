@@ -75,6 +75,18 @@ class LocalStore extends Base
 
     return cb null, users
 
+  # Gets public metadata for users by usernames.
+  getUsersMetadata: (usernames, cb) ->
+    metadata = []
+    for name in usernames
+      data =
+        username    : name
+        repos_count : 0
+      for reponame, hash of @repos[name]
+        data.repos_count++
+      metadata.push data
+    return cb null, metadata
+
   # Gets a user's password hash.
   getPasswordHash: (username, cb) ->
     u = @users[username]

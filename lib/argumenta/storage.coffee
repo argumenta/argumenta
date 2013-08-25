@@ -120,6 +120,35 @@ class Storage extends Base
       return cb new @Error "Failed getting users from store." if err
       return cb null, users
 
+  # Get metadata for users by usernames.
+  #
+  # @param [Array<String>] usernames
+  # @param [Function]      cb(err, metadata)
+  # @param [StorageError]  err
+  # @param [Array<Object>] metadata
+  getUsersMetadata: (usernames, cb) ->
+    @store.getUsersMetadata usernames, (err, metadata) ->
+      return cb new @Error "Failed getting users metadata from store." if err
+      return cb null, metadata
+
+  # Get users with metadata by usernames, omitting sensitive fields.
+  #
+  # @param [Array<String>]     usernames
+  # @param [Function]          cb(err, users)
+  # @param [StorageError]      err
+  # @param [Array<PublicUser>] users
+  getUsersWithMetadata: (usernames, cb) ->
+    @store.getUsers usernames, (er1, users) =>
+      @store.getUsersMetadata usernames, (er2, metadata) =>
+        if err = er1 or er2
+          return cb new @Error "Failed getting users with metadata from store."
+        byUsername = {}
+        for m in metadata
+          byUsername[m.username] = m
+        for u in users
+          u.metadata = byUsername[u.username]
+        return cb null, users
+
   # Get repos for a given user.
   #
   # @param [String] username     The username of the repo owner.

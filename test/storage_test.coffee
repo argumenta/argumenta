@@ -171,6 +171,18 @@ describeStorageTests = (storage, type) ->
               should.ok _.some users, (u) -> u.equals pubUser2
               done()
 
+    describe 'getUsersWithMetadata( usernames, callback )', ->
+      it 'should get stored users with metadata', (done) ->
+        withArgumentRepo (user1, repo1, commit1, argument1) ->
+          withUser (user2) ->
+            usernames = [ user1.username, user2.username ]
+            storage.getUsersWithMetadata usernames, (err, users) ->
+              should.not.exist err
+              users.length.should.equal 2
+              should.ok _.some users, (u) -> u.metadata.repos_count == 1
+              should.ok _.some users, (u) -> u.metadata.repos_count == 0
+              done()
+
     describe 'clearAll( opts, callback )', ->
       it 'should delete all stored users', (done) ->
         tester = fixtures.validUser()

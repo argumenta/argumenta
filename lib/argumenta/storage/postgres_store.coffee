@@ -150,6 +150,26 @@ class PostgresStore extends Base
       publicUsers.push new PublicUser( row ) for row in res.rows
       return callback null, publicUsers
 
+  # Gets public metadata for users by usernames.
+  # @api public
+  getUsersMetadata: (usernames, callback) ->
+    query = Queries.selectUsersMetadata(usernames)
+    @query query, (err, res) =>
+      return callback err if err
+
+      byUsername = {}
+      for row in res.rows
+        byUsername[row.username] = row
+
+      metadata = []
+      for name in usernames
+        byUsername[name] ?=
+          username    : name
+          repos_count : 0
+        metadata.push byUsername[name]
+
+      return callback null, metadata
+
   # Gets a list of repos for the given user.
   # @api public
   getUserRepos: (username, opts, callback) ->
