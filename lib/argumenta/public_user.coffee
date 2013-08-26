@@ -41,11 +41,13 @@ class PublicUser extends User
   # @api public
   # @return [Object] The user data.
   data: () ->
-    return {
+    data = {
       username:     @username
       join_date:    @joinDate.toISOString()
       gravatar_id:  @gravatarId
     }
+    data.metadata = @metadata if @metadata
+    return data
 
   # Checks for equality with another user instance.
   #

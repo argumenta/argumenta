@@ -39,6 +39,12 @@ describe 'PublicUser', ->
         gravatar_id:  user.gravatarId
       }
 
+    it 'should include any metadata', ->
+      user = fixtures.validPublicUser()
+      user.metadata = fixtures.validUserMetadata()
+      data = user.data()
+      data.metadata.should.equal user.metadata
+
   describe 'equals( user )', ->
     it 'should return true for an identical user', ->
       userA = fixtures.validPublicUser()

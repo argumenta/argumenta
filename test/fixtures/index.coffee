@@ -54,6 +54,12 @@ class Fixtures
       join_ip:       @validJoinIp()
     }
 
+  @validUserMetadata: () ->
+    return {
+      username:    @validUsername()
+      repos_count: 0
+    }
+
   @validPublicUserData: () ->
     return {
       username:      @validUsername()
