@@ -1,3 +1,4 @@
+_         = require 'underscore'
 Base      = require '../argumenta/base'
 Argument  = require '../argumenta/objects/argument'
 Commit    = require '../argumenta/objects/commit'
@@ -61,5 +62,36 @@ class Arguments extends Base
           return callback err, commit if err
           @storage.addRepo username, argument.repo(), commit.sha1(), (err) =>
             return callback err, commit
+
+  # Gets argument resources by hashes.
+  #
+  # @api public
+  # @param [Array<String>]   hashes
+  # @param [Function]        callback(err, arguments)
+  # @param [Error]           err
+  # @param [Array<Argument>] arguments
+  get: (hashes, callback) ->
+    unless _.isArray hashes
+      return new @Error "Hashes must be an array."
+
+    if hashes.length is 0
+      return callback null, []
+
+    @storage.getArguments hashes, (er1, args) =>
+      @storage.getCommitsFor hashes, (er2, commits) =>
+        if err = er1 or er2
+          return callback new @Error "Failed getting arguments and commits." if err
+
+        byHash = {}
+        for arg in args
+          byHash[arg.sha1()] = arg
+        for commit in commits
+          byHash[commit.targetSha1].commit = commit
+
+        results = []
+        for hash in hashes
+          results.push byHash[hash]
+
+        return callback null, results
 
 module.exports = Arguments
