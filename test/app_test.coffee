@@ -592,7 +592,8 @@ describeAppTests = (type, app) ->
               json = res.body
               json.arguments.should.be.an.instanceOf Array
               json.arguments.length.should.equal 1
-              json.arguments[0].should.eql argData
+              json.arguments[0].should.include argData
+              json.arguments[0].commit.committer.should.equal user.username
               done()
 
         it 'should find a user by username', (done) ->

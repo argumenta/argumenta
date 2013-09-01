@@ -8,7 +8,7 @@ exports.query = (req, res) ->
   options =
     offset : req.query.offset
 
-  argumenta.storage.search query, options, (err, results) ->
+  argumenta.search.query query, options, (err, results) ->
     if err
       return res.failed '/search', err.message,
         status: Errors.statusFor err
