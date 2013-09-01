@@ -277,12 +277,16 @@ class LocalStore extends Base
     args = []
     for k, a of @arguments.bySha1
       if a.title.match regex
-        args.push new Argument a.data()
+        if options.return_keys
+        then args.push a.sha1()
+        else args.push new Argument a.data()
 
     users = []
     for k, u of @users
       if u.username.match regex
-        users.push new PublicUser u
+        if options.return_keys
+        then users.push u.username
+        else users.push new PublicUser u
 
     results =
       arguments : args

@@ -501,6 +501,7 @@ class Storage extends Base
   #
   # @param [String]             query
   # @param [Object]             options
+  # @param [Boolean]            options.return_keys
   # @param [Function]           cb(err, results)
   # @param [Object]             results
   # @param [Array<PublicUser>]  results.users

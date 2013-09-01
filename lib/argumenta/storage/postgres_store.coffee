@@ -12,7 +12,7 @@ Session      = null
 {Argument, Proposition, Commit, Tag} = Objects
 
 #
-# PostgresStore provides a datastore backed by PostgresSQL.  
+# PostgresStore provides a datastore backed by PostgreSQL.  
 # Designed for use with the Storage module.
 #
 class PostgresStore extends Base
@@ -512,9 +512,13 @@ class PostgresStore extends Base
     argQuery = Queries.searchArguments query, options
     @query argQuery, (err, res) =>
       return callback err if err
+      return callback null, [] if res.rows.length is 0
 
       argHashes = []
       argHashes.push row.argument_sha1 for row in res.rows
+      if options.return_keys
+        return callback null, argHashes
+
       @getArguments argHashes, (err, args) =>
         return callback err if err
         return callback null, args
@@ -525,9 +529,13 @@ class PostgresStore extends Base
     userQuery = Queries.searchUsers query, options
     @query userQuery, (err, res) =>
       return callback err if err
+      return callback null, [] if res.rows.length is 0
 
       usernames = []
       usernames.push row.username for row in res.rows
+      if options.return_keys
+        return callback null, usernames
+
       @getUsers usernames, (err, users) =>
         return callback err if err
         return callback null, users
