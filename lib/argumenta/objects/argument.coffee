@@ -117,7 +117,7 @@ class Argument
   # @api public
   # @return [Object] The argument data.
   data: () ->
-    return {
+    data = {
       title: @title
       premises: _.map @premises, (prop) -> prop.text
       conclusion: @conclusion.text
@@ -125,6 +125,8 @@ class Argument
       sha1: @sha1()
       repo: @repo()
     }
+    data.commit = @commit.data() if @commit
+    return data
 
   ### Validation ###
 

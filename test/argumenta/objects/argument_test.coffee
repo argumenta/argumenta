@@ -1,6 +1,7 @@
 should      = require 'should'
 Argument    = require '../../../lib/argumenta/objects/argument'
 Proposition = require '../../../lib/argumenta/objects/proposition'
+Fixtures    = require '../../../test/fixtures'
 
 describe 'Argument', ->
 
@@ -120,6 +121,12 @@ describe 'Argument', ->
         sha1: argument.sha1()
         repo: argument.repo()
       }
+
+    it 'should include commit data if present', ->
+      argument = new Argument title, premises, conclusion
+      argument.commit = Fixtures.validCommit()
+      data = argument.data()
+      data.commit.should.eql argument.commit.data()
 
   describe 'Argument.sanitizeTitle( text )', ->
     it 'should replace newlines with spaces', ->
