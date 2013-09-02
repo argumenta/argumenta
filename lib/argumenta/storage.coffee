@@ -304,6 +304,33 @@ class Storage extends Base
       return cb new @RetrievalError "Failed getting arguments from the store." if err
       return cb null, args
 
+  # Get arguments along with metadata from the store by hashes.
+  #
+  # @param [Array<String>]   hashes
+  # @param [Function]        cb(err, args)
+  # @param [StorageError]    err
+  # @param [Array<Argument>] args
+  getArgumentsWithMetadata: (hashes, cb) ->
+    @store.getArguments hashes, (err, args) =>
+      return cb new @RetrievalError "Failed getting arguments from the store." if err
+
+      propHashes = []
+      for a in args
+        for p in a.propositions
+          propHashes.push p.sha1()
+
+      @store.getPropositionsMetadata propHashes, (err, propMetadata) =>
+        return cb new @RetrievalError "Failed getting propositions metadata." if err
+
+        byHash = {}
+        for md in propMetadata
+          byHash[md.sha1] = md
+        for a in args
+          for p in a.propositions
+            p.metadata = byHash[p.sha1()]
+
+        return cb null, args
+
   # Add an array of propositions to the store.
   #
   # @param [Array<Proposition>] propositions The propositions array.

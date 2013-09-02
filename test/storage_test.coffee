@@ -332,6 +332,17 @@ describeStorageTests = (storage, type) ->
               args[1].equals(argument2).should.equal true
               done()
 
+    describe 'getArgumentsWithMetadata( hashes, callback )', ->
+      it 'should retrieve stored arguments with propositions metadata', (done) ->
+        withArgument (user1, commit1, argument1) ->
+          withArgument (user2, commit2, argument2) ->
+            hashes = [argument1.sha1(), argument2.sha1()]
+            storage.getArgumentsWithMetadata hashes, (err, args) ->
+              should.not.exist err
+              args.length.should.equal 2
+              should.exist args[0].propositions[0].metadata
+              done()
+
     #### Commits ####
 
     describe 'addCommit( commit, callback )', ->
