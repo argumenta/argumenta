@@ -128,6 +128,13 @@ describe 'Argument', ->
       data = argument.data()
       data.commit.should.eql argument.commit.data()
 
+    it 'should include propositions data if metadata present', ->
+      argument = new Argument title, premises, conclusion
+      for p in argument.propositions
+        p.metadata = Fixtures.validPropositionMetadata(p)
+      data = argument.data()
+      data.propositions[0].should.eql argument.propositions[0].data()
+
   describe 'Argument.sanitizeTitle( text )', ->
     it 'should replace newlines with spaces', ->
       text = '\ntitle:\n\nsubtitle\n'

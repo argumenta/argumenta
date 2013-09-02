@@ -126,6 +126,9 @@ class Argument
       repo: @repo()
     }
     data.commit = @commit.data() if @commit
+    if @propositions[0].metadata
+      data.propositions = []
+      data.propositions.push p.data() for p in @propositions
     return data
 
   ### Validation ###
