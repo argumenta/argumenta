@@ -77,7 +77,7 @@ class Arguments extends Base
     if hashes.length is 0
       return callback null, []
 
-    @storage.getArguments hashes, (er1, args) =>
+    @storage.getArgumentsWithMetadata hashes, (er1, args) =>
       @storage.getCommitsFor hashes, (er2, commits) =>
         if err = er1 or er2
           return callback new @Error "Failed getting arguments and commits." if err

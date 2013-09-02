@@ -57,7 +57,7 @@ describe 'Arguments', ->
                 done()
 
   describe 'arguments.get( hashes, callback )', ->
-    it 'it should get argument resources by hashes', (done) ->
+    it 'should get argument resources by hashes', (done) ->
       withArgument (user1, commit1, argument1) ->
         withArgument (user2, commit2, argument2) ->
           hashes = [ argument1.sha1(), argument2.sha1() ]
@@ -65,3 +65,10 @@ describe 'Arguments', ->
             should.ok args[0].equals argument1
             should.ok args[1].equals argument2
             done()
+
+    it 'should include metadata for propositions', (done) ->
+      withArgument (user1, commit1, argument1) ->
+        hashes = [ argument1.sha1() ]
+        argumenta.arguments.get hashes, (err, args) ->
+          should.exist args[0].propositions[0].metadata
+          done()
