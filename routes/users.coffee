@@ -35,9 +35,9 @@ exports.show = (req, res) ->
   unless name?
     return res.reply 'index', error: "Error getting user: Missing name."
 
-  argumenta.storage.getUser name, (err, user) ->
-    return res.notFound "User '#{name}' not found" if err
-    return res.reply 'users/user', user: user
+  argumenta.storage.getUsersWithMetadata [name], (err, users) ->
+    return res.notFound "User '#{name}' not found." if err or !users.length
+    return res.reply 'users/user', user: users[0]
 
 # Show public overview of a user, including repos
 exports.public = (req, res) ->
