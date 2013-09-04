@@ -39,7 +39,7 @@
 
 # Argumenta API
 
-## [Overview](#overview) / [Features](#features) / [Routes](#routes) / [Usage](#usage) / [Changes](#changes)
+## [Overview](#overview) / [Routes](#routes) / [Resources](#resources) / [Usage](#usage) / [Changes](#changes)
 
 <a name="overview"></a>
 ## Overview
@@ -48,11 +48,7 @@ The Argumenta API provides a RESTful interface to data in JSON form.
 
 It can be used to access resources including Users, Repos, Arguments, Propositions, and Tags.  
 Search is now also available.
-Planned resources include Follows and Activity.
-
-<a name="features"></a>
-## Features
-
+Planned resources include Follows and Activity.  
 The current version (0.1.0) provides the following features:
 
 + Read access for general use by unauthenticated clients.
@@ -182,6 +178,118 @@ The current version (0.1.0) provides the following features:
     <td width="300px">Delete a repo.</td>
   </tr>
 </table>
+
+# Resources
+
+## User
+
+    user: {
+      username:    [String]
+      join_date:   [String]
+      gravatar_id: [String]
+      metadata:    [UserMetadata]   // PLANNED
+    }
+
+### UserMetadata
+
+    metadata: {
+      repos_count: [Number]
+    }
+
+### UserProfile
+
+    user:  [User]
+    repos: [Array<Repo>]
+
+## Repo
+
+    username: [String]
+    reponame: [String]
+    user:     [User]
+    commit:   [Commit]
+    target:   [Argument]
+
+## Commit
+
+    commit: {
+      object_type:  [String]
+      sha1:         [String]
+      target_type:  [String]
+      target_sha1:  [String]
+      committer:    [String]
+      commit_date:  [String]
+      parent_sha1s: [Array<String>]
+      host:         [String]
+    }
+
+## Argument
+
+    argument: {
+      title:        [String]
+      premises:     [Array<String>]
+      conclusion:   [String]
+      object_type:  [String]
+      sha1:         [String]
+      repo:         [String]
+      propositions: [Array<Proposition>] // PLANNED
+    }
+
+## Proposition
+
+    proposition: {
+      text:        [String]
+      object_type: [String]
+      sha1:        [String]
+      metadata:    [PropositionMetadata]
+    }
+
+### PropositionMetadata
+
+    metadata: {
+      tag_sha1s: {
+        support:  [Array<String>]
+        dispute:  [Array<String>]
+        citation: [Array<String>]
+      }
+      tag_counts: {
+        support:  [Number]
+        dispute:  [Number]
+        citation: [Number]
+      }
+    }
+
+## Tag
+
+### SupportTag, DisputeTag
+
+    tag: {
+      object_type: [String]
+      tag_type:    [String]
+      target_type: [String]
+      target_sha1: [String]
+      source_type: [String]
+      source_sha1: [String]
+    }
+
+### CitationTag
+
+    tag: {
+      object_type:   [String]
+      tag_type:      [String]
+      target_type:   [String]
+      target_sha1:   [String]
+      citation_text: [String]
+    }
+
+## Search
+
+    results: {
+      users:        [Array<User>]
+      arguments:    [Array<Argument>]
+      propositions: [Array<Proposition>] // PLANNED
+      tags:         [Array<Tag>]         // PLANNED
+    }
+
 
 <a name="usage"></a>
 ## Usage
@@ -425,6 +533,7 @@ For convenience, you may use the `query` param in the URL's path or query string
       -b ~/tmp/cookies -c ~/tmp/cookies
 
 -->
+
 
 # Session Routes (Authenticated)
 
