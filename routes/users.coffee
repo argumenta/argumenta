@@ -45,12 +45,7 @@ exports.public = (req, res) ->
   unless name?
     return res.reply 'index', error: "Username missing."
 
-  argumenta.storage.getUser name, (err, user) ->
+  argumenta.users.get name, (err, user) ->
     return res.notFound "User '#{name}' not found." if err
-
-    repoOpts = { offset: 0, limit: 50, latest: true }
-    argumenta.storage.getUserRepos name, repoOpts, (err, repos) ->
-      return res.notFound "Failed getting repos for user '#{name}'." if err
-      return res.reply 'users/public',
-        user: user,
-        repos: repos
+    return res.reply 'users/public',
+      user: user

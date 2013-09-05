@@ -654,8 +654,8 @@ describeAppTests = (type, app) ->
               json.user.username.should.equal user.username
               json.user.join_date.should.match /^\d{4}-\d{2}-\d{2}.\d{2}:\d{2}:\d{2}.\d{3}Z$/
               json.user.gravatar_id.should.match /^[0-9,a-f]{32}$/
-              json.repos[0].username.should.equal user.username
-              json.repos[0].target.should.eql argument
+              json.user.repos[0].username.should.equal user.username
+              json.user.repos[0].target.should.eql argument
               done()
 
     describe '/:name/:repo.:format?', ->

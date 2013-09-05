@@ -10,8 +10,8 @@ block content
   .content-pane
     h2.title-pane.center
       b Arguments &amp; Activity
-    if repos.length
-      for repo in repos
+    if user.repos.length
+      for repo in user.repos
         - var argument = repo.target
         - var commit = repo.commit
         include ../partials/argument
