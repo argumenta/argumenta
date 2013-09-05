@@ -47,6 +47,7 @@ class PublicUser extends User
       gravatar_id:  @gravatarId
     }
     data.metadata = @metadata if @metadata
+    data.repos = (r.data() for r in @repos) if @repos
     return data
 
   # Checks for equality with another user instance.

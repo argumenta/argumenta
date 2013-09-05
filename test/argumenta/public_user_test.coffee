@@ -45,6 +45,13 @@ describe 'PublicUser', ->
       data = user.data()
       data.metadata.should.equal user.metadata
 
+    it 'should include repos if present', ->
+      user = fixtures.validPublicUser()
+      repo = fixtures.validRepo()
+      user.repos = [ repo ]
+      data = user.data()
+      data.repos[0].should.eql repo.data()
+
   describe 'equals( user )', ->
     it 'should return true for an identical user', ->
       userA = fixtures.validPublicUser()
