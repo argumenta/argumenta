@@ -67,4 +67,24 @@ class Users extends Base
           return callback err, null if err
           return callback null, publicUser
 
+  # Gets a user resource by username, with metadata and latest repos.
+  #
+  # @param [String]     username
+  # @param [Function]   callback(err, user)
+  # @param [Error]      err
+  # @param [PublicUser] user
+  get: (username, callback) ->
+
+    @storage.getUsersWithMetadata [username], (err, users) =>
+      return callback err if err
+      return callback new @Error "User not found." unless users.length > 0
+
+      user = users[0]
+      repoOpts = { offset: 0, limit: 50, latest: true }
+      @storage.getUserRepos username, repoOpts, (err, repos) =>
+        return callback err if err
+        user.repos = repos
+
+        return callback null, user
+
 module.exports = Users
