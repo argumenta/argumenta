@@ -19,7 +19,7 @@
     Content-Type: application/json
     Content-Length: 221
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -27,7 +27,7 @@
       "message": "Welcome aboard, tester!",
       "user": {
         "username": "tester",
-        "join_date": "2013-09-04T00:50:33.988Z",
+        "join_date": "2013-09-07T01:40:35.062Z",
         "gravatar_id": "cf3321b32988beb65273932bf8de619e"
       },
       "error": null
@@ -50,7 +50,7 @@
     Content-Type: application/json
     Content-Length: 378
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -87,7 +87,7 @@
     Content-Type: application/json
     Content-Length: 423
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -122,7 +122,7 @@
     Content-Type: application/json
     Content-Length: 431
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -292,7 +292,8 @@ The current version (0.1.0) provides the following features:
       username:    [String]
       join_date:   [String]
       gravatar_id: [String]
-      metadata:    [UserMetadata]   // PLANNED
+      metadata:    [UserMetadata]
+      repos:       [Array<Repo>]    // Optional
     }
 
 ### UserMetadata
@@ -300,11 +301,6 @@ The current version (0.1.0) provides the following features:
     metadata: {
       repos_count: [Number]
     }
-
-### UserProfile
-
-    user:  [User]
-    repos: [Array<Repo>]
 
 ## Repo
 
@@ -336,7 +332,8 @@ The current version (0.1.0) provides the following features:
       object_type:  [String]
       sha1:         [String]
       repo:         [String]
-      propositions: [Array<Proposition>] // PLANNED
+      commit:       [Commit]             // Optional
+      propositions: [Array<Proposition>] // Optional
     }
 
 ## Proposition
@@ -429,16 +426,20 @@ Here, we access the user `tester`, replacing the regular `.json` extension with 
     Access-Control-Allow-Methods: GET,PUT,POST
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: text/javascript
-    Content-Length: 177
+    Content-Length: 253
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     jsonpCallback({
       "user": {
         "username": "tester",
-        "join_date": "2013-09-04T00:50:33.988Z",
-        "gravatar_id": "cf3321b32988beb65273932bf8de619e"
+        "join_date": "2013-09-07T01:40:35.062Z",
+        "gravatar_id": "cf3321b32988beb65273932bf8de619e",
+        "metadata": {
+          "username": "tester",
+          "repos_count": 1
+        }
       },
       "error": null
     });
@@ -460,16 +461,20 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Methods: GET,PUT,POST
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: text/javascript
-    Content-Length: 168
+    Content-Length: 244
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     myCb({
       "user": {
         "username": "tester",
-        "join_date": "2013-09-04T00:50:33.988Z",
-        "gravatar_id": "cf3321b32988beb65273932bf8de619e"
+        "join_date": "2013-09-07T01:40:35.062Z",
+        "gravatar_id": "cf3321b32988beb65273932bf8de619e",
+        "metadata": {
+          "username": "tester",
+          "repos_count": 1
+        }
       },
       "error": null
     });
@@ -497,16 +502,20 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Methods: GET,PUT,POST
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
-    Content-Length: 161
+    Content-Length: 237
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
       "user": {
         "username": "tester",
-        "join_date": "2013-09-04T00:50:33.988Z",
-        "gravatar_id": "cf3321b32988beb65273932bf8de619e"
+        "join_date": "2013-09-07T01:40:35.062Z",
+        "gravatar_id": "cf3321b32988beb65273932bf8de619e",
+        "metadata": {
+          "username": "tester",
+          "repos_count": 1
+        }
       },
       "error": null
     }
@@ -531,50 +540,54 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Methods: GET,PUT,POST
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
-    Content-Length: 1109
-    ETag: "-1632831142"
+    Content-Length: 1249
+    ETag: "124841101"
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
       "user": {
         "username": "tester",
-        "join_date": "2013-09-04T00:50:33.988Z",
-        "gravatar_id": "cf3321b32988beb65273932bf8de619e"
-      },
-      "repos": [
-        {
+        "join_date": "2013-09-07T01:40:35.062Z",
+        "gravatar_id": "cf3321b32988beb65273932bf8de619e",
+        "metadata": {
           "username": "tester",
-          "reponame": "my-argument-^_^",
-          "user": {
+          "repos_count": 1
+        },
+        "repos": [
+          {
             "username": "tester",
-            "join_date": "2013-09-04T00:50:33.988Z",
-            "gravatar_id": "cf3321b32988beb65273932bf8de619e"
-          },
-          "commit": {
-            "object_type": "commit",
-            "sha1": "dbfce5995f7d66102bc88b51ea1afc08f3464539",
-            "target_type": "argument",
-            "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
-            "committer": "tester",
-            "commit_date": "2013-09-04T00:50:34Z",
-            "parent_sha1s": [],
-            "host": "testing.argumenta.io"
-          },
-          "target": {
-            "title": "My Argument ^_^",
-            "premises": [
-              "First premise.",
-              "Second premise."
-            ],
-            "conclusion": "The conclusion! :D",
-            "object_type": "argument",
-            "sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
-            "repo": "my-argument-^_^"
+            "reponame": "my-argument-^_^",
+            "user": {
+              "username": "tester",
+              "join_date": "2013-09-07T01:40:35.062Z",
+              "gravatar_id": "cf3321b32988beb65273932bf8de619e"
+            },
+            "commit": {
+              "object_type": "commit",
+              "sha1": "c211303b5384c1185097450e9b5e413e4ba5e28f",
+              "target_type": "argument",
+              "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
+              "committer": "tester",
+              "commit_date": "2013-09-07T01:40:35Z",
+              "parent_sha1s": [],
+              "host": "testing.argumenta.io"
+            },
+            "target": {
+              "title": "My Argument ^_^",
+              "premises": [
+                "First premise.",
+                "Second premise."
+              ],
+              "conclusion": "The conclusion! :D",
+              "object_type": "argument",
+              "sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
+              "repo": "my-argument-^_^"
+            }
           }
-        }
-      ],
+        ]
+      },
       "error": null
     }
 
@@ -604,7 +617,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Content-Type: application/json
     Content-Length: 898
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -613,16 +626,16 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
         "reponame": "my-argument-^_^",
         "user": {
           "username": "tester",
-          "join_date": "2013-09-04T00:50:33.988Z",
+          "join_date": "2013-09-07T01:40:35.062Z",
           "gravatar_id": "cf3321b32988beb65273932bf8de619e"
         },
         "commit": {
           "object_type": "commit",
-          "sha1": "dbfce5995f7d66102bc88b51ea1afc08f3464539",
+          "sha1": "c211303b5384c1185097450e9b5e413e4ba5e28f",
           "target_type": "argument",
           "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
           "committer": "tester",
-          "commit_date": "2013-09-04T00:50:34Z",
+          "commit_date": "2013-09-07T01:40:35Z",
           "parent_sha1s": [],
           "host": "testing.argumenta.io"
         },
@@ -655,7 +668,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 
 #### Notes
 
-+ Includes the argument's original commit for convenience.
++ Includes the argument's propositions and original commit for convenience.
 
 #### Example
 
@@ -668,9 +681,10 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Methods: GET,PUT,POST
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
-    Content-Length: 629
+    Content-Length: 2256
+    ETag: "402048280"
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -683,17 +697,77 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
         "conclusion": "The conclusion! :D",
         "object_type": "argument",
         "sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
-        "repo": "my-argument-^_^"
-      },
-      "commit": {
-        "object_type": "commit",
-        "sha1": "dbfce5995f7d66102bc88b51ea1afc08f3464539",
-        "target_type": "argument",
-        "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
-        "committer": "tester",
-        "commit_date": "2013-09-04T00:50:34Z",
-        "parent_sha1s": [],
-        "host": "testing.argumenta.io"
+        "repo": "my-argument-^_^",
+        "commit": {
+          "object_type": "commit",
+          "sha1": "c211303b5384c1185097450e9b5e413e4ba5e28f",
+          "target_type": "argument",
+          "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
+          "committer": "tester",
+          "commit_date": "2013-09-07T01:40:35Z",
+          "parent_sha1s": [],
+          "host": "testing.argumenta.io"
+        },
+        "propositions": [
+          {
+            "text": "First premise.",
+            "object_type": "proposition",
+            "sha1": "49cb32b909f2cdfad750fd76af83a126414d0e7a",
+            "metadata": {
+              "sha1": "49cb32b909f2cdfad750fd76af83a126414d0e7a",
+              "tag_sha1s": {
+                "support": [],
+                "dispute": [],
+                "citation": []
+              },
+              "tag_counts": {
+                "support": 0,
+                "dispute": 0,
+                "citation": 0
+              }
+            }
+          },
+          {
+            "text": "Second premise.",
+            "object_type": "proposition",
+            "sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
+            "metadata": {
+              "sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
+              "tag_sha1s": {
+                "support": [
+                  "08f6c25476af45f8d8ee4cb0601740bc7bf098ab"
+                ],
+                "dispute": [],
+                "citation": [
+                  "412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae"
+                ]
+              },
+              "tag_counts": {
+                "support": 1,
+                "dispute": 0,
+                "citation": 1
+              }
+            }
+          },
+          {
+            "text": "The conclusion! :D",
+            "object_type": "proposition",
+            "sha1": "dfe2394f3cdad27e56023cd0574be36b9a5f9e6e",
+            "metadata": {
+              "sha1": "dfe2394f3cdad27e56023cd0574be36b9a5f9e6e",
+              "tag_sha1s": {
+                "support": [],
+                "dispute": [],
+                "citation": []
+              },
+              "tag_counts": {
+                "support": 0,
+                "dispute": 0,
+                "citation": 0
+              }
+            }
+          }
+        ]
       },
       "error": null
     }
@@ -724,7 +798,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Content-Length: 1789
     ETag: "1174394911"
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -832,7 +906,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Content-Type: application/json
     Content-Length: 565
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -887,7 +961,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Content-Type: application/json
     Content-Length: 683
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -938,9 +1012,9 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 1527
-    ETag: "176860006"
+    ETag: "1305439715"
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -973,21 +1047,21 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "commits": [
         {
           "object_type": "commit",
-          "sha1": "15a6093c84d545d6136438d1390481d2ce79d6eb",
+          "sha1": "003e6e9fd5f3b9b1c15c29371596ee259e0d831c",
           "target_type": "tag",
           "target_sha1": "08f6c25476af45f8d8ee4cb0601740bc7bf098ab",
           "committer": "tester",
-          "commit_date": "2013-09-04T00:50:34Z",
+          "commit_date": "2013-09-07T01:40:35Z",
           "parent_sha1s": [],
           "host": "testing.argumenta.io"
         },
         {
           "object_type": "commit",
-          "sha1": "1b7a5f7935e3675fdef988fbbb4e23bcb94adccd",
+          "sha1": "6938eb580e1ca9665715389ff0728fa2bc859a92",
           "target_type": "tag",
           "target_sha1": "412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae",
           "committer": "tester",
-          "commit_date": "2013-09-04T00:50:34Z",
+          "commit_date": "2013-09-07T01:40:35Z",
           "parent_sha1s": [],
           "host": "testing.argumenta.io"
         }
@@ -1025,7 +1099,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Content-Type: application/json
     Content-Length: 329
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -1074,9 +1148,9 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 2442
-    ETag: "-544020393"
+    ETag: "2038856434"
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -1093,11 +1167,11 @@ For convenience, you may use the `query` param in the URL's path or query string
           "repo": "my-argument-^_^",
           "commit": {
             "object_type": "commit",
-            "sha1": "dbfce5995f7d66102bc88b51ea1afc08f3464539",
+            "sha1": "c211303b5384c1185097450e9b5e413e4ba5e28f",
             "target_type": "argument",
             "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
             "committer": "tester",
-            "commit_date": "2013-09-04T00:50:34Z",
+            "commit_date": "2013-09-07T01:40:35Z",
             "parent_sha1s": [],
             "host": "testing.argumenta.io"
           },
@@ -1179,9 +1253,9 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 2442
-    ETag: "-544020393"
+    ETag: "2038856434"
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -1198,11 +1272,11 @@ For convenience, you may use the `query` param in the URL's path or query string
           "repo": "my-argument-^_^",
           "commit": {
             "object_type": "commit",
-            "sha1": "dbfce5995f7d66102bc88b51ea1afc08f3464539",
+            "sha1": "c211303b5384c1185097450e9b5e413e4ba5e28f",
             "target_type": "argument",
             "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
             "committer": "tester",
-            "commit_date": "2013-09-04T00:50:34Z",
+            "commit_date": "2013-09-07T01:40:35Z",
             "parent_sha1s": [],
             "host": "testing.argumenta.io"
           },
@@ -1294,7 +1368,7 @@ For convenience, you may use the `query` param in the URL's path or query string
     Content-Type: application/json
     Content-Length: 372
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -1327,7 +1401,7 @@ For convenience, you may use the `query` param in the URL's path or query string
     Content-Type: application/json
     Content-Length: 86
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -1378,7 +1452,7 @@ For convenience, you may use the `query` param in the URL's path or query string
     Content-Type: application/json
     Content-Length: 221
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -1386,7 +1460,7 @@ For convenience, you may use the `query` param in the URL's path or query string
       "message": "Welcome aboard, tester!",
       "user": {
         "username": "tester",
-        "join_date": "2013-09-04T00:50:33.988Z",
+        "join_date": "2013-09-07T01:40:35.062Z",
         "gravatar_id": "cf3321b32988beb65273932bf8de619e"
       },
       "error": null
@@ -1426,7 +1500,7 @@ For convenience, you may use the `query` param in the URL's path or query string
     Content-Type: application/json
     Content-Length: 76
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:36 GMT
     Connection: keep-alive
 
     {
@@ -1462,7 +1536,7 @@ For convenience, you may use the `query` param in the URL's path or query string
     Content-Type: application/json
     Content-Length: 74
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22%22%7D.AJY%2Fn4IAE2DtwZfmTqqyhynLvqswFNU3sUzlQ0uCPQqZNWHvHZaOBzcAm5e7ZTbbOSDiPUDpiq4ibWFyTb49ww; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:36 GMT
     Connection: keep-alive
 
     {
@@ -1509,7 +1583,7 @@ For convenience, you may use the `query` param in the URL's path or query string
     Content-Type: application/json
     Content-Length: 378
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -1579,7 +1653,7 @@ Required for **commentary** tags:
     Content-Type: application/json
     Content-Length: 423
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -1615,7 +1689,7 @@ Required for **commentary** tags:
     Content-Type: application/json
     Content-Length: 431
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:34 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {
@@ -1670,7 +1744,7 @@ Users may only delete their own repos.
     Content-Type: application/json
     Content-Length: 86
     Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
-    Date: Wed, 04 Sep 2013 00:50:35 GMT
+    Date: Sat, 07 Sep 2013 01:40:35 GMT
     Connection: keep-alive
 
     {

@@ -187,7 +187,8 @@ The current version (0.1.0) provides the following features:
       username:    [String]
       join_date:   [String]
       gravatar_id: [String]
-      metadata:    [UserMetadata]   // PLANNED
+      metadata:    [UserMetadata]
+      repos:       [Array<Repo>]    // Optional
     }
 
 ### UserMetadata
@@ -195,11 +196,6 @@ The current version (0.1.0) provides the following features:
     metadata: {
       repos_count: [Number]
     }
-
-### UserProfile
-
-    user:  [User]
-    repos: [Array<Repo>]
 
 ## Repo
 
@@ -231,7 +227,8 @@ The current version (0.1.0) provides the following features:
       object_type:  [String]
       sha1:         [String]
       repo:         [String]
-      propositions: [Array<Proposition>] // PLANNED
+      commit:       [Commit]             // Optional
+      propositions: [Array<Proposition>] // Optional
     }
 
 ## Proposition
@@ -387,7 +384,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 
 #### Notes
 
-+ Includes the argument's original commit for convenience.
++ Includes the argument's propositions and original commit for convenience.
 
 #### Example
 
