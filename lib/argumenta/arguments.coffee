@@ -82,6 +82,9 @@ class Arguments extends Base
         if err = er1 or er2
           return callback new @Error "Failed getting arguments and commits." if err
 
+        if hashes.length and !args.length
+          return callback new @Errors.NotFound "Arguments not found."
+
         byHash = {}
         for arg in args
           byHash[arg.sha1()] = arg

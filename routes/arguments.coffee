@@ -56,16 +56,14 @@ exports.show = (req, res) ->
   unless hash
     return res.reply 'index', error: "Error getting argument: missing hash."
 
-  argumenta.storage.getArgument hash, (er1, arg) ->
-    argumenta.storage.getCommitsFor [hash], (er2, commits) ->
-      if err = (er1 or er2)
-        return res.reply 'index',
-          error: err.message,
-          status: Errors.statusFor err
-      else
-        return res.reply 'arguments/show',
-          argument: arg
-          commit: commits[0]
+  argumenta.arguments.get [hash], (err, args) ->
+    if err
+      return res.reply 'index',
+        error: err.message,
+        status: Errors.statusFor err
+    else
+      return res.reply 'arguments/show',
+        argument: args[0]
 
 # Get an argument's propositions as html, json, or jsonp
 exports.propositions = (req, res) ->
