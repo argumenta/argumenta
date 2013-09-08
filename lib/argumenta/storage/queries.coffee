@@ -60,8 +60,8 @@ class Queries
 
   ### Queries ###
 
-  # Search arguments by query.
-  @searchArguments: (query, opts={}) ->
+  # Search arguments by title query.
+  @searchArgumentsByTitle: (query, opts={}) ->
     limit  = opts.limit ? 20
     offset = opts.offset ? 0
     return searchArgumentsQuery =
@@ -72,6 +72,32 @@ class Queries
         LIMIT $2 OFFSET $3;
         """
       values: [ query, limit, offset ]
+
+  # Search arguments by full text query.
+  @searchArgumentsByFullText: (query, opts={}) ->
+    limit  = opts.limit ? 20
+    offset = opts.offset ? 0
+    return searchArgumentsQuery =
+      text: """
+        SELECT argument_sha1, full_text
+        FROM (
+               SELECT a.argument_sha1,
+                      u.username || ' ' || a.title || ' ' || string_agg(p.text, ' ')
+                      AS full_text
+               FROM Arguments a
+               JOIN Commits c ON (a.argument_sha1 = c.target_sha1)
+               JOIN Users u ON (c.committer = u.username)
+               JOIN ArgumentPropositions ap USING (argument_sha1)
+               JOIN Propositions p USING (proposition_sha1)
+               GROUP BY c.commit_sha1, a.argument_sha1, u.username
+             ) ft
+        WHERE to_tsvector(full_text) @@ plainto_tsquery( $1 )
+        LIMIT $2 OFFSET $3;
+        """
+      values: [ query, limit, offset ]
+
+  # Search arguments by query.
+  @searchArguments: @searchArgumentsByFullText
 
   # Search users by query.
   @searchUsers: (query, opts={}) ->

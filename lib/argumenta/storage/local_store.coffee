@@ -276,7 +276,9 @@ class LocalStore extends Base
     regex = new RegExp query, 'i'
     args = []
     for k, a of @arguments.bySha1
-      if a.title.match regex
+      fullText = a.title
+      fullText += ' ' + p.text for p in a.propositions
+      if fullText.match regex
         if options.return_keys
         then args.push a.sha1()
         else args.push new Argument a.data()

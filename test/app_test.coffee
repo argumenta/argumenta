@@ -584,9 +584,9 @@ describeAppTests = (type, app) ->
     describe '/search', ->
 
       describe 'GET /search/:query.json', ->
-        it 'should find an argument by title', (done) ->
+        it 'should find an argument by full text query', (done) ->
           sessionWithArgument (user, argData, get, post) ->
-            query = encodeURIComponent(argData.title)
+            query = user.username + ' ' + encodeURIComponent(argData.title)
             get '/search/' + query + '.json', (err, res) ->
               should.not.exist err
               res.status.should.equal 200
