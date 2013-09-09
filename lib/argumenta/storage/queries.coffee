@@ -79,11 +79,14 @@ class Queries
     offset = opts.offset ? 0
     return searchArgumentsQuery =
       text: """
-        SELECT argument_sha1, full_text
+        SELECT argument_sha1,
+               ts_rank(vector, query) AS rank
         FROM (
                SELECT a.argument_sha1,
-                      u.username || ' ' || a.title || ' ' || string_agg(p.text, ' ')
-                      AS full_text
+                      to_tsvector(
+                        u.username || ' ' || a.title || ' ' || string_agg(p.text, ' ')
+                      ) AS vector,
+                      plainto_tsquery( $1 ) AS query
                FROM Arguments a
                JOIN Commits c ON (a.argument_sha1 = c.target_sha1)
                JOIN Users u ON (c.committer = u.username)
@@ -91,7 +94,8 @@ class Queries
                JOIN Propositions p USING (proposition_sha1)
                GROUP BY c.commit_sha1, a.argument_sha1, u.username
              ) ft
-        WHERE to_tsvector(full_text) @@ plainto_tsquery( $1 )
+        WHERE vector @@ query
+        ORDER BY rank DESC
         LIMIT $2 OFFSET $3;
         """
       values: [ query, limit, offset ]

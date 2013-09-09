@@ -1,5 +1,6 @@
 config      = require '../config'
 Storage     = require '../lib/argumenta/storage'
+LocalStore  = require '../lib/argumenta/storage/local_store'
 User        = require '../lib/argumenta/user'
 PublicUser  = require '../lib/argumenta/public_user'
 Repo        = require '../lib/argumenta/repo'
@@ -65,9 +66,11 @@ describeStorageTests = (storage, type) ->
         return callback user, arg, commit
 
     # WithArgument Helper
-    withArgument = (callback) ->
-      withUser (user) ->
+    withArgument = (argument, callback) ->
+      if arguments.length is 1
+        callback = arguments[0]
         argument = fixtures.uniqueArgument()
+      withUser (user) ->
         commit = new Commit 'argument', argument.sha1(), user.username
         storage.addArgument argument, (er1) ->
           storage.addCommit commit, (er2) ->
@@ -643,5 +646,20 @@ describeStorageTests = (storage, type) ->
             results.users.length.should.equal 1
             should.ok results.users[0].equals pubUser
             done()
+
+      it 'should rank results by frequency', (done) ->
+        if storage.store instanceof LocalStore
+          return done()
+        arg1 = fixtures.uniqueArgument()
+        arg2 = fixtures.uniqueArgument()
+        arg1.title = 'spam'
+        arg2.title = 'spam spam eggs and spam'
+        withArgument arg1, (user1, commit1, argument1) ->
+          withArgument arg2, (user1, commit2, argument2) ->
+            query = 'spam'
+            storage.search query, {}, (err, results) ->
+              should.ok results.arguments[0].equals arg2
+              should.ok results.arguments[1].equals arg1
+              done()
 
 describeAllTests()
