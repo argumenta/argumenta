@@ -178,9 +178,11 @@ class Storage extends Base
   # @param [StorageError]  err Any error.
   # @param [Array<Object>] users An object array of users' public fields.
   getAllUsers: (cb) ->
-    @store.getAllUsers (err, users) ->
-      return cb new @Error "Failed getting all users from store." if err
-      return cb null, users
+    @store.listUsers (er1, usernames) =>
+      @getUsersWithMetadata usernames, (er2, users) =>
+        if err = er1 or er2
+          return cb new @Error "Failed getting all users from store."
+        return cb null, users
 
   #### Repos ####
 

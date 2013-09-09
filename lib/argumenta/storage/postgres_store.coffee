@@ -118,15 +118,15 @@ class PostgresStore extends Base
       return callback err if err
       return callback null
 
-  # Gets the *public* properties of all users.
+  # List the usernames of all users.
   # @api public
-  getAllUsers: (callback) ->
+  listUsers: (callback) ->
     @query Queries.listUsers(), (err, res) =>
       return callback err if err
 
-      users = []
-      users.push new PublicUser( row ) for row in res.rows
-      return callback null, users
+      usernames = []
+      usernames.push row.username for row in res.rows
+      return callback null, usernames
 
   # Gets the *public* properties of a user by name.
   # @api public

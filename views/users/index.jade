@@ -7,7 +7,4 @@ block content
     ul.users
       each user in users
         li
-          a(href="/#{user.username}")
-            img.avatar(src="https://secure.gravatar.com/avatar/#{user.gravatarId}?rating=pg&default=identicon&size=50px")
-          a(href="/#{user.username}")
-            span.username #{user.username}
+          .user-widget(data-user=user.data())
