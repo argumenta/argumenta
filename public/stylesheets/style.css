@@ -227,7 +227,7 @@ body.argumenta .sidebar-contents {
 *.argumenta .wrapper .column > h4,
 *.argumenta .wrapper .column > h5,
 *.argumenta .wrapper .column > h6 {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
   color: #fff;
   -webkit-border-radius: 5px;
   border-radius: 5px;
