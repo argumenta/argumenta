@@ -37,6 +37,9 @@ body.argumenta .wrapper {
   background-image: -ms-linear-gradient(left, rgba(135,251,234,0.5) 0%, rgba(61,116,194,0.5) 100%), url("/images/dark-stripes.svg");
   background-image: linear-gradient(left, rgba(135,251,234,0.5) 0%, rgba(61,116,194,0.5) 100%), url("/images/dark-stripes.svg");
 }
+body.argumenta .main {
+  padding: 0 5px;
+}
 body.argumenta .sidebar-contents {
   padding: 0 5px;
 }
@@ -221,12 +224,12 @@ body.argumenta .sidebar-contents {
   text-decoration: underline;
   color: #333;
 }
-*.argumenta .wrapper .column > h1,
-*.argumenta .wrapper .column > h2,
-*.argumenta .wrapper .column > h3,
-*.argumenta .wrapper .column > h4,
-*.argumenta .wrapper .column > h5,
-*.argumenta .wrapper .column > h6 {
+*.argumenta .main > h1,
+*.argumenta .main > h2,
+*.argumenta .main > h3,
+*.argumenta .main > h4,
+*.argumenta .main > h5,
+*.argumenta .main > h6 {
   background: rgba(0,0,0,0.6);
   color: #fff;
   -webkit-border-radius: 5px;
@@ -234,6 +237,7 @@ body.argumenta .sidebar-contents {
   margin: 5px;
   padding: 5px;
   padding: 0.3em;
+  margin: 10px 0;
 }
 *.argumenta .nav-login,
 *.argumenta .nav-logout {
