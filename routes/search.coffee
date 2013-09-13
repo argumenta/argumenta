@@ -8,6 +8,10 @@ exports.query = (req, res) ->
   options =
     offset : req.query.offset
 
+  if /^.json/.test(query) and !req.params.format
+    req.params.format = query.substr 1
+    query = ''
+
   argumenta.search.query query, options, (err, results) ->
     if err
       return res.failed '/search', err.message,
