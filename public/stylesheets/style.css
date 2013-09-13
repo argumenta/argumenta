@@ -366,23 +366,3 @@ body.argumenta .sidebar-contents {
   -webkit-border-radius: 5px;
   border-radius: 5px;
 }
-*.argumenta .users {
-  background: none;
-}
-*.argumenta .users li {
-  padding: 5px;
-  background: #fff;
-  margin: 10px 5px;
-}
-*.argumenta .users .avatar {
-  vertical-align: middle;
-  -webkit-border-radius: 0px;
-  border-radius: 0px;
-  border: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  margin: 5px;
-}
-*.argumenta .users .username {
-  margin: 5px 10px;
-}

@@ -4,7 +4,5 @@ block content
   h1 Users
   h2 All current users
   .content-pane
-    ul.users
-      each user in users
-        li
-          .user-widget(data-user=user.data())
+    each user in users
+      .user-widget(data-user=user.data())
