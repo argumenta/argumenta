@@ -72,7 +72,7 @@ unless config.appMode.match /production|testing|development/
   configure()
 
 # Routes
-app.get  '/',                                              routes.main.index
+app.get  '/.:format?',                                     routes.main.index
 
 app.get  '/users',                                         routes.users.index
 app.post '/users.:format?',                                routes.users.create

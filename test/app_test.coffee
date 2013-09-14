@@ -140,6 +140,15 @@ describeAppTests = (type, app) ->
             res.text.should.match /Sign in.*or.*Join now!/
             done()
 
+      describe 'GET /.json', ->
+        it 'should include latest users and arguments data', (done) ->
+          get '/.json', (res) ->
+            res.status.should.equal 200
+            json = res.body
+            json.latest_arguments.should.eql []
+            json.latest_users.should.eql []
+            done()
+
     describe '/stylesheets', ->
       describe 'GET /stylesheets/style.css', ->
         it 'should serve gzipped css', (done) ->
