@@ -73,3 +73,14 @@ describe 'Users', ->
           should.not.exist err
           should.ok retrievedUser.equals user
           done()
+
+  describe 'users.latest( options, callback )', ->
+    it 'should get latest users', (done) ->
+      withUser (user1) ->
+        withUser (user2) ->
+          argumenta.users.latest {}, (err, users) ->
+            should.not.exist err
+            users.length.should.equal 2
+            should.ok users[0].equals user2
+            should.ok users[1].equals user1
+            done()

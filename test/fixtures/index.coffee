@@ -93,7 +93,7 @@ class Fixtures
     return '$2a$10$EdsQm10l4VTDkr4eLvH09.aXtug.QHDxhNnVHY3Jm.RaG6s5msek2'
 
   @validJoinDate: () ->
-    return new Date '1970-01-01T00:00:00.000Z'
+    return new Date()
 
   @validJoinIp: () ->
     return '127.0.0.1'

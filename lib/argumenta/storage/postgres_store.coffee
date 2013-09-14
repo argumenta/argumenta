@@ -146,8 +146,14 @@ class PostgresStore extends Base
     @query Queries.selectUsers(usernames), (err, res) =>
       return callback err if err
 
+      byName = {}
+      byName[row.username] = new PublicUser( row ) for row in res.rows
+
       publicUsers = []
-      publicUsers.push new PublicUser( row ) for row in res.rows
+      for name in usernames
+        if user = byName[name]
+          publicUsers.push user
+
       return callback null, publicUsers
 
   # Gets public metadata for users by usernames.
