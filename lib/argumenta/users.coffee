@@ -90,15 +90,16 @@ class Users extends Base
   # Gets latest users.
   #
   # @param [Object]   options
+  # @param [Object]   options.limit
+  # @param [Object]   options.offset
   # @param [Function] callback(err, users)
   latest: (options, callback) ->
 
-    @storage.store.listUsers (err, usernames) =>
+    @storage.store.listUsers options, (err, usernames) =>
       return callback new @Error "Latest usernames not found." if err
       return callback null, [] if usernames.length is 0
 
-      latestNames = usernames.slice 0, 10
-      @storage.getUsersWithMetadata latestNames, (err, users) =>
+      @storage.getUsersWithMetadata usernames, (err, users) =>
         return callback new @Error "Latest users not found." if err
         return callback null, users
 

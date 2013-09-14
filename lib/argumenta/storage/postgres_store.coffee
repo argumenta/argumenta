@@ -120,8 +120,10 @@ class PostgresStore extends Base
 
   # List the usernames of all users.
   # @api public
-  listUsers: (callback) ->
-    @query Queries.listUsers(), (err, res) =>
+  listUsers: (options..., callback) ->
+    options = options[0]
+
+    @query Queries.listUsers(options), (err, res) =>
       return callback err if err
 
       usernames = []
