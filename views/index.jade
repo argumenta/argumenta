@@ -2,3 +2,10 @@ extends layout
 
 block content
   h2 Welcome to #{siteName}
+
+block append sidebar
+  if latest_users
+    h2 Latest Users
+    div.content-pane
+      each user in latest_users
+        div.user-widget('data-user'=user.data())

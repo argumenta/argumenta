@@ -225,11 +225,17 @@ body.argumenta .sidebar-contents {
   color: #333;
 }
 *.argumenta .main > h1,
+*.argumenta .sidebar-contents > h1,
 *.argumenta .main > h2,
+*.argumenta .sidebar-contents > h2,
 *.argumenta .main > h3,
+*.argumenta .sidebar-contents > h3,
 *.argumenta .main > h4,
+*.argumenta .sidebar-contents > h4,
 *.argumenta .main > h5,
-*.argumenta .main > h6 {
+*.argumenta .sidebar-contents > h5,
+*.argumenta .main > h6,
+*.argumenta .sidebar-contents > h6 {
   background: rgba(0,0,0,0.6);
   color: #fff;
   -webkit-border-radius: 5px;

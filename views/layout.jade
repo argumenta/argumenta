@@ -25,11 +25,11 @@ html
       div.toolbar
         a.button(href="/arguments/new") New Argument
       div.two-columns
-        div.column
-          div.main
-            block content
+        div.main.column
+          block content
         div.sidebar-widget
-          div.search-widget
+          block sidebar
+            div.search-widget
       div.notifications
         each message in messages
           div.info= "Info: " + message

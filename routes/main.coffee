@@ -1,5 +1,9 @@
-respond = require './helpers/respond'
+
+# Argumenta instance
+argumenta = require '../app/argumenta'
 
 # Site index
 exports.index = (req, res) ->
-  respond 'index', {}, req, res
+  argumenta.users.latest null, (err, users) ->
+    res.reply 'index',
+      latest_users: users
