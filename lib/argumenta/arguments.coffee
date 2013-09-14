@@ -97,4 +97,20 @@ class Arguments extends Base
 
         return callback null, results
 
+  # Gets latest arguments.
+  #
+  # @param [Object]   options
+  # @param [Object]   options.limit
+  # @param [Object]   options.offset
+  # @param [Function] callback(err, args)
+  latest: (options, callback) ->
+
+    @storage.store.listArguments options, (err, sha1s) =>
+      return callback new @Error "Latest argument sha1s not found." if err
+      return callback null, [] if sha1s.length is 0
+
+      @get sha1s, (err, args) =>
+        return callback new @Error "Latest arguments not found." if err
+        return callback null, args
+
 module.exports = Arguments

@@ -387,6 +387,18 @@ class PostgresStore extends Base
 
       return callback null, args
 
+  # List the latest arguments by sha1.
+  # @api public
+  listArguments: (options..., callback) ->
+    options = options[0]
+
+    @query Queries.listArguments(options), (err, res) =>
+      return callback err if err
+
+      argument_sha1s = []
+      argument_sha1s.push row.argument_sha1 for row in res.rows
+      return callback null, argument_sha1s
+
   #### Propositions ####
 
   # Add a valid proposition to the store.

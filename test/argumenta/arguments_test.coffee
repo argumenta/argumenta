@@ -1,3 +1,4 @@
+config      = require '../../config'
 Argumenta = require '../../lib/argumenta'
 Storage   = require '../../lib/argumenta/storage'
 Arguments = require '../../lib/argumenta/arguments'
@@ -7,7 +8,8 @@ should    = require 'should'
 describe 'Arguments', ->
 
   options =
-    storageType: 'local'
+    storageType: 'postgres'
+    storageUrl:  config.postgresUrl
     host: 'testing.argumenta.io'
 
   argumenta = new Argumenta options
@@ -72,3 +74,14 @@ describe 'Arguments', ->
         argumenta.arguments.get hashes, (err, args) ->
           should.exist args[0].propositions[0].metadata
           done()
+
+  describe 'arguments.latest( options, callback )', ->
+    it 'should get latest arguments', (done) ->
+      withArgument (user1, commit1, argument1) ->
+        withArgument (user2, commit2, argument2) ->
+          argumenta.arguments.latest {}, (err, args) ->
+            should.not.exist err
+            args.length.should.equal 2
+            should.ok args[0].equals argument2
+            should.ok args[1].equals argument1
+            done()

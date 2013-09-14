@@ -151,6 +151,19 @@ class Queries
         """
       values: usernames
 
+  # List arguments by sha1, starting with the latest.
+  @listArguments: (opts={}) ->
+    limit  = opts.limit  ? 100
+    offset = opts.offset ? 0
+    return listArgumentsQuery =
+      text: """
+        SELECT argument_sha1
+        FROM Arguments
+        ORDER BY argument_id DESC
+        LIMIT $1 OFFSET $2;
+        """
+      values: [limit, offset]
+
   # List users, starting with the latest.
   @listUsers: (opts={}) ->
     limit  = opts.limit  ? 100
