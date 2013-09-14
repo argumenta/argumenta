@@ -1,7 +1,14 @@
 extends layout
 
 block content
-  h2 Welcome to #{siteName}
+  if latest_arguments
+    h2 Latest Arguments
+    div.content-pane
+      each argument in latest_arguments
+        div.argument-widget(
+          'data-argument'=argument.data(),
+          'data-show_propositions'='false'
+        )
 
 block append sidebar
   if latest_users

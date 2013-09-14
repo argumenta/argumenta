@@ -138,6 +138,8 @@ describeAppTests = (type, app) ->
             res.status.should.equal 200
             res.text.should.match /Argumenta/
             res.text.should.match /Sign in.*or.*Join now!/
+            res.text.should.match /Latest Arguments/
+            res.text.should.match /Latest Users/
             done()
 
       describe 'GET /.json', ->
