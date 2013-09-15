@@ -523,9 +523,9 @@ class Storage extends Base
                 Failed getting tags plus sources from the store."""
             return cb null, tags, sources, commits
 
-  # Search by query for users, arguments, propositions, and tags.
+  # Search by query for users, arguments and propositions.
   #
-  #     storage.search "Bradley Manning", {}, (err, results) ->
+  #     storage.search "Chelsea Manning", {}, (err, results) ->
   #       console.log results.arguments unless err
   #
   # @param [String]             query
@@ -535,8 +535,6 @@ class Storage extends Base
   # @param [Object]             results
   # @param [Array<PublicUser>]  results.users
   # @param [Array<Argument>]    results.arguments
-  # @param [Array<Proposition>] results.propositions
-  # @param [Array<Tag>]         results.tags
   search: (query, options, cb) ->
     @store.search query, options, (err, results) =>
       return cb new @RetrievalError "Failed searching store by query." if err

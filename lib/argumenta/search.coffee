@@ -23,9 +23,9 @@ class Search extends Base
 
   ### Instance Methods ###
 
-  # Queries for user, arguments, propositions, and tags.
+  # Queries for user, arguments and propositions.
   #
-  #     storage.search "Bradley Manning", {}, (err, results) ->
+  #     storage.search "Chelsea Manning", {}, (err, results) ->
   #       console.log results.arguments unless err
   #
   # @api public
@@ -35,8 +35,6 @@ class Search extends Base
   # @param [Object]             results
   # @param [Array<PublicUser>]  results.users
   # @param [Array<Argument>]    results.arguments
-  # @param [Array<Proposition>] results.propositions
-  # @param [Array<Tag>]         results.tags
   query: (query, options={}, callback) ->
     options.return_keys = true
     @storage.search query, options, (err, results) =>
