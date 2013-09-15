@@ -125,11 +125,11 @@ The current version (0.1.0) provides the following features:
 <table class="routes" width="600px">
   <tr>
     <td width="300px"><a href="#search-by-query">GET /search.json</td>
-    <td width="300px">Search for users, arguments, props, tags.</td>
+    <td width="300px">Search for users, arguments, and propositions.</td>
   </tr>
   <tr>
     <td width="300px"><a href="#search-by-query">GET /search/:query.json</td>
-    <td width="300px">Search for users, arguments, props, tags.</td>
+    <td width="300px">Search for users, arguments, and propositions.</td>
   </tr>
 </table>
 
@@ -489,7 +489,7 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 ### GET /search.json
 ### GET /search/:query.json
 
-*Search by query for users, arguments, propositions, and tags.*
+*Search by query for users, arguments, and propositions.*
 
 #### Notes
 
@@ -718,7 +718,9 @@ Users may only delete their own repos.
 
 ## 0.1.0
 
-Add Search route.
+Add Search route.  
+Include metadata with users.  
+Document resource types and properties.
 
 ## 0.0.1alpha6
 
