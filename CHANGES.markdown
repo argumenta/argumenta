@@ -1,6 +1,14 @@
 
 # Changes
 
+## 0.1.0 / 2013-08-16
+
++ Search for users, arguments, propositions.
++ Use widgets for search, sidebar, users.
++ Show latest users, arguments.
++ Document API resources.
++ Add search API route.
+
 ## 0.0.10 / 2013-08-02
 
 + Add config option for `host`.
