@@ -1,7 +1,7 @@
 
 # Changes
 
-## 0.1.0 / 2013-08-16
+## 0.1.0 / 2013-09-16
 
 + Search for users, arguments, propositions.
 + Use widgets for search, sidebar, users.
