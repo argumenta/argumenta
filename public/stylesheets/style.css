@@ -253,6 +253,35 @@ body.argumenta .sidebar-contents {
   top: 0px;
   color: #999;
 }
+*.argumenta .intro {
+  background: -webkit-gradient(linear, left top, right top, color-stop(-0.1, #0cf), color-stop(0.4, #240041), color-stop(0.6, #002c41), color-stop(1.1, #ff00c2));
+  background: -webkit-linear-gradient(left, #0cf -10%, #240041 40%, #002c41 60%, #ff00c2 110%);
+  background: -moz-linear-gradient(left, #0cf -10%, #240041 40%, #002c41 60%, #ff00c2 110%);
+  background: -o-linear-gradient(left, #0cf -10%, #240041 40%, #002c41 60%, #ff00c2 110%);
+  background: -ms-linear-gradient(left, #0cf -10%, #240041 40%, #002c41 60%, #ff00c2 110%);
+  background: linear-gradient(left, #0cf -10%, #240041 40%, #002c41 60%, #ff00c2 110%);
+  color: #fff;
+  margin: 0;
+  overflow: auto;
+  position: relative;
+  text-shadow: 0px 2px 2px rgba(0,0,0,0.5);
+  z-index: 0;
+}
+*.argumenta .intro canvas#stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+*.argumenta .intro .tagline-container {
+  text-align: center;
+  margin: 10px;
+}
+*.argumenta .intro .tagline-container h1 {
+  font-weight: bold;
+}
 *.argumenta form.join {
   display: inline-block;
   text-align: center;

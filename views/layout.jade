@@ -7,6 +7,11 @@ html
     link(rel='stylesheet', href='/widgets/css/argumenta.css')
   body.argumenta
     div.wrapper
+      div.intro
+        canvas#stars
+        div.tagline-container
+          h1 Social Argument Collaboration
+          h2 for Skeptical Minds
       div.header
         a.header-logo(href="/")= siteName
         - if (username)
@@ -40,6 +45,22 @@ html
       script(src="/javascripts/autosize/jquery.autosize.js")
       script(src="/javascripts/charcount/jquery.charcount.js")
       script(src="/javascripts/objects.js")
+      script.
+        (function () {
+          var canvas = document.getElementById('stars');
+          var context = canvas.getContext('2d');
+          var h = canvas.height = $(canvas).height();
+          var w = canvas.width = $(canvas).width();
+
+          var alpha, x, y;
+          for (var i = 0; i < 200; i++) {
+            x = Math.floor(Math.random() * w);
+            y = Math.floor(Math.random() * h);
+            alpha = Math.random();
+            context.fillStyle = 'rgba(255, 255, 255, ' + alpha + ' )';
+            context.fillRect(x, y, 2, 2);
+          }
+        })();
       script.
         var jquery = $.noConflict();
         var browserify = { require: require };
