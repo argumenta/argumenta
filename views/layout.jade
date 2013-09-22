@@ -10,8 +10,8 @@ html
       div.intro
         canvas#stars
         div.tagline-container
-          h1 Social Argument Collaboration
-          h2 for Skeptical Minds
+          h1.tagline Social Argument Collaboration
+          h2.audience for Skeptical Minds
       div.header
         a.header-logo(href="/")= siteName
         - if (username)
@@ -45,6 +45,7 @@ html
       script(src="/javascripts/autosize/jquery.autosize.js")
       script(src="/javascripts/charcount/jquery.charcount.js")
       script(src="/javascripts/objects.js")
+      script(src="/javascripts/audience.js")
       script.
         (function () {
           var canvas = document.getElementById('stars');
