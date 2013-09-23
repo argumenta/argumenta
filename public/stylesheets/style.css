@@ -212,7 +212,7 @@ body.argumenta .sidebar-contents {
 *.argumenta .header {
   position: relative;
   background-color: #fff;
-  padding: 2px 5px;
+  padding: 5px 5px;
 }
 *.argumenta .header-logo {
   font-family: Monda, sans-serif;
@@ -245,8 +245,9 @@ body.argumenta .sidebar-contents {
 *.argumenta .nav-logout {
   position: absolute;
   margin: 10px 5px;
+  margin-top: -8px;
   right: 0px;
-  top: 0px;
+  top: 50%;
   color: #999;
 }
 *.argumenta .intro {
