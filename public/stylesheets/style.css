@@ -16,12 +16,8 @@ body.argumenta {
   padding: 0px;
   height: 100%;
   background-color: #000;
-  background-repeat: no-repeat;
-  background-image: -webkit-radial-gradient(top, #7aa3b8, #000);
-  background-image: -moz-radial-gradient(top, #7aa3b8, #000);
-  background-image: -ms-radial-gradient(top, #7aa3b8, #000);
-  background-image: -o-radial-gradient(top, #7aa3b8, #000);
-  background-image: radial-gradient(top, #7aa3b8, #000);
+  background-image: url("/images/linear-gradient-vert.png");
+  background-repeat: repeat-x;
 }
 body.argumenta .wrapper {
   height: auto;
