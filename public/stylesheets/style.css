@@ -39,6 +39,32 @@ body.argumenta .main {
 body.argumenta .sidebar-contents {
   padding: 0 5px;
 }
+body.argumenta .footer {
+  display: none;
+  background: #333;
+  border-top: 3px solid #0ef;
+  color: #eee;
+  font-size: 16px;
+  padding: 20px 10px;
+  text-align: center;
+}
+body.argumenta .footer a {
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  -ms-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  -webkit-transition-property: color;
+  -moz-transition-property: color;
+  -o-transition-property: color;
+  -ms-transition-property: color;
+  transition-property: color;
+  margin: 15px;
+  color: #ccc;
+}
+body.argumenta .footer a:hover {
+  color: #fff;
+}
 *.argumenta form {
   background-color: #eee;
   border: 10px solid #fff;
