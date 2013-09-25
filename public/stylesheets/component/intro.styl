@@ -13,12 +13,11 @@
     )
     color: #fff
     margin: 0
-    overflow: auto
     position: relative
     text-shadow: 0px 2px 2px rgba(0,0,0,0.5)
     z-index: 0
 
-  .intro canvas#stars
+  .intro canvas.stars
     position: absolute
     top: 0
     left: 0
@@ -28,7 +27,45 @@
 
   .intro .tagline-container
     text-align: center
-    margin: 10px
 
   .intro .tagline-container h1
     font-weight: bold
+
+  .intro .audience .placeholder
+    visibility: hidden
+
+  .intro .learn-more
+    position: absolute
+    right: 16.5%
+    bottom: -3px
+    padding: 7px
+    font-size: 18px
+    background: rgba(255,255,255,0.3)
+    border-radius: 5px
+    cursor: pointer
+    transition-duration: 0.5s
+    transition-property: background
+
+  .intro .learn-more:hover
+    background: rgba(255,255,255,0.5)
+    text-decoration: underline
+
+  .intro .intro-ribbon
+    position: relative
+    padding: 5px
+
+  .intro .intro-panel
+    position: relative
+    padding: 10px
+
+  .intro-panel .activity
+    margin: 5px 0
+    padding: 10px
+    background: rgba(0,0,0,0.4)
+    border-radius: 5px
+
+  .intro-panel .activity-header
+    margin: 10px
+
+  .intro-panel .activity-header .glyphicon
+    margin-right: 10px
