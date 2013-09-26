@@ -4,7 +4,7 @@
     var self = this;
     self.counter = 0;
     self.$element = $(element);
-    self.$element.on('mouseover', function() {
+    self.$element.on('mouseover click', function() {
       self.update();
     });
   };

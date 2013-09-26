@@ -304,6 +304,9 @@ body.argumenta .footer a:hover {
 *.argumenta .intro .tagline-container h1 {
   font-weight: bold;
 }
+*.argumenta .intro .audience {
+  cursor: pointer;
+}
 *.argumenta .intro .audience .placeholder {
   visibility: hidden;
 }
