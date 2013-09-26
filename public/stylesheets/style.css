@@ -237,12 +237,13 @@ body.argumenta .footer a:hover {
 }
 *.argumenta .header {
   position: relative;
-  background-color: #fff;
   padding: 5px 5px;
+  font-size: 15px;
+  background-color: #fff;
 }
 *.argumenta .header-logo {
   font-family: Monda, sans-serif;
-  font-size: 2em;
+  font-size: 28px;
   text-decoration: underline;
   color: #333;
 }
@@ -271,7 +272,7 @@ body.argumenta .footer a:hover {
 *.argumenta .nav-logout {
   position: absolute;
   margin: 10px 5px;
-  margin-top: -8px;
+  margin-top: -9px;
   right: 0px;
   top: 50%;
   color: #999;
