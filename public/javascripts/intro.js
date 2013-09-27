@@ -21,6 +21,7 @@
   // Shows the join modal.
   var showJoin = function() {
     $('.modal-background, .join-modal').fadeIn(300);
+    return false;
   };
 
   // Hides the join modal.
@@ -30,7 +31,7 @@
 
   // Initializes the join modal.
   var initJoin = function() {
-    $('.show-join').click(showJoin);
+    $('.show-join, .nav-join').click(showJoin);
     $('.modal-background').click(hideJoin);
     hideJoin();
   };
