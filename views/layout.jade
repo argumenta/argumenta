@@ -10,16 +10,15 @@ html
       include ./partials/intro
       div.header
         a.header-logo(href="/")= siteName
-        - if (username)
-          ul.nav
-            li Logged in as 
+        div.nav
+          if username
+            span Logged in as 
                 a(href="/#{username}") #{username}
                 |  (
                 a(href="/logout") Sign out
                 | )
-        - else
-          ul.nav
-            li
+          else
+            span
               a.nav-login(href="/login") Sign in
               |  or 
               a.nav-join(href="/join") Join now!

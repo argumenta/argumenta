@@ -31,4 +31,5 @@ div.intro
           | Citations link propositions with any external resource
           | via text, embedded media, or URLs.
     div.intro-actions
-      span.show-join.action Join!
+      if !username
+        span.show-join.action Join!
