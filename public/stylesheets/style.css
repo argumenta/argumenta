@@ -286,8 +286,7 @@ body.argumenta .footer a:hover {
   padding: 0.3em;
   margin: 10px 0;
 }
-*.argumenta .nav-login,
-*.argumenta .nav-logout {
+*.argumenta .nav {
   position: absolute;
   margin: 10px 5px;
   margin-top: -9px;
@@ -401,7 +400,9 @@ body.argumenta .footer a:hover {
   background: rgba(0,0,0,0.5);
 }
 *.argumenta .join-modal,
-*.argumenta *.argumenta-bootstrap .join-modal {
+*.argumenta *.argumenta-bootstrap .join-modal,
+*.argumenta .login-modal,
+*.argumenta *.argumenta-bootstrap .login-modal {
   display: none;
   position: fixed;
   z-index: 10;
@@ -412,7 +413,9 @@ body.argumenta .footer a:hover {
   text-align: center;
 }
 *.argumenta .join-header,
-*.argumenta *.argumenta-bootstrap .join-header {
+*.argumenta *.argumenta-bootstrap .join-header,
+*.argumenta .login-header,
+*.argumenta *.argumenta-bootstrap .login-header {
   font-size: 24px;
   color: #fff;
   text-shadow: 2px 2px 10px #222;

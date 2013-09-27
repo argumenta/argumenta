@@ -2,8 +2,15 @@ div.modal-background
 div.join-modal
   div.join-partial.argumenta-bootstrap
     h2.join-header Create your account!
-    form.join(action='/users', method='POST')
-      div: input(name="username", placeholder='Username', type="text")
-      div: input(name="password", placeholder='Password', type="password")
-      div: input(name="email", placeholder='Email', type="text")
-      div: button.btn-block.btn-primary(type='submit') Join!
+    form.join(action="/users", method="POST")
+      div: input(name="username", placeholder="Username", type="text", autofocus)
+      div: input(name="password", placeholder="Password", type="password")
+      div: input(name="email", placeholder="Email", type="text")
+      div: button.btn-block.btn-primary(type="submit") Join!
+div.login-modal
+  div.login-partial.argumenta-bootstrap
+    h2.login-header Login with your account!
+    form.login(action="/login", method="POST")
+      div: input(name="username", placeholder="Username", type="text", autofocus)
+      div: input(name="password", placeholder="Password", type="password")
+      div: button.btn-block.btn-primary(type="submit") Login!

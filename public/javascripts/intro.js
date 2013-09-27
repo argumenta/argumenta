@@ -24,16 +24,23 @@
     return false;
   };
 
-  // Hides the join modal.
-  var hideJoin = function() {
-    $('.modal-background, .join-modal').fadeOut(300);
+  // Shows the login modal.
+  var showLogin = function() {
+    $('.modal-background, .login-modal').fadeIn(300);
+    return false;
   };
 
-  // Initializes the join modal.
-  var initJoin = function() {
+  // Hides all modals and background.
+  var hideModals = function() {
+    $('.modal-background, .join-modal, .login-modal').fadeOut(300);
+  };
+
+  // Initializes all modals.
+  var initModals = function() {
     $('.show-join, .nav-join').click(showJoin);
-    $('.modal-background').click(hideJoin);
-    hideJoin();
+    $('.nav-login').click(showLogin);
+    $('.modal-background').click(hideModals);
+    hideModals();
   };
 
   // Initializes the intro panel.
@@ -51,6 +58,6 @@
 
   // Let's do this!
   initIntro();
-  initJoin();
+  initModals();
 
 })();

@@ -11,16 +11,16 @@ html
       div.header
         a.header-logo(href="/")= siteName
         - if (username)
-          ul.nav-logout
+          ul.nav
             li Logged in as 
                 a(href="/#{username}") #{username}
                 |  (
                 a(href="/logout") Sign out
                 | )
         - else
-          ul.nav-login
+          ul.nav
             li
-              a(href="/login") Sign in
+              a.nav-login(href="/login") Sign in
               |  or 
               a.nav-join(href="/join") Join now!
       div.toolbar
