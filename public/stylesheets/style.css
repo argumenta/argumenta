@@ -65,7 +65,8 @@ body.argumenta .footer a {
 body.argumenta .footer a:hover {
   color: #fff;
 }
-*.argumenta form {
+*.argumenta form,
+*.argumenta *.argumenta-bootstrap form {
   background-color: #eee;
   border: 10px solid #fff;
   -webkit-border-radius: 5px;
@@ -75,11 +76,22 @@ body.argumenta .footer a:hover {
   margin: 10px;
   padding: 10px;
 }
-*.argumenta form input {
+*.argumenta form input,
+*.argumenta *.argumenta-bootstrap form input,
+*.argumenta form textarea,
+*.argumenta *.argumenta-bootstrap form textarea,
+*.argumenta form button,
+*.argumenta *.argumenta-bootstrap form button {
+  font-family: "Monda", "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+*.argumenta form input,
+*.argumenta *.argumenta-bootstrap form input {
   height: 2em;
 }
 *.argumenta form input,
-*.argumenta form textarea {
+*.argumenta *.argumenta-bootstrap form input,
+*.argumenta form textarea,
+*.argumenta *.argumenta-bootstrap form textarea {
   -webkit-box-shadow: 1px 1px 1px #ccc;
   box-shadow: 1px 1px 1px #ccc;
   -webkit-border-radius: 2px;
@@ -89,16 +101,20 @@ body.argumenta .footer a:hover {
   border: 1px solid #fff;
 }
 *.argumenta form input:focus,
-*.argumenta form textarea:focus {
+*.argumenta *.argumenta-bootstrap form input:focus,
+*.argumenta form textarea:focus,
+*.argumenta *.argumenta-bootstrap form textarea:focus {
   outline: none;
   border: 1px solid #2af;
   -webkit-box-shadow: 0px 0px 3px #08f;
   box-shadow: 0px 0px 3px #08f;
 }
-*.argumenta label {
+*.argumenta label,
+*.argumenta *.argumenta-bootstrap label {
   margin: 5px;
 }
-*.argumenta button {
+*.argumenta button,
+*.argumenta *.argumenta-bootstrap button {
   -webkit-border-radius: 5px;
   border-radius: 5px;
   -webkit-box-shadow: 1px 1px 2px #aaa;
@@ -109,10 +125,12 @@ body.argumenta .footer a:hover {
   margin: 5px;
   padding: 5px;
 }
-*.argumenta button:hover {
+*.argumenta button:hover,
+*.argumenta *.argumenta-bootstrap button:hover {
   text-shadow: 0px 0px 4px #fff;
 }
-*.argumenta ul {
+*.argumenta ul,
+*.argumenta *.argumenta-bootstrap ul {
   list-style: none;
 }
 *.argumenta .button {
@@ -310,10 +328,7 @@ body.argumenta .footer a:hover {
 *.argumenta .intro .audience .placeholder {
   visibility: hidden;
 }
-*.argumenta .intro .learn-more {
-  position: absolute;
-  right: 16.5%;
-  bottom: -3px;
+*.argumenta .intro .action {
   padding: 7px;
   font-size: 18px;
   background: rgba(255,255,255,0.3);
@@ -331,9 +346,14 @@ body.argumenta .footer a:hover {
   -ms-transition-property: background;
   transition-property: background;
 }
-*.argumenta .intro .learn-more:hover {
+*.argumenta .intro .action:hover {
   background: rgba(255,255,255,0.5);
   text-decoration: underline;
+}
+*.argumenta .intro .learn-more {
+  position: absolute;
+  right: 16.5%;
+  bottom: -3px;
 }
 *.argumenta .intro .intro-ribbon {
   position: relative;
@@ -356,14 +376,58 @@ body.argumenta .footer a:hover {
 *.argumenta .intro-panel .activity-header .glyphicon {
   margin-right: 10px;
 }
-*.argumenta form.join {
+*.argumenta .intro-actions {
+  text-align: center;
+}
+*.argumenta .show-join,
+*.argumenta *.argumenta-bootstrap .show-join {
+  display: inline-block;
+  margin: 5px;
+  background: #09f;
+}
+*.argumenta .show-join:hover,
+*.argumenta *.argumenta-bootstrap .show-join:hover {
+  background: #007acc;
+}
+*.argumenta .modal-background,
+*.argumenta *.argumenta-bootstrap .modal-background {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+}
+*.argumenta .join-modal,
+*.argumenta *.argumenta-bootstrap .join-modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  top: 15%;
+  right: 50%;
+  margin-top: 0px;
+  margin-right: -140px;
+  text-align: center;
+}
+*.argumenta .join-header,
+*.argumenta *.argumenta-bootstrap .join-header {
+  font-size: 24px;
+  color: #fff;
+  text-shadow: 2px 2px 10px #222;
+}
+*.argumenta form.join,
+*.argumenta *.argumenta-bootstrap form.join {
   display: inline-block;
   text-align: center;
 }
-*.argumenta form.join li {
+*.argumenta form.join li,
+*.argumenta *.argumenta-bootstrap form.join li {
   text-align: right;
 }
-*.argumenta form.join label {
+*.argumenta form.join label,
+*.argumenta *.argumenta-bootstrap form.join label {
   display: inline-block;
 }
 *.argumenta form.login {

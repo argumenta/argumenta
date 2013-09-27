@@ -1,7 +1,6 @@
 (function () {
 
   // Draws stars on a given canvas.
-
   var drawStars = function (canvas) {
     var context = canvas.getContext('2d');
     var h = canvas.height = $(canvas).height();
@@ -19,9 +18,25 @@
     }
   };
 
-  // Initializes the intro panel.
+  // Shows the join modal.
+  var showJoin = function() {
+    $('.modal-background, .join-modal').fadeIn(300);
+  };
 
-  var init = function () {
+  // Hides the join modal.
+  var hideJoin = function() {
+    $('.modal-background, .join-modal').fadeOut(300);
+  };
+
+  // Initializes the join modal.
+  var initJoin = function() {
+    $('.show-join').click(showJoin);
+    $('.modal-background').click(hideJoin);
+    hideJoin();
+  };
+
+  // Initializes the intro panel.
+  var initIntro = function () {
     $('canvas.stars').each(function (index, element) {
       drawStars(element);
     });
@@ -34,6 +49,7 @@
   };
 
   // Let's do this!
-  init();
+  initIntro();
+  initJoin();
 
 })();
