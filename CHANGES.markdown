@@ -1,6 +1,12 @@
 
 # Changes
 
+## 0.1.1 / 2013-09-27
+
++ Add intro ribbon, panel.
++ Add join, login modals.
++ Add procedural audience widget.
+
 ## 0.1.0 / 2013-09-16
 
 + Search for users, arguments, propositions.
