@@ -12,22 +12,6 @@ SOURCE_DIR=$(readlink -f `dirname "$SCRIPT_FILE"`/..)
 # The migration script.
 MIGRATE="${SOURCE_DIR}/bin/migrate.sh"
 
-# Database Name
-DB=${DB:="argumenta"}
-
-# Database User
-DB_USER=${DB_USER:="argumenta"}
-
-# Database User's Password
-DB_USER_PASSWORD=${DB_USER_PASSWORD:=""}
-
-# The app mode for selected database.
-if [[ $DB == 'argumenta' ]]; then
-  APP_MODE='production'
-else
-  APP_MODE=${DB#argumenta_}
-fi
-
 # Test only mode
 TEST_ONLY=0
 
@@ -74,6 +58,22 @@ getOpts() {
 #
 main() {
   getOpts "$@"
+
+  # Database Name
+  DB=${DB:="argumenta"}
+
+  # Database User
+  DB_USER=${DB_USER:="argumenta"}
+
+  # Database User's Password
+  DB_USER_PASSWORD=${DB_USER_PASSWORD:=""}
+
+  # The app mode for selected database.
+  if [[ $DB == 'argumenta' ]]; then
+    APP_MODE='production'
+  else
+    APP_MODE=${DB#argumenta_}
+  fi
 
   if [[ $TEST_ONLY -eq 1 ]]; then
     echo "Running test-only. Would use settings:"
