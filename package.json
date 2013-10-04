@@ -28,7 +28,7 @@
   "dependencies": {
     "argumenta-widgets": "0.1.0",
     "async": "0.1.22",
-    "bcrypt": "0.5.x",
+    "bcrypt": "0.7.7",
     "class-delegator": "0.0.3",
     "coffee-script": "~1.6.2",
     "connect-flash": "0.1.0",
