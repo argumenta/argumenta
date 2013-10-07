@@ -313,12 +313,12 @@ body.argumenta .footer a:hover {
 }
 *.argumenta .new-proposition.button {
   background: #0d83f2;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #0ef), color-stop(1, #07f));
-  background: -webkit-linear-gradient(top, #0ef 0%, #07f 100%);
-  background: -moz-linear-gradient(top, #0ef 0%, #07f 100%);
-  background: -o-linear-gradient(top, #0ef 0%, #07f 100%);
-  background: -ms-linear-gradient(top, #0ef 0%, #07f 100%);
-  background: linear-gradient(top, #0ef 0%, #07f 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #00ddfa), color-stop(1, #005ac2));
+  background: -webkit-linear-gradient(top, #00ddfa 0%, #005ac2 100%);
+  background: -moz-linear-gradient(top, #00ddfa 0%, #005ac2 100%);
+  background: -o-linear-gradient(top, #00ddfa 0%, #005ac2 100%);
+  background: -ms-linear-gradient(top, #00ddfa 0%, #005ac2 100%);
+  background: linear-gradient(top, #00ddfa 0%, #005ac2 100%);
 }
 *.argumenta .intro {
   background: -webkit-gradient(linear, left top, right top, color-stop(-0.1, #0cf), color-stop(0.4, #240041), color-stop(0.6, #002c41), color-stop(1.1, #ff00c2));
