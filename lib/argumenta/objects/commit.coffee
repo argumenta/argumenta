@@ -198,8 +198,11 @@ class Commit
     unless targetType?
       throw @Errors.ObjectValidation "Commit target type must exist."
 
-    unless targetType.match /^argument|tag$/
-      throw @Errors.ObjectValidation "Commit target type must be argument or tag."
+    unless _.isString targetType
+      throw @Errors.ObjectValidation "Commit target must be a string."
+
+    unless targetType.match /^(argument|proposition|tag)$/
+      throw @Errors.ObjectValidation "Commit target must be a valid type."
 
     return true
 

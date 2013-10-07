@@ -13,6 +13,7 @@ describe 'Commit', ->
   host = 'testing.argumenta.io'
 
   describe 'new Commit( targetType, targetSha1, committer )', ->
+
     it 'should create a new commit instance', ->
       commit = new Commit( targetType, targetSha1, committer )
       commit.should.be.an.instanceOf Commit
@@ -22,7 +23,14 @@ describe 'Commit', ->
       commit.commitDate.should.match /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/
       should.ok Date.now() - new Date(commit.commitDate) < 2000
 
+    it 'should create a new commit with proposition target', ->
+      prop = fixtures.validProposition()
+      commit = new Commit('proposition', prop.sha1(), committer)
+      commit.targetType.should.equal 'proposition'
+      should.ok commit.validate()
+
   describe 'new Commit( options )', ->
+
     it 'should create a new commit instance', ->
       commit1 = fixtures.validCommit()
       commit2 = new Commit( commit1.data() )
@@ -35,11 +43,13 @@ describe 'Commit', ->
       commit.host.should.equal data.host
 
   describe 'new Commit( targetType, targetSha1, committer, commitDate, parentSha1s )', ->
+
     it 'should create a new commit instance', ->
       commit = new Commit( targetType, targetSha1, committer, null, [parentASha1, parentBSha1] )
       commit.validate().should.equal true
 
   describe 'objectRecord()', ->
+
     it 'should return the commit object record text', ->
       commit = new Commit( targetType, targetSha1, committer, commitDate )
       record = commit.objectRecord()
@@ -80,12 +90,14 @@ describe 'Commit', ->
       """
 
   describe 'sha1()', ->
+
     it 'should return the sha1 sum of the object record', ->
       commit = new Commit( targetType, targetSha1, committer, commitDate )
       sha1 = commit.sha1()
       sha1.should.equal 'fa95fa7684ec4156c5616931d8e233a3397ba9e5'
 
   describe 'data()', ->
+
     it 'should return a plain object with commit data', ->
       commit = new Commit targetType, targetSha1, committer, commitDate, [], host
       data = commit.data()
@@ -101,6 +113,7 @@ describe 'Commit', ->
       }
 
   describe 'equals()', ->
+
     it 'should return true if commits are equal', ->
       commitA = new Commit targetType, targetSha1, committer, commitDate
       commitB = new Commit targetType, targetSha1, committer, commitDate
@@ -112,6 +125,7 @@ describe 'Commit', ->
       commitA.equals(commitB).should.equal false
 
   describe 'validate()', ->
+
     it 'should return true for a valid Commit instance', ->
       commit = new Commit( targetType, targetSha1, committer )
       commit.validate().should.equal true
@@ -161,6 +175,7 @@ describe 'Commit', ->
       commit.validate().should.equal false
 
   describe 'Commit.formatDate( date )', ->
+
     it 'should format a date as a ISO 8601 string', ->
       date = new Date 0
       dateString = Commit.formatDate( date )
