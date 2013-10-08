@@ -479,6 +479,19 @@ class PostgresStore extends Base
 
       return callback null, metadata
 
+  # List the latest propositions by sha1.
+  # @api public
+  listPropositions: (options..., callback) ->
+    options = options[0]
+
+    @query Queries.listPropositions(options), (err, res) =>
+      return callback err if err
+
+      proposition_sha1s = []
+      proposition_sha1s.push row.proposition_sha1 for row in res.rows
+      return callback null, proposition_sha1s
+
+
   #### Tags ####
 
   # Add a tag to the store.

@@ -1,10 +1,11 @@
-Argumenta   = require '../../lib/argumenta'
-Auth        = require '../../lib/argumenta/auth'
-Storage     = require '../../lib/argumenta/storage'
-Arguments   = require '../../lib/argumenta/arguments'
-Search      = require '../../lib/argumenta/search'
-Users       = require '../../lib/argumenta/users'
-LocalStore  = require '../../lib/argumenta/storage/local_store'
+Argumenta    = require '../../lib/argumenta'
+Auth         = require '../../lib/argumenta/auth'
+Storage      = require '../../lib/argumenta/storage'
+Arguments    = require '../../lib/argumenta/arguments'
+Propositions = require '../../lib/argumenta/propositions'
+Search       = require '../../lib/argumenta/search'
+Users        = require '../../lib/argumenta/users'
+LocalStore   = require '../../lib/argumenta/storage/local_store'
 
 describe 'Argumenta', ->
   describe 'new Argumenta( opts )', ->
@@ -14,5 +15,6 @@ describe 'Argumenta', ->
       argumenta.auth.should.be.an.instanceof Auth
       argumenta.storage.store.should.be.an.instanceOf LocalStore
       argumenta.arguments.should.be.an.instanceof Arguments
+      argumenta.propositions.should.be.an.instanceof Propositions
       argumenta.search.should.be.an.instanceof Search
       argumenta.users.should.be.an.instanceof Users

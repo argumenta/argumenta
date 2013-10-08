@@ -1,10 +1,11 @@
-Auth      = require './argumenta/auth'
-Logger    = require './argumenta/logger'
-Storage   = require './argumenta/storage'
-Arguments = require './argumenta/arguments'
-Search    = require './argumenta/search'
-Tags      = require './argumenta/tags'
-Users     = require './argumenta/users'
+Auth         = require './argumenta/auth'
+Logger       = require './argumenta/logger'
+Storage      = require './argumenta/storage'
+Arguments    = require './argumenta/arguments'
+Propositions = require './argumenta/propositions'
+Search       = require './argumenta/search'
+Tags         = require './argumenta/tags'
+Users        = require './argumenta/users'
 
 class Argumenta
 
@@ -16,11 +17,12 @@ class Argumenta
     Logger.setLevel options.logLevel
 
     # Auth, Storage, and Collections instances
-    @auth      = new Auth this
-    @storage   = new Storage storageOpts
-    @arguments = new Arguments this, @storage
-    @search    = new Search this, @storage
-    @tags      = new Tags this, @storage
-    @users     = new Users this, @storage
+    @auth         = new Auth this
+    @storage      = new Storage storageOpts
+    @arguments    = new Arguments this, @storage
+    @propositions = new Propositions this, @storage
+    @search       = new Search this, @storage
+    @tags         = new Tags this, @storage
+    @users        = new Users this, @storage
 
 module.exports = Argumenta

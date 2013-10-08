@@ -164,6 +164,20 @@ class Queries
         """
       values: [limit, offset]
 
+  # List propositions by sha1, starting with the latest.
+  @listPropositions: (opts={}) ->
+    limit  = opts.limit  ? 100
+    offset = opts.offset ? 0
+    return listPropositionsQuery =
+      text: """
+        SELECT proposition_sha1
+        FROM Propositions
+        ORDER BY proposition_id DESC
+        LIMIT $1 OFFSET $2;
+        """
+      values: [limit, offset]
+
+
   # List users, starting with the latest.
   @listUsers: (opts={}) ->
     limit  = opts.limit  ? 100

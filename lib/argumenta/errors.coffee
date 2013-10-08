@@ -22,6 +22,7 @@ class Errors
   @PostgresStore:    class PostgresStoreError extends StorageError
 
   @Arguments:        class ArgumentsError extends BaseError
+  @Propositions:     class PropositionsError extends BaseError
   @Search:           class SearchError extends BaseError
   @Users:            class UsersError extends BaseError
 
