@@ -2,7 +2,6 @@ _         = require 'underscore'
 Base      = require '../argumenta/base'
 Argument  = require '../argumenta/objects/argument'
 Commit    = require '../argumenta/objects/commit'
-{inspect} = require 'util'
 
 #
 # Arguments models an arguments collection.  
@@ -43,7 +42,7 @@ class Arguments extends Base
   commit: (username, argument, callback) ->
     unless argument instanceof Argument and argument.validate()
       err = argument?.validationError or
-        new @Error "Valid argument required to create commit.\nGot: #{inspect argument}"
+        new @Error "Valid argument required to create commit."
       return callback err, null
 
     @storage.getRepoHash username, argument.repo(), (err, hash) =>
@@ -80,7 +79,7 @@ class Arguments extends Base
     @storage.getArgumentsWithMetadata hashes, (er1, args) =>
       @storage.getCommitsFor hashes, (er2, commits) =>
         if err = er1 or er2
-          return callback new @Error "Failed getting arguments and commits." if err
+          return callback new @Error "Failed getting arguments and commits."
 
         if hashes.length and !args.length
           return callback new @Errors.NotFound "Arguments not found."

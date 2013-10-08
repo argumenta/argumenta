@@ -2,7 +2,6 @@ _           = require 'underscore'
 Base        = require '../argumenta/base'
 Commit      = require '../argumenta/objects/commit'
 Proposition = require '../argumenta/objects/proposition'
-{inspect}   = require 'util'
 
 #
 # Propositions models a propositions collection.  
@@ -74,7 +73,7 @@ class Propositions extends Base
     @storage.getPropositionsWithMetadata hashes, (er1, props) =>
       @storage.getCommitsFor hashes, (er2, commits) =>
         if err = er1 or er2
-          return callback new @Error "Failed getting propositions and commits." if err
+          return callback new @Error "Failed getting propositions and commits."
 
         if hashes.length and !props.length
           return callback new @Errors.NotFound "Propositions not found."

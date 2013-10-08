@@ -1,7 +1,6 @@
 Base      = require '../argumenta/base'
 Tag       = require '../argumenta/objects/tag'
 Commit    = require '../argumenta/objects/commit'
-{inspect} = require 'util'
 
 #
 # Tags models a tags collection.  
@@ -42,7 +41,7 @@ class Tags extends Base
   commit: (username, tag, callback) ->
     unless tag instanceof Tag and tag.validate()
       err = tag?.validationError or
-        new @Error "Valid tag required to create commit.\nGot: #{inspect tag}"
+        new @Error "Valid tag required to create commit."
       return callback err, null
 
     commit = new Commit
