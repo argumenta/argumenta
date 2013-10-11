@@ -89,6 +89,8 @@ app.post '/arguments.:format?',                            routes.arguments.crea
 app.get  '/arguments/:hash.:format?',                      routes.arguments.show
 app.get  '/arguments/:hash/propositions.:format?',         routes.arguments.propositions
 
+app.get  '/propositions/new',                              routes.propositions.new
+app.post '/propositions.:format?',                         routes.propositions.create
 app.get  '/propositions/:hash.:format?',                   routes.propositions.show
 app.get  '/propositions/:hash/tags.:format?',              routes.propositions.tags
 app.get  '/propositions/:hash/tags-plus-sources.:format?', routes.propositions.tagsPlusSources

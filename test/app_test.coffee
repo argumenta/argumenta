@@ -543,6 +543,62 @@ describeAppTests = (type, app) ->
               should.not.exist json.error
               done()
 
+      describe 'POST /propositions', ->
+        it 'should create a new proposition', (done) ->
+          session (user, get, post) ->
+            prop = fixtures.uniqueProposition()
+            data = text: prop.text
+            post '/propositions', data, (res) ->
+              res.status.should.equal 200
+              res.text.should.match /Created a new proposition!/
+              res.text.should.match new RegExp prop.text
+              done()
+
+        it 'should redirect to /login if user not logged in', (done) ->
+          noSession (user, get, post) ->
+            prop = fixtures.uniqueProposition()
+            data = text: prop.text
+            post '/propositions', data, (err, res) ->
+              should.not.exist err
+              res.status.should.equal 200
+              res.redirects.should.eql [base + "/login"]
+              get '/propositions/' + prop.sha1(), (res) ->
+                res.status.should.equal 404
+                done()
+
+      describe 'POST /propositions.:format?', ->
+        it 'should create a new proposition and respond with json', (done) ->
+          session (user, get, post) ->
+            prop = fixtures.uniqueProposition()
+            data = text: prop.text
+            post '/propositions.json', data, (res) ->
+              res.status.should.equal 201
+              json = res.body
+              json.message.should.match /Created a new proposition!/
+              json.proposition.text.should.equal prop.text
+              done()
+
+        it 'should fail with 400 status if proposition is invalid', (done) ->
+          session (user, get, post) ->
+            text = ''
+            text += '1234567890' for n in [1..25]
+            data = text: text
+            post '/propositions.json', data, (res) ->
+              res.status.should.equal 400
+              json = res.body
+              json.error.should.match /Propositions must be 240 characters or less./
+              done()
+
+        it 'should fail with 401 status if not logged in', (done) ->
+          noSession (user, get, post) ->
+            prop = fixtures.uniqueProposition()
+            data = text: prop.text
+            post '/propositions.json', data, (res) ->
+              res.status.should.equal 401
+              json = res.body
+              json.error.should.match /Login to publish propositions./
+              done()
+
     describe '/tags', ->
       describe 'GET /tags/:hash.:format?', ->
         it 'should return a tag as json', (done) ->
