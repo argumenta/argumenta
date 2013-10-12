@@ -16,8 +16,8 @@ exports.new = (req, res) ->
   }
 
   placeholder = {
-    title: 'The Argument Title'
-    premises: ['A brief proposition or claim.', '']
+    title: 'My Argument Title'
+    premises: ['A brief proposition.', 'Another proposition.']
     conclusion: 'A concluding proposition.'
   }
 
