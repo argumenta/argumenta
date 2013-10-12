@@ -18,6 +18,11 @@
       -d 'conclusion=The conclusion! :D' \
       -b ~/tmp/cookies -c ~/tmp/cookies
 
+    # POST /propositions.json
+    curl -i -X POST http://localhost:3000/propositions.json \
+      -d 'text=A new proposition.' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
     # POST /tags.json
     curl -i -X POST http://localhost:3000/tags.json \
       -d 'tag_type=citation' \
@@ -163,6 +168,10 @@ The current version (0.1.1) provides the following features:
   <tr>
     <td width="300px"><a href="#post-arguments">POST /arguments.json</td>
     <td width="300px">Create a new argument (with repo).</td>
+  </tr>
+  <tr>
+    <td width="300px"><a href="#post-propositions">POST /propositions.json</td>
+    <td width="300px">Create a new proposition.</td>
   </tr>
   <tr>
     <td width="300px"><a href="#post-tags">POST /tags.json</td>
@@ -634,6 +643,27 @@ For convenience, you may use the `query` param in the URL's path or query string
       -d 'conclusion=The conclusion! :D' \
       -b ~/tmp/cookies -c ~/tmp/cookies
 
+<a name="post-propositions"></a>
+### POST /propositions.json
+
+*Create a new proposition.*
+
+#### Params
+
++ text: [Required] The proposition text. (240 characters max)
+
+#### Returns
+
++ Success: 201 (Created)
++ Error: 400 (Bad Request)
++ Error: 401 (Unauthorized)
+
+#### Example
+
+    curl -i -X POST http://localhost:3000/propositions.json \
+      -d 'text=A new proposition.' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
 <a name="post-tags"></a>
 ### POST /tags.json
 
@@ -715,6 +745,10 @@ Users may only delete their own repos.
 
 <a name="changes"></a>
 # Changes
+
+## 0.1.2
+
+Add route for publishing propositions.
 
 ## 0.1.0
 
