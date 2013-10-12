@@ -472,14 +472,14 @@ body.argumenta .footer a:hover {
   width: 70px;
 }
 *.argumenta .new-argument {
-  min-width: 450px;
+  min-width: 440px;
   max-width: 600px;
   width: 100%;
 }
 *.argumenta form.edit {
   border: 5px solid #fff;
   color: #333;
-  margin: 5px;
+  margin: 5px 0;
   padding: 0px;
   text-align: center;
 }
