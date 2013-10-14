@@ -1,7 +1,7 @@
 config       = require '../../config'
 Argumenta    = require '../../lib/argumenta'
 Storage      = require '../../lib/argumenta/storage'
-Propositions = require '../../lib/argumenta/arguments'
+Propositions = require '../../lib/argumenta/propositions'
 fixtures     = require '../../test/fixtures'
 should       = require 'should'
 
