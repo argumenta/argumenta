@@ -23,6 +23,7 @@ class Errors
 
   @Arguments:        class ArgumentsError extends BaseError
   @Propositions:     class PropositionsError extends BaseError
+  @Publications:     class PublicationsError extends BaseError
   @Search:           class SearchError extends BaseError
   @Users:            class UsersError extends BaseError
 

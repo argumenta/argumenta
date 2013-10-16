@@ -82,11 +82,12 @@ class Propositions extends Base
         for prop in props
           byHash[prop.sha1()] = prop
         for commit in commits
-          byHash[commit.targetSha1].commit = commit
+          byHash[commit.targetSha1]?.commit = commit
 
         results = []
         for hash in hashes
-          results.push byHash[hash]
+          if prop = byHash[hash]
+            results.push prop
 
         return callback null, results
 

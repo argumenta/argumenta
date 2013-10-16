@@ -206,6 +206,18 @@ class PostgresStore extends Base
       passwordHash = row.password_hash
       return callback null, passwordHash
 
+  #### Publications ####
+
+  # List latest publication sha1s for given usernames.
+  # @api public
+  listPublications: (usernames, options, callback) ->
+    query = Queries.listCommitsByUsers(usernames, options)
+    @query query, (err, res) =>
+      return callback err if err
+
+      publication_sha1s = (row.target_sha1 for row in res.rows)
+      return callback null, publication_sha1s
+
   #### Repos ####
 
   # Add a user repo for a given commit hash.

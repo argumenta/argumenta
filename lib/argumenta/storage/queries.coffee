@@ -164,6 +164,25 @@ class Queries
         """
       values: [limit, offset]
 
+  # List commit sha1s for given usernames, starting with the latest.
+  @listCommitsByUsers: (usernames, opts={}) ->
+    limit  = opts.limit  ? 100
+    offset = opts.offset ? 0
+    values = [].concat usernames, limit, offset
+    placeholders = placeholdersFor(values).split(', ')
+    $users = placeholders.slice(0, -2).join(', ')
+    $limit = placeholders.slice(-2, -1)
+    $offset = placeholders.slice(-1)
+    return listCommitsByUsersQuery =
+      text: """
+        SELECT commit_sha1, target_sha1, commit_id
+        FROM Commits
+        WHERE committer IN (#{ $users })
+        ORDER BY commit_id DESC
+        LIMIT #{ $limit } OFFSET #{ $offset };
+        """
+      values: values
+
   # List propositions by sha1, starting with the latest.
   @listPropositions: (opts={}) ->
     limit  = opts.limit  ? 100

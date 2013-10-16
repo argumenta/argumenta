@@ -88,11 +88,12 @@ class Arguments extends Base
         for arg in args
           byHash[arg.sha1()] = arg
         for commit in commits
-          byHash[commit.targetSha1].commit = commit
+          byHash[commit.targetSha1]?.commit = commit
 
         results = []
         for hash in hashes
-          results.push byHash[hash]
+          if arg = byHash[hash]
+            results.push arg
 
         return callback null, results
 
