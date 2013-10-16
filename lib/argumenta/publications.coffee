@@ -57,11 +57,13 @@ class Publications extends Base
 
     @argumenta.arguments.get hashes, (er1, args) =>
       @argumenta.propositions.get hashes, (er2, props) =>
+        if er1 instanceof @Errors.NotFound then er1 = null; args = []
+        if er2 instanceof @Errors.NotFound then er2 = null; props = []
         return callback err if err = er1 or er2
 
         byHash = {}
         byHash[pub.sha1()] = pub for pub in [].concat args, props
-        publications = (byHash[hash] for hash in hashes)
+        publications = (pub for hash in hashes when pub = byHash[hash])
         return callback null, publications
 
 module.exports = Publications

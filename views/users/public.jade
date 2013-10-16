@@ -7,14 +7,18 @@ block content
         b User
         |  | 
         a(href="/#{user.username}")= user.username
+  h2.title-pane.center Publications &amp; Activity
   .content-pane
-    h2.title-pane.center
-      b Arguments &amp; Activity
-    if user.repos.length
-      for repo in user.repos
-        - var argument = repo.target
-        - var commit = repo.commit
-        include ../partials/argument
+    if user.publications
+      for publication in user.publications
+        if publication.title
+          - var argument = publication
+          - var commit = publication.commit
+          include ../partials/argument
+        if publication.text
+          - var proposition = publication
+          - var commit = publication.commit
+          include ../partials/proposition
     else
       if username == user.username
         .content-panel

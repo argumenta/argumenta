@@ -47,5 +47,12 @@ exports.public = (req, res) ->
 
   argumenta.users.get name, (err, user) ->
     return res.notFound "User '#{name}' not found." if err
-    return res.reply 'users/public',
-      user: user
+
+    argumenta.publications.byUsernames [name], {}, (err, publications) ->
+      if err
+        return res.failed '/', "Failed loading publications for user '#{name}'.",
+          status: Errors.statusFor err
+      else
+        user.publications = publications
+        return res.reply 'users/public',
+          user: user

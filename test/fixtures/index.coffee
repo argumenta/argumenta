@@ -172,6 +172,9 @@ class Fixtures
   @uniqueProposition: () ->
     return new Proposition "Unique proposition text number #{++uniquePropositionCount}."
 
+  @uniquePropositionData: () ->
+    return @uniqueProposition().data()
+
   @validPropositionText: () ->
     return 'The proposition text.'
 

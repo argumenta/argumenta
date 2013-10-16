@@ -79,6 +79,15 @@ sessionWithArgument = (callback) ->
       res.status.should.equal 200
       callback user, data, get, post, put, del
 
+# Session with proposition helper - provides user, proposition data, get, post
+sessionWithProposition = (callback) ->
+  session (user, get, post, put, del) ->
+    data = fixtures.uniquePropositionData()
+    post '/propositions', data, (err, res) ->
+      should.not.exist err
+      res.status.should.equal 200
+      callback user, data, get, post, put, del
+
 # Session with tag helper - provides user, argument, tag, get, post
 sessionWithTag = (callback) ->
   sessionWithArgument (user, argumentData, get, post, put, del) ->
@@ -709,6 +718,14 @@ describeAppTests = (type, app) ->
               res.text.should.not.match /error/i
               res.text.should.match new RegExp user.username
               res.text.should.match new RegExp argument.title
+              done()
+
+        it "should show published propositions", (done) ->
+          sessionWithProposition (user, proposition, get, post) ->
+            get '/' + user.username, (err, res) ->
+              should.not.exist err
+              res.status.should.equal 200
+              res.text.should.match new RegExp proposition.text
               done()
 
       describe 'GET /:name.json', ->
