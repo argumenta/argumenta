@@ -21,24 +21,22 @@ class Arguments extends Base
   #
   # @api public
   # @param [Argumenta] argumenta An argumenta instance.
-  # @param [Storage] storage A storage instance.
+  # @param [Storage]   storage A storage instance.
   constructor: (@argumenta, @storage) ->
 
   ### Instance Methods ###
 
   # Commits an argument for a given user.
   #
-  # Example:
-  #
   #     arguments.commit username, argument, (err, commit) ->
   #       console.log "Committed argument for #{user.username}!" unless err
   #
   # @api public
-  # @param [String]   username The user's username.
-  # @param [Argument] argument The argument to commit.
-  # @param [Function] callback(err, commit) Called on error or success.
-  # @param [Error] err Any error.
-  # @param [Commit] commit The new commit instance.
+  # @param [String]   username
+  # @param [Argument] argument
+  # @param [Function] callback(err, commit)
+  # @param [Error]    err
+  # @param [Commit]   commit
   commit: (username, argument, callback) ->
     unless argument instanceof Argument and argument.validate()
       err = argument?.validationError or
@@ -99,10 +97,12 @@ class Arguments extends Base
 
   # Gets latest arguments.
   #
-  # @param [Object]   options
-  # @param [Object]   options.limit
-  # @param [Object]   options.offset
-  # @param [Function] callback(err, args)
+  # @param [Object]          options
+  # @param [Number]          options.limit
+  # @param [Number]          options.offset
+  # @param [Function]        callback(err, args)
+  # @param [Error]           err
+  # @param [Array<Argument>] arguments
   latest: (options, callback) ->
 
     @storage.store.listArguments options, (err, sha1s) =>

@@ -21,7 +21,7 @@ class Propositions extends Base
   #
   # @api public
   # @param [Argumenta] argumenta An argumenta instance.
-  # @param [Storage] storage A storage instance.
+  # @param [Storage]   storage A storage instance.
   constructor: (@argumenta, @storage) ->
 
   ### Instance Methods ###
@@ -29,14 +29,14 @@ class Propositions extends Base
   # Commits a proposition for a given user.
   #
   #     propositions.commit username, proposition, (err, commit) ->
-  #       console.log "Committed proposition for #{user.username}!" unless err
+  #       console.log "Committed proposition for #{username}!" unless err
   #
   # @api public
-  # @param [String]      username The user's username.
-  # @param [Proposition] proposition The proposition to commit.
-  # @param [Function]    callback(err, commit) Called on error or success.
-  # @param [Error]       err Any error.
-  # @param [Commit]      commit The new commit instance.
+  # @param [String]      username
+  # @param [Proposition] proposition
+  # @param [Function]    callback(err, commit)
+  # @param [Error]       err
+  # @param [Commit]      commit
   commit: (username, proposition, callback) ->
     unless proposition instanceof Proposition and proposition.validate()
       err = proposition?.validationError or
@@ -93,10 +93,13 @@ class Propositions extends Base
 
   # Gets latest propositions.
   #
-  # @param [Object]   options
-  # @param [Object]   options.limit
-  # @param [Object]   options.offset
-  # @param [Function] callback(err, propositions)
+  # @api public
+  # @param [Object]             options
+  # @param [Number]             options.limit
+  # @param [Number]             options.offset
+  # @param [Function]           callback(err, propositions)
+  # @param [Error]              err
+  # @param [Array<Proposition>] propositions
   latest: (options, callback) ->
 
     @storage.store.listPropositions options, (err, sha1s) =>

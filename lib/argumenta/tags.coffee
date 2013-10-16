@@ -20,24 +20,22 @@ class Tags extends Base
   #
   # @api public
   # @param [Argumenta] argumenta An argumenta instance.
-  # @param [Storage] storage A storage instance.
+  # @param [Storage]   storage A storage instance.
   constructor: (@argumenta, @storage) ->
 
   ### Instance Methods ###
 
   # Commits a tag for a given user.
   #
-  # Example:
-  #
   #     tags.commit username, tag, (err, commit) ->
   #       console.log "Committed tag for #{user.username}!" unless err
   #
   # @api public
-  # @param [String] username The user's username.
-  # @param [Tag] tag The tag to commit.
-  # @param [Function] callback(err, commit) Called on error or success.
-  # @param [Error] err Any error.
-  # @param [Commit] commit The new commit instance.
+  # @param [String]   username
+  # @param [Tag]      tag
+  # @param [Function] callback(err, commit)
+  # @param [Error]    err
+  # @param [Commit]   commit
   commit: (username, tag, callback) ->
     unless tag instanceof Tag and tag.validate()
       err = tag?.validationError or

@@ -21,13 +21,14 @@ class Publications extends Base
   #
   # @api public
   # @param [Argumenta] argumenta An argumenta instance.
-  # @param [Storage] storage A storage instance.
+  # @param [Storage]   storage A storage instance.
   constructor: (@argumenta, @storage) ->
 
   ### Instance Methods ###
 
   # Gets latest publications for given usernames.
   #
+  # @api public
   # @param [Object]             options
   # @param [Number]             options.limit
   # @param [Number]             options.offset

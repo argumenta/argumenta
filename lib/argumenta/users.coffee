@@ -22,7 +22,7 @@ class Users extends Base
   #
   # @api public
   # @param [Argumenta] argumenta An argumenta instance.
-  # @param [Storage] storage A storage instance.
+  # @param [Storage]   storage A storage instance.
   constructor: (@argumenta, @storage) ->
 
   ### Instance Methods ###
@@ -39,9 +39,9 @@ class Users extends Base
   # @param [String]     options.email
   # @param [Date]       options.join_date
   # @param [String]     options.join_ip
-  # @param [Function]   callback(err, user) Called on error or success.
-  # @param [Error]      err Any error.
-  # @param [PublicUser] publicUser A public representation of the new user.
+  # @param [Function]   callback(err, user)
+  # @param [Error]      err
+  # @param [PublicUser] publicUser
   create: (options, callback) ->
     {username, password} = options
 
@@ -69,6 +69,7 @@ class Users extends Base
 
   # Gets a user resource by username, with metadata and latest repos.
   #
+  # @api public
   # @param [String]     username
   # @param [Function]   callback(err, user)
   # @param [Error]      err
@@ -89,10 +90,13 @@ class Users extends Base
 
   # Gets latest users.
   #
-  # @param [Object]   options
-  # @param [Object]   options.limit
-  # @param [Object]   options.offset
-  # @param [Function] callback(err, users)
+  # @api public
+  # @param [Object]            options
+  # @param [Number]            options.limit
+  # @param [Number]            options.offset
+  # @param [Function]          callback(err, users)
+  # @param [Error]             err
+  # @param [Array<PublicUser>] users
   latest: (options, callback) ->
 
     @storage.store.listUsers options, (err, usernames) =>
