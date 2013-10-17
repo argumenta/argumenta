@@ -36,7 +36,7 @@ class Publications extends Base
   # @param [Error]              err
   # @param [Array<Publication>] publications
   byUsernames: (usernames, options, callback) ->
-    @argumenta.storage.store.listPublications usernames, options, (err, hashes) =>
+    @storage.store.listPublications usernames, options, (err, hashes) =>
       return callback err if err
       @get hashes, (err, publications) =>
         return callback null, publications
