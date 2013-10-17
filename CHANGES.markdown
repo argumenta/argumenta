@@ -1,6 +1,12 @@
 
 # Changes
 
+## 0.1.2 / 2013-10-17
+
++ Add proposition publishing.
++ Add proposition search results.
++ Show publications on public user page.
+
 ## 0.1.1 / 2013-09-27
 
 + Add intro ribbon, panel.
