@@ -103,6 +103,26 @@ class Queries
   # Search arguments by query.
   @searchArguments: @searchArgumentsByFullText
 
+  # Search propositions by query.
+  @searchPropositions: (query, opts={}) ->
+    limit  = opts.limit ? 20
+    offset = opts.offset ? 0
+    return searchPropositionsQuery =
+      text: """
+        SELECT proposition_sha1,
+               ts_rank(vector, query) AS rank
+        FROM (
+               SELECT proposition_sha1,
+                      to_tsvector( p.text ) AS vector,
+                      plainto_tsquery( $1 ) AS query
+               FROM Propositions p
+             ) ft
+        WHERE vector @@ query
+        ORDER BY rank DESC
+        LIMIT $2 OFFSET $3;
+      """
+      values: [ query, limit, offset ]
+
   # Search users by query.
   @searchUsers: (query, opts={}) ->
     limit  = opts.limit ? 20

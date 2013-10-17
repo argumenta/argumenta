@@ -568,6 +568,22 @@ class PostgresStore extends Base
         return callback err if err
         return callback null, args
 
+  # Search by query for propositions.
+  # @api private
+  searchPropositions: (query, options, callback) ->
+    propsQuery = Queries.searchPropositions query, options
+    @query propsQuery, (err, res) =>
+      return callback err if err
+      return callback null, [] if res.rows.length is 0
+
+      hashes = (row.proposition_sha1 for row in res.rows)
+      if options.return_keys
+        return callback null, hashes
+
+      @getPropositions hashes, (err, props) =>
+        return callback err if err
+        return callback null, props
+
   # Search by query for users.
   # @api private
   searchUsers: (query, options, callback) ->
@@ -589,14 +605,16 @@ class PostgresStore extends Base
   # @api public
   search: (query, options, callback) ->
     @searchArguments query, options, (er1, args) =>
-      @searchUsers query, options, (er2, users) =>
-        err = er1 or er2
-        return callback err if err
+      @searchPropositions query, options, (er2, props) =>
+        @searchUsers query, options, (er3, users) =>
+          err = er1 or er2 or er3
+          return callback err if err
 
-        results =
-          arguments : args
-          users     : users
+          results =
+            arguments:    args
+            propositions: props
+            users:        users
 
-        return callback null, results
+          return callback null, results
 
 module.exports = PostgresStore

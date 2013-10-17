@@ -673,6 +673,18 @@ describeAppTests = (type, app) ->
               json.arguments[0].commit.committer.should.equal user.username
               done()
 
+        it 'should find a proposition by full text query', (done) ->
+          sessionWithProposition (user, prop, get, post) ->
+            query = encodeURIComponent(prop.text)
+            get '/search/' + query + '.json', (err, res) ->
+              should.not.exist err
+              res.status.should.equal 200
+              json = res.body
+              json.propositions.should.be.an.instanceOf Array
+              json.propositions.length.should.equal 1
+              json.propositions[0].should.include prop
+              done()
+
         it 'should find a user by username', (done) ->
           session (user, get, post) ->
             query = encodeURIComponent(user.username)

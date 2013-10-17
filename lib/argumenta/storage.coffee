@@ -533,8 +533,9 @@ class Storage extends Base
   # @param [Boolean]            options.return_keys
   # @param [Function]           cb(err, results)
   # @param [Object]             results
-  # @param [Array<PublicUser>]  results.users
   # @param [Array<Argument>]    results.arguments
+  # @param [Array<Proposition>] results.propositions
+  # @param [Array<PublicUser>]  results.users
   search: (query, options, cb) ->
     @store.search query, options, (err, results) =>
       return cb new @RetrievalError "Failed searching store by query." if err

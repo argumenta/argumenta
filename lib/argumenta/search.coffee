@@ -35,20 +35,23 @@ class Search extends Base
   # @param [Object]             results
   # @param [Array<PublicUser>]  results.users
   # @param [Array<Argument>]    results.arguments
+  # @param [Array<Proposition>] results.propositions
   query: (query, options={}, callback) ->
     options.return_keys = true
     @storage.search query, options, (err, results) =>
       return new @Error "Failed searching storage." if err
 
-      @argumenta.arguments.get results.arguments, (err, args) =>
-        return callback err if err
-        @storage.getUsersWithMetadata results.users, (err, users) =>
-          return callback err if err
+      @argumenta.arguments.get results.arguments, (er1, args) =>
+        @argumenta.propositions.get results.propositions, (er2, props) =>
+          @storage.getUsersWithMetadata results.users, (er3, users) =>
+            err = er1 or er2 or er3
+            return callback err if err
 
-          resources =
-            arguments:    args
-            users:        users
+            resources =
+              arguments:    args
+              propositions: props
+              users:        users
 
-          return callback null, resources
+            return callback null, resources
 
 module.exports = Search

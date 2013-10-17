@@ -52,3 +52,13 @@ describe 'Search', ->
           should.ok arg.equals argument
           should.ok arg.commit.equals commit
           done()
+
+    it 'should get propositions matching the given query', (done) ->
+      withArgument (user, commit, argument) ->
+        proposition = argument.propositions[0]
+        query = proposition.text
+        argumenta.search.query query, {}, (err, results) ->
+          results.propositions.length.should.equal 1
+          prop = results.propositions[0]
+          should.ok prop.equals proposition
+          done()

@@ -290,9 +290,17 @@ class LocalStore extends Base
         then users.push u.username
         else users.push new PublicUser u
 
+    props = []
+    for k, p of @propositions.bySha1
+      if p.text.match regex
+        if options.return_keys
+        then props.push p.sha1()
+        else props.push new Proposition p.text
+
     results =
-      arguments : args
-      users     : users
+      arguments:    args
+      propositions: props
+      users:        users
 
     return cb null, results
 
