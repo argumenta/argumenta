@@ -54,7 +54,7 @@ The Argumenta API provides a RESTful interface to data in JSON form.
 It can be used to access resources including Users, Repos, Arguments, Propositions, and Tags.  
 Search is now also available.
 Planned resources include Follows and Activity.  
-The current version (0.1.1) provides the following features:
+The current version (0.1.2) provides the following features:
 
 + Read access for general use by unauthenticated clients.
 + Cookie-based authenticated sessions for account creation, login, and publishing.
@@ -292,7 +292,7 @@ The current version (0.1.1) provides the following features:
     results: {
       users:        [Array<User>]
       arguments:    [Array<Argument>]
-      propositions: [Array<Proposition>] // PLANNED
+      propositions: [Array<Proposition>]
       tags:         [Array<Tag>]         // PLANNED
     }
 
