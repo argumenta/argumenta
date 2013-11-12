@@ -83,6 +83,30 @@ CREATE TABLE Repos (
   FOREIGN KEY (commit_sha1) REFERENCES Commits(commit_sha1)
 );
 
-CREATE INDEX commit_target_sha1_index ON Commits (target_sha1);
-CREATE INDEX tags_target_sha1_index ON Tags (target_sha1);
+CREATE TABLE Discussions (
+  discussion_id     SERIAL        UNIQUE,
+  target_type       CHAR(40)      NOT NULL,
+  target_sha1       CHAR(40)      NOT NULL,
+  target_owner      VARCHAR(20)   NOT NULL,
+  creator           VARCHAR(20)   NOT NULL,
+  created_at        TIMESTAMP     NOT NULL,
+  updated_at        TIMESTAMP     NULL,
+  FOREIGN KEY (target_sha1)   REFERENCES Objects(sha1),
+  FOREIGN KEY (target_owner)  REFERENCES Users(username),
+  FOREIGN KEY (creator)       REFERENCES Users(username)
+);
 
+CREATE TABLE Comments (
+  comment_id        SERIAL        UNIQUE,
+  author            VARCHAR(20)   NOT NULL,
+  comment_date      TIMESTAMP     NOT NULL,
+  comment_text      VARCHAR(2400) NOT NULL,
+  discussion_id     INTEGER       NOT NULL,
+  FOREIGN KEY (author)        REFERENCES Users(username),
+  FOREIGN KEY (discussion_id) REFERENCES Discussions(discussion_id)
+);
+
+CREATE INDEX commit_target_sha1_index       ON Commits (target_sha1);
+CREATE INDEX tags_target_sha1_index         ON Tags (target_sha1);
+CREATE INDEX discussions_target_sha1_index  ON Discussions (target_sha1);
+CREATE INDEX comments_discussion_index      ON Comments (discussion_id);
