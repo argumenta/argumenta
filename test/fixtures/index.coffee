@@ -297,4 +297,23 @@ class Fixtures
   @validCommentaryText: () ->
     return 'The commentary analysis, up to a few paragraphs...'
 
+  #### Discussions ####
+
+  @validDiscussionId: () ->
+    return 1234
+
+  #### Comments ####
+
+  @validCommentAuthor: () ->
+    return @validUsername()
+
+  @validCommentText: () ->
+    return 'The comment text...'
+
+  @validCommentDate: () ->
+    return new Date()
+
+  @validCommentId: () ->
+    return 1111
+
 module.exports = Fixtures
