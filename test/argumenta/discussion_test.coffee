@@ -25,10 +25,16 @@ describe 'Discussion', ->
       discussion.targetOwner.should.equal params.targetOwner
       discussion.creator.should.equal params.creator
       discussion.createdAt.should.equal params.createdAt
+      should.not.exist discussion.discussionId
       should.not.exist discussion.updatedAt
       discussion.validate().should.equal true
 
   describe 'validate()', ->
+
+    it 'should return false if discussionId is invalid', ->
+      params = _.extend {}, defaultParams, {discussionId: 'bad-id'}
+      discussion = new Discussion params
+      discussion.validate().should.equal false
 
     it 'should return false if targetType is invalid', ->
       params = _.extend {}, defaultParams, {targetType: 'bad-type'}

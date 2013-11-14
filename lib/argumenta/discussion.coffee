@@ -23,7 +23,7 @@ class Discussion
   #
   # @api public
   # @param [Object]         params
-  # @param [String]         params.discussionId
+  # @param [Number]         params.discussionId
   # @param [String]         params.targetType
   # @param [String]         params.targetSha1
   # @param [String]         params.targetOwner
@@ -68,7 +68,8 @@ class Discussion
   # @return [Boolean] The validation status.
   validate: () ->
     try
-      if @validateTargetType() and @validateTargetSha1() and
+      if @validateDiscussionId() and
+         @validateTargetType() and @validateTargetSha1() and
          @validateTargetOwner() and @validateCreator() and
          @validateCreatedAt() and @validateUpdatedAt()
         @validationError = null
@@ -80,6 +81,9 @@ class Discussion
       return @validationStatus
 
   ### Instance Validation ###
+
+  validateDiscussionId: () ->
+    return Discussion.validateDiscussionId @discussionId
 
   validateCreator: () ->
     return Discussion.validateCreator @creator
@@ -100,6 +104,15 @@ class Discussion
     return Discussion.validateUpdatedAt @updatedAt
 
   ### Static Validation ###
+
+  @validateDiscussionId: (discussionId) ->
+    unless discussionId?
+      return true
+
+    unless _.isNumber discussionId
+      throw new @ValidationError "Discussion id must be an integer, if set."
+
+    return true
 
   @validateCreator: (creator) ->
     try
