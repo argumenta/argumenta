@@ -1,6 +1,7 @@
 _       = require 'underscore'
 User    = require '../../lib/argumenta/user'
 Commit  = require '../../lib/argumenta/objects/commit'
+Errors  = require '../../lib/argumenta/errors'
 
 #
 # Discussion represents a conversation about a published argument.
@@ -15,6 +16,8 @@ Commit  = require '../../lib/argumenta/objects/commit'
 # + Each argument may have multiple discussions.
 #
 class Discussion
+
+  @ValidationError = Errors.Validation
 
   # Creates a discussion instance.
   #
@@ -36,7 +39,7 @@ class Discussion
     @creator       = params.creator
     @createdAt     = params.createdAt     ? params.created_at
     @updatedAt     = params.updatedAt     ? params.updated_at
-    @comments      = params.comments
+    @comments      = params.comments      ? []
 
   # Gets a plain object with discussion data.
   #
@@ -116,10 +119,10 @@ class Discussion
 
   @validateTargetType: (targetType) ->
     unless _.isString targetType
-      throw "Discussion target type must be a string."
+      throw new @ValidationError "Discussion target type must be a string."
 
     unless targetType is 'argument'
-      throw "Discussion target must be an argument."
+      throw new @ValidationError "Discussion target must be an argument."
 
     return true
 
