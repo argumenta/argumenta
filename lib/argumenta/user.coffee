@@ -23,10 +23,12 @@ class User
   #
   # @api public
   # @see Users#create()
-  # @param [Object] params A hash of user params.
-  # @param [String] params.username The user's login name.
-  # @param [String] params.email    The user's email adress.
-  # @param [String] params.passwordHash The user's password hash.
+  # @param [Object] params
+  # @param [String] params.username
+  # @param [String] params.email
+  # @param [String] params.passwordHash
+  # @param [Date]   params.joinDate
+  # @param [String] params.joinIp
   constructor: (@username, @email, @passwordHash, @joinDate, @joinIp) ->
     if arguments.length == 1 and arguments[0].username
       params = arguments[0]
