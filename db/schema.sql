@@ -85,7 +85,7 @@ CREATE TABLE Repos (
 
 CREATE TABLE Discussions (
   discussion_id     SERIAL        UNIQUE,
-  target_type       CHAR(40)      NOT NULL,
+  target_type       VARCHAR(20)   NOT NULL,
   target_sha1       CHAR(40)      NOT NULL,
   target_owner      VARCHAR(20)   NOT NULL,
   creator           VARCHAR(20)   NOT NULL,
