@@ -29,6 +29,20 @@ describe 'Discussion', ->
       should.not.exist discussion.updatedAt
       discussion.validate().should.equal true
 
+  describe 'equals( discussion )', ->
+
+    it 'should return true if discussions are equal', ->
+      params = defaultParams
+      discussion1 = new Discussion params
+      discussion2 = new Discussion params
+      should.ok discussion1.equals discussion2
+
+    it 'should return false if discussions are not equal', ->
+      params = defaultParams
+      discussion1 = new Discussion params
+      discussion2 = new Discussion _.extend({}, params, {creator: 'Senpai'})
+      should.ok !discussion1.equals discussion2
+
   describe 'validate()', ->
 
     it 'should return false if discussionId is invalid', ->

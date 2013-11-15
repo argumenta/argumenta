@@ -41,6 +41,40 @@ class Discussion
     @updatedAt     = params.updatedAt     ? params.updated_at
     @comments      = params.comments      ? []
 
+  # Checks for equality with another discussion.
+  #
+  #   isEqual = discussion1.equals( discussion2 )
+  #
+  # @api public
+  # @param [Discussion] discussion The other discussion.
+  # @return [Boolean] The equality result.
+  equals: (discussion) ->
+    unless discussion instanceof Discussion
+      return false
+
+    ms = (date) ->
+      if date instanceof Date then date.getTime() else null
+
+    unless (
+      @discussionId   == discussion.discussionId and
+      @targetType     == discussion.targetType and
+      @targetSha1     == discussion.targetSha1 and
+      @targetOwner    == discussion.targetOwner and
+      @creator        == discussion.creator and
+      ms(@createdAt)  == ms(discussion.createdAt) and
+      ms(@updatedAt)  == ms(discussion.updatedAt)
+    )
+      return false
+
+    unless @comments.length == discussion.comments.length
+      return false
+
+    for c, index in @comments
+      unless c.equals discussion.comments[index]
+        return false
+
+    return true
+
   # Gets a plain object with discussion data.
   #
   # @api public

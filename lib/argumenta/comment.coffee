@@ -28,6 +28,21 @@ class Comment
     @commentText   = params.commentText ? params.comment_text
     @discussionId  = params.discussionId ? params.discussion_id
 
+  # Checks for equality with another comment.
+  #
+  #   isEqual = comment1.equals( comment2 )
+  #
+  # @api public
+  # @param [Comment] comment The other comment.
+  # @return [Boolean] The equality result.
+  equals: (comment) ->
+    return comment instanceof Comment and
+      @commentId    == comment.commentId and
+      @author       == comment.author and
+      @commentDate  == comment.commentDate and
+      @commentText  == comment.commentText and
+      @discussionId == comment.discussionId
+
   # Gets a plain object with comment data.
   #
   # @api public

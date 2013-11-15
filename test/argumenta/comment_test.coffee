@@ -27,6 +27,20 @@ describe 'Comment', ->
       comment.discussionId.should.equal params.discussionId
       comment.validate().should.equal true
 
+  describe 'equals( comment )', ->
+
+    it 'should return true if comments are equal', ->
+      params = defaultParams
+      comment1 = new Comment params
+      comment2 = new Comment params
+      should.ok comment1.equals comment2
+
+    it 'should return false if comments are not equal', ->
+      params = defaultParams
+      comment1 = new Comment params
+      comment2 = new Comment _.extend({}, params, {author: 'Senpai'})
+      should.ok !comment1.equals comment2
+
   describe 'validate()', ->
 
     it 'should return false if commentId is invalid', ->
