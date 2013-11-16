@@ -3,6 +3,8 @@ pg           = require 'pg'
 Transaction  = require 'pg-nest'
 _            = require 'underscore'
 Base         = require '../../argumenta/base'
+Comment      = require '../../argumenta/comment'
+Discussion   = require '../../argumenta/discussion'
 Objects      = require '../../argumenta/objects'
 PublicUser   = require '../../argumenta/public_user'
 Repo         = require '../../argumenta/repo'
@@ -600,6 +602,45 @@ class PostgresStore extends Base
       @getUsers usernames, (err, users) =>
         return callback err if err
         return callback null, users
+
+  #### Discussions ####
+
+  # Add a discussion to the store.
+  # @api public
+  addDiscussion: (discussion, callback) ->
+    @session (err, session) ->
+      return callback err if err
+
+      query = Queries.insertDiscussion discussion
+      session.query query, (err) =>
+        session.finalize err, callback
+
+  # Get discussions for given target hashes.
+  # @api public
+  getDiscussionsFor: (targetHashes, callback) ->
+    query = Queries.selectDiscussionsFor targetHashes
+    @query query, (err, results) =>
+      return callback err if err
+
+      byId = []
+      withTarget = {}
+      for row in results.rows
+        discussion = byId[row.discussion_id]
+        unless discussion
+          discussion = new Discussion row
+          byId[row.discussion_id] = discussion
+          withTarget[row.target_sha1] or= []
+          withTarget[row.target_sha1].push discussion
+
+        comment = new Comment row
+        if comment.commentId != null
+          discussion.comments.push comment
+
+      discussions = []
+      for h in targetHashes
+        discussions = discussions.concat withTarget[h]
+
+      return callback null, discussions
 
   # Search by query for users, arguments, propositions, and tags.
   # @api public

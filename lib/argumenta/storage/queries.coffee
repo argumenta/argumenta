@@ -481,6 +481,39 @@ class Queries
         tag.citationText, tag.commentaryText
       ]
 
+  # Select discussions for given target hashes.
+  @selectDiscussionsFor: (targetHashes) ->
+    placeholders = placeholdersFor targetHashes
+    return selectDiscussionsForQuery =
+      text: """
+        SELECT discussion_id,
+               target_type, target_sha1, target_owner,
+               creator, created_at, updated_at,
+               comment_id,
+               author, comment_date, comment_text
+        FROM Discussions d
+        LEFT OUTER JOIN Comments c USING (discussion_id)
+        WHERE d.target_sha1 IN (#{ placeholders })
+        ORDER BY d.updated_at DESC, c.comment_date ASC;
+        """
+      values: targetHashes
+
+  # Insert a discussion.
+  @insertDiscussion: (discussion) ->
+    return insertDiscussionQuery =
+      text: """
+        INSERT INTO Discussions ( discussion_id,
+                                  target_type, target_sha1, target_owner,
+                                  creator, created_at, updated_at )
+        VALUES( DEFAULT,
+                $1, $2, $3,
+                $4, $5, $6 );
+      """
+      values: [
+        discussion.targetType, discussion.targetSha1, discussion.targetOwner,
+        discussion.creator, discussion.createdAt, discussion.updatedAt
+      ]
+
   # Deletes a repo by owner and name.
   @deleteRepo: (username, reponame) ->
     return deleteRepoQuery =
@@ -494,6 +527,8 @@ class Queries
   # @note Faster than truncation for small tables; useful for tests.
   @deleteAll: () ->
     return deleteAllQuery = """
+      DELETE FROM Comments;
+      DELETE FROM Discussions;
       DELETE FROM Repos;
       DELETE FROM Commits;
       DELETE FROM Tags;
@@ -508,7 +543,8 @@ class Queries
   @truncateAll: () ->
     return truncateAllQuery = """
       TRUNCATE Users, Objects, Propositions, Arguments,
-               ArgumentPropositions, Tags, Commits, Repos
+               ArgumentPropositions, Tags, Commits, Repos,
+               Discussions, Comments
       RESTART IDENTITY
       CASCADE;
       """

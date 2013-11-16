@@ -5,6 +5,7 @@ User        = require '../lib/argumenta/user'
 PublicUser  = require '../lib/argumenta/public_user'
 Repo        = require '../lib/argumenta/repo'
 Objects     = require '../lib/argumenta/objects'
+Discussion  = require '../lib/argumenta/discussion'
 fixtures    = require '../test/fixtures'
 _           = require 'underscore'
 should      = require 'should'
@@ -135,6 +136,23 @@ describeStorageTests = (storage, type) ->
           storage.addCommit tagCommit, (err) ->
             should.not.exist err
             callback user, target, source, tagCommit, tag
+
+    # With Discussion
+    withDiscussion = (callback) ->
+      withArgument (user, commit, argument) ->
+        params =
+          targetType: 'argument'
+          targetSha1: argument.sha1()
+          targetOwner: user.username
+          creator: user.username
+          createdAt: new Date()
+        discussion = new Discussion params
+        storage.addDiscussion discussion, (err) ->
+          should.not.exist err
+          storage.getDiscussionsFor [params.targetSha1], (err, discussions) ->
+            should.not.exist err
+            discussions[0].should.include params
+            callback user, argument, discussions[0]
 
     before clearStorage
     afterEach clearStorageQuick
@@ -614,6 +632,37 @@ describeStorageTests = (storage, type) ->
               p1.metadata.tag_sha1s.citation[0].should.equal tag1.sha1()
               p2.metadata.tag_sha1s.support[0].should.equal tag2.sha1()
               done()
+
+    #### Discussions ####
+
+    describe 'addDiscussion( discussion )', ->
+      it 'should store a valid discussion', (done) ->
+        withArgument (user, commit, argument) ->
+          params =
+            targetType: 'argument'
+            targetSha1: argument.sha1()
+            targetOwner: user.username
+            creator: user.username
+            createdAt: new Date()
+          discussion = new Discussion params
+          storage.addDiscussion discussion, (err) ->
+            should.not.exist err
+            storage.getDiscussionsFor [params.targetSha1], (err, discussions) ->
+              should.not.exist err
+              discussions[0].should.include params
+              done()
+
+    describe 'getDiscussionsFor( targetHashes, callback )', ->
+      it 'should get discussions for given target hashes', (done) ->
+        withDiscussion (user, argument, discussion) ->
+          hashes = [argument.sha1()]
+          storage.getDiscussionsFor hashes, (err, discussions) ->
+            should.not.exist err
+            discussions.length.should.equal 1
+            should.ok discussions[0].equals discussion
+            done()
+
+    #### Search ####
 
     describe 'search( query, options, callback )', ->
       it 'should find an argument by title', (done) ->

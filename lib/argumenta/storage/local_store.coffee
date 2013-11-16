@@ -1,4 +1,6 @@
 Base        = require '../../argumenta/base'
+Comment     = require '../../argumenta/comment'
+Discussion  = require '../../argumenta/discussion'
 Argument    = require '../../argumenta/objects/argument'
 Proposition = require '../../argumenta/objects/proposition'
 ObjectUtils = require '../../argumenta/objects/object_utils'
@@ -21,6 +23,9 @@ class LocalStore extends Base
     @commits = { bySha1: {}, withTargetSha1: {} }
     @tags = { bySha1: {}, withTargetSha1: {} }
 
+    # Init discussions hashes
+    @discussions = { byId: [], withTargetSha1: {} }
+
   # Store a User in memory.
   addUser: (user, cb) ->
     # Check for existing user
@@ -37,11 +42,14 @@ class LocalStore extends Base
   clearAll: (opts, cb) ->
     @users = {}
 
-    for collection in [@arguments, @propositions, @commits, @tags]
+    for collection in [@arguments, @propositions, @commits, @tags, @discussions]
       collection.bySha1 = {}
 
-    for collection in [@commits, @tags]
+    for collection in [@commits, @tags, @discussions]
       collection.withTargetSha1 = {}
+
+    for collection in [@discussions]
+      collection.byId = []
 
     return cb null
 
@@ -270,6 +278,26 @@ class LocalStore extends Base
       results = results.concat tags or []
 
     return cb null, results
+
+  #### Discussions ####
+
+  addDiscussion: (discussion, cb) ->
+    id = @discussions.byId.length
+    @discussions.byId[id] = discussion
+    discussion.discussionId = id
+
+    hash = discussion.targetSha1
+    @discussions.withTargetSha1[hash] or= []
+    @discussions.withTargetSha1[hash].push discussion
+
+    return cb null
+
+  getDiscussionsFor: (targetHashes, cb) ->
+    discussions = []
+    for hash in targetHashes
+      discussions = discussions.concat @discussions.withTargetSha1[hash]
+
+    return cb null, discussions
 
   # Search by query for users, arguments, propositions, and tags.
   search: (query, options, cb) ->

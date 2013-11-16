@@ -4,6 +4,7 @@ Argument    = require '../argumenta/objects/argument'
 Proposition = require '../argumenta/objects/proposition'
 Commit      = require '../argumenta/objects/commit'
 Tag         = require '../argumenta/objects/tag'
+Discussion  = require '../argumenta/discussion'
 
 # Storage persists users and objects to a backend store.
 
@@ -522,6 +523,35 @@ class Storage extends Base
               return cb new @RetrievalError """
                 Failed getting tags plus sources from the store."""
             return cb null, tags, sources, commits
+
+  # Add a discussion to the store.
+  #
+  # @param [Discussion]        discussion
+  # @param [Function]          cb(err)
+  # @param [Error]             err
+  addDiscussion: (discussion, cb) ->
+    unless discussion instanceof Discussion
+      return cb new @InputError "Discussion instance required to store discussion."
+    unless discussion.validate()
+      return cb new @InputError "Discussion to store must be valid."
+
+    @store.addDiscussion discussion, (err) =>
+      return cb new @Error "Failed storing discussion.", err if err
+      return cb null
+
+  # Get discussions for the given target hashes.
+  #
+  # @param [Array<String>]     targetHashes
+  # @param [Function]          cb(err, discussions)
+  # @param [Error]             err
+  # @param [Array<Discussion>] discussions
+  getDiscussionsFor: (targetHashes, cb) ->
+    @store.getDiscussionsFor targetHashes, (err, discussions) =>
+      if err
+        message = "Failed getting discussions from the store."
+        return cb new @RetrievalError message
+      else
+        return cb null, discussions
 
   # Search by query for users, arguments and propositions.
   #
