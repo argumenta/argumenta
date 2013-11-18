@@ -90,7 +90,7 @@ CREATE TABLE Discussions (
   target_owner      VARCHAR(20)   NOT NULL,
   creator           VARCHAR(20)   NOT NULL,
   created_at        TIMESTAMP     NOT NULL,
-  updated_at        TIMESTAMP     NULL,
+  updated_at        TIMESTAMP     NOT NULL,
   FOREIGN KEY (target_sha1)   REFERENCES Objects(sha1),
   FOREIGN KEY (target_owner)  REFERENCES Users(username),
   FOREIGN KEY (creator)       REFERENCES Users(username)
