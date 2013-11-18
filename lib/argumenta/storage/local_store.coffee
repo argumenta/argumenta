@@ -13,18 +13,28 @@ class LocalStore extends Base
   Error: @Error = @Errors.LocalStore
 
   constructor: () ->
-    # Init users and repos hashes
+    @initHashes()
+
+  # Inits all hashes for the store.
+  initHashes: () ->
+    # Users and repos
     @users = {}
     @repos = {}
 
-    # Init object hashes
+    # Objects
     @arguments = { bySha1: {} }
     @propositions = { bySha1: {} }
     @commits = { bySha1: {}, withTargetSha1: {} }
     @tags = { bySha1: {}, withTargetSha1: {} }
 
-    # Init discussions hashes
+    # Comments and discussions
     @discussions = { byId: [], withTargetSha1: {} }
+    @comments = { byId: [], withDiscussionId: {} }
+
+  # Delete *all* entities from the store.
+  clearAll: (opts, cb) ->
+    @initHashes()
+    return cb null
 
   # Store a User in memory.
   addUser: (user, cb) ->
@@ -36,21 +46,6 @@ class LocalStore extends Base
     @users[user.username] = user
 
     # Success
-    return cb null
-
-  # Delete *all* entities from the store.
-  clearAll: (opts, cb) ->
-    @users = {}
-
-    for collection in [@arguments, @propositions, @commits, @tags, @discussions]
-      collection.bySha1 = {}
-
-    for collection in [@commits, @tags, @discussions]
-      collection.withTargetSha1 = {}
-
-    for collection in [@discussions]
-      collection.byId = []
-
     return cb null
 
   # Gets the *public* properties of a user by name.
