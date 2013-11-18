@@ -45,7 +45,7 @@
     "browserify": "~1.15.4",
     "mocha": "1.0.x",
     "request": "~2.9.202",
-    "should": "0.6.x",
+    "should": "2.1.0",
     "superagent": "0.15.7",
     "sweeten-docco": ">=0.3.1"
   }

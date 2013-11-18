@@ -174,7 +174,7 @@ describeStorageTests = (storage, type) ->
           storage.getUser tester.username, (err, user) ->
             should.not.exist err
             user.username.should.equal tester.username
-            user.joinDate.should.equal tester.joinDate
+            user.joinDate.should.eql tester.joinDate
             user.gravatarId.should.match /^[0-9,a-f]{32}$/
             done()
 
