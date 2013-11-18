@@ -39,7 +39,12 @@ class Discussion
     @creator       = params.creator
     @createdAt     = params.createdAt     ? params.created_at
     @updatedAt     = params.updatedAt     ? params.updated_at
-    @comments      = params.comments      ? []
+    @comments      = params.comments
+
+    # Defaults
+    @createdAt     = @createdAt or new Date()
+    @updatedAt     = @updatedAt or @createdAt
+    @comments      = @comments  or []
 
   # Checks for equality with another discussion.
   #

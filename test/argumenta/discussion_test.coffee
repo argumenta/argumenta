@@ -26,8 +26,19 @@ describe 'Discussion', ->
       discussion.creator.should.equal params.creator
       discussion.createdAt.should.equal params.createdAt
       should.not.exist discussion.discussionId
-      should.not.exist discussion.updatedAt
       discussion.validate().should.equal true
+
+    it 'should set default values for createdAt, updatedAt, and comments', ->
+      params = _.extend {}, defaultParams,
+        createdAt: null,
+        updateAt: null,
+        comments: null
+
+      discussion = new Discussion params
+
+      discussion.createdAt.should.be.an.instanceOf Date
+      discussion.updatedAt.should.equal discussion.createdAt
+      discussion.comments.should.eql []
 
   describe 'equals( discussion )', ->
 
@@ -71,7 +82,7 @@ describe 'Discussion', ->
       discussion.validate().should.equal false
 
     it 'should return false if createdAt is invalid', ->
-      params = _.extend {}, defaultParams, {createdAt: null}
+      params = _.extend {}, defaultParams, {createdAt: 'bad-date'}
       discussion = new Discussion params
       discussion.validate().should.equal false
 
