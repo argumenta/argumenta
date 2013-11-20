@@ -6,6 +6,7 @@ PublicUser  = require '../lib/argumenta/public_user'
 Repo        = require '../lib/argumenta/repo'
 Objects     = require '../lib/argumenta/objects'
 Discussion  = require '../lib/argumenta/discussion'
+Comment     = require '../lib/argumenta/comment'
 fixtures    = require '../test/fixtures'
 _           = require 'underscore'
 should      = require 'should'
@@ -153,6 +154,23 @@ describeStorageTests = (storage, type) ->
             should.not.exist err
             discussions[0].should.include params
             callback user, argument, discussions[0]
+
+    # With Comment
+    withComment = (callback) ->
+      withDiscussion (user, argument, discussion) ->
+        params =
+          author: user.username
+          commentText: fixtures.validCommentText()
+          commentDate: new Date()
+          discussionId: discussion.discussionId
+        comment = new Comment params
+        storage.addComment comment, (err, id) ->
+          should.not.exist err
+          storage.getComments [id], (err, comments) ->
+            should.not.exist err
+            comments.length.should.equal 1
+            comments[0].should.include params
+            callback user, discussion, comments[0]
 
     before clearStorage
     afterEach clearStorageQuick
@@ -660,6 +678,37 @@ describeStorageTests = (storage, type) ->
             should.not.exist err
             discussions.length.should.equal 1
             should.ok discussions[0].equals discussion
+            done()
+
+    #### Comments ####
+
+    describe 'addComment( comment, callback )', ->
+      it 'should store a valid comment', (done) ->
+        withDiscussion (user, argument, discussion) ->
+          params =
+            author: user.username
+            commentText: fixtures.validCommentText()
+            commentDate: new Date()
+            discussionId: discussion.discussionId
+          comment = new Comment params
+          storage.addComment comment, (err, id) ->
+            should.not.exist err
+            storage.getComments [id], (err, comments) ->
+              should.not.exist err
+              comments.length.should.equal 1
+              comments[0].should.include params
+              comments[0].commentId.should.be.a.number
+              done()
+
+    describe 'getComments( commentIds, callback )', ->
+      it 'should get comments by ids', (done) ->
+        withComment (user, discussion, comment) ->
+          commentIds = [ comment.commentId ]
+          storage.getComments commentIds, (err, comments) ->
+            should.not.exist err
+            comments.length.should.equal 1
+            comments[0].should.include _.pick comment,
+              'author', 'commentDate', 'commentText', 'discussionId'
             done()
 
     #### Search ####

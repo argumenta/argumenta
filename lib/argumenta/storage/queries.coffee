@@ -481,6 +481,37 @@ class Queries
         tag.citationText, tag.commentaryText
       ]
 
+  # Select comments by ids.
+  @selectComments: (ids) ->
+    placeholders = placeholdersFor ids
+    return selectCommentsQuery =
+      text: """
+        SELECT comment_id,
+               author, comment_date, comment_text,
+               discussion_id
+        FROM Comments c
+        WHERE c.comment_id IN (#{ placeholders })
+        ORDER BY c.comment_date ASC;
+        """
+      values: ids
+
+  # Insert a comment.
+  @insertComment: (comment) ->
+    return insertCommentQuery =
+      text: """
+        INSERT INTO Comments ( comment_id,
+                               author, comment_date, comment_text,
+                               discussion_id )
+        VALUES( DEFAULT,
+                $1, $2, $3,
+                $4 )
+        RETURNING comment_id;
+      """
+      values: [
+        comment.author, comment.commentDate, comment.commentText,
+        comment.discussionId
+      ]
+
   # Select discussions for given target hashes.
   @selectDiscussionsFor: (targetHashes) ->
     placeholders = placeholdersFor targetHashes

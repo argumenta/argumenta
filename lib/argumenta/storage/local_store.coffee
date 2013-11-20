@@ -274,8 +274,31 @@ class LocalStore extends Base
 
     return cb null, results
 
+  #### Comments ####
+
+  # Add a comment to the store.
+  addComment: (comment, cb) ->
+    id = @comments.byId.length
+    @comments.byId[id] = comment
+    comment.commentId = id
+
+    discussionId = comment.discussionId
+    @comments.withDiscussionId[discussionId] or= []
+    @comments.withDiscussionId[discussionId].push comment
+
+    return cb null, id
+
+  # Get comments by ids.
+  getComments: (ids, cb) ->
+    comments = []
+    for id in ids
+      comments.push @comments.byId[id]
+
+    return cb null, comments
+
   #### Discussions ####
 
+  # Add a discussion to the store.
   addDiscussion: (discussion, cb) ->
     id = @discussions.byId.length
     @discussions.byId[id] = discussion
@@ -287,6 +310,7 @@ class LocalStore extends Base
 
     return cb null
 
+  # Get discussions for given target hashes.
   getDiscussionsFor: (targetHashes, cb) ->
     discussions = []
     for hash in targetHashes

@@ -642,6 +642,38 @@ class PostgresStore extends Base
 
       return callback null, discussions
 
+  #### Comments ####
+
+  # Add a comment to the store.
+  # @api public
+  addComment: (comment, callback) ->
+    @session (err, session) ->
+      return callback err if err
+
+      query = Queries.insertComment comment
+      session.query query, (err, results) =>
+        session.finalize err, (err) =>
+          if err
+            return callback err
+          else
+            id = results.rows[0].comment_id
+            return callback null, id
+
+  # Get comments by ids.
+  # @api public
+  getComments: (ids, callback) ->
+    query = Queries.selectComments ids
+    @query query, (err, results) =>
+      return callback err if err
+
+      byId = {}
+      for row in results.rows
+        comment = new Comment row
+        byId[row.comment_id] = comment
+
+      comments = (byId[id] for id in ids)
+      return callback null, comments
+
   # Search by query for users, arguments, propositions, and tags.
   # @api public
   search: (query, options, callback) ->

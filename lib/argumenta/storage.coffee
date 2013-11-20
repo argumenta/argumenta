@@ -5,6 +5,7 @@ Proposition = require '../argumenta/objects/proposition'
 Commit      = require '../argumenta/objects/commit'
 Tag         = require '../argumenta/objects/tag'
 Discussion  = require '../argumenta/discussion'
+Comment     = require '../argumenta/comment'
 
 # Storage persists users and objects to a backend store.
 
@@ -523,6 +524,36 @@ class Storage extends Base
               return cb new @RetrievalError """
                 Failed getting tags plus sources from the store."""
             return cb null, tags, sources, commits
+
+  # Add a comment to the store.
+  #
+  # @param [Comment]           comment
+  # @param [Function]          cb(err, id)
+  # @param [Error]             err
+  # @param [Number]            id
+  addComment: (comment, cb) ->
+    unless comment instanceof Comment
+      return cb new @InputError "Comment instance required to store comment."
+    unless comment.validate()
+      return cb new @InputError "Comment to store must be valid."
+
+    @store.addComment comment, (err, id) =>
+      return cb new @Error "Failed storing comment.", err if err
+      return cb null, id
+
+  # Get comments by ids.
+  #
+  # @param [Array<String>]     ids
+  # @param [Function]          cb(err, comments)
+  # @param [Error]             err
+  # @param [Array<Comment>]    comments
+  getComments: (ids, cb) ->
+    @store.getComments ids, (err, comments) =>
+      if err
+        message = "Failed getting comments from the store."
+        return cb new @RetrievalError message
+      else
+        return cb null, comments
 
   # Add a discussion to the store.
   #
