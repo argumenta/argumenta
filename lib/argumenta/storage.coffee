@@ -570,6 +570,20 @@ class Storage extends Base
       return cb new @Error "Failed storing discussion.", err if err
       return cb null
 
+  # Get discussions by ids.
+  #
+  # @param [Array<Number>]     ids
+  # @param [Function]          cb(err, discussions)
+  # @param [Error]             err
+  # @param [Array<Discussion>] discussions
+  getDiscussions: (ids, cb) ->
+    @store.getDiscussions ids, (err, discussions) =>
+      if err
+        message = "Failed getting discussions from the store."
+        return cb new @RetrievalError message
+      else
+        return cb null, discussions
+
   # Get discussions for the given target hashes.
   #
   # @param [Array<String>]     targetHashes

@@ -615,6 +615,31 @@ class PostgresStore extends Base
       session.query query, (err) =>
         session.finalize err, callback
 
+  # Get discussions by ids.
+  # @api public
+  getDiscussions: (ids, callback) ->
+    query = Queries.selectDiscussions ids
+    @query query, (err, results) =>
+      return callback err if err
+
+      byId = []
+      for row in results.rows
+        discussion = byId[row.discussion_id]
+        unless discussion
+          discussion = new Discussion row
+          byId[row.discussion_id] = discussion
+
+        comment = new Comment row
+        if comment.commentId != null
+          discussion.comments.push comment
+
+      discussions = []
+      for id in ids
+        discussions.push byId[id]
+
+      return callback null, discussions
+
+
   # Get discussions for given target hashes.
   # @api public
   getDiscussionsFor: (targetHashes, callback) ->

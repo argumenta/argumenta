@@ -670,6 +670,16 @@ describeStorageTests = (storage, type) ->
               discussions[0].should.include params
               done()
 
+    describe 'getDiscussions( ids, callback )', ->
+      it 'should get discussions by ids', (done) ->
+        withDiscussion (user, argument, discussion) ->
+          ids = [discussion.discussionId]
+          storage.getDiscussions ids, (err, discussions) ->
+            should.not.exist err
+            discussions.length.should.equal 1
+            should.ok discussions[0].equals discussion
+            done()
+
     describe 'getDiscussionsFor( targetHashes, callback )', ->
       it 'should get discussions for given target hashes', (done) ->
         withDiscussion (user, argument, discussion) ->

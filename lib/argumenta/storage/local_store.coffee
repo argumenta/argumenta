@@ -310,6 +310,14 @@ class LocalStore extends Base
 
     return cb null
 
+  # Get discussions by ids.
+  getDiscussions: (ids, cb) ->
+    discussions = []
+    for id in ids
+      discussions.push @discussions.byId[id]
+
+    return cb null, discussions
+
   # Get discussions for given target hashes.
   getDiscussionsFor: (targetHashes, cb) ->
     discussions = []

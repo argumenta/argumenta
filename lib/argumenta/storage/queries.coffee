@@ -512,6 +512,23 @@ class Queries
         comment.discussionId
       ]
 
+  # Select discussions by ids.
+  @selectDiscussions: (ids) ->
+    placeholders = placeholdersFor ids
+    return selectDiscussionsQuery =
+      text: """
+        SELECT discussion_id,
+               target_type, target_sha1, target_owner,
+               creator, created_at, updated_at,
+               comment_id,
+               author, comment_date, comment_text
+        FROM Discussions d
+        LEFT OUTER JOIN Comments c USING (discussion_id)
+        WHERE d.discussion_id IN (#{ placeholders })
+        ORDER BY d.updated_at DESC, c.comment_date ASC;
+        """
+      values: ids
+
   # Select discussions for given target hashes.
   @selectDiscussionsFor: (targetHashes) ->
     placeholders = placeholdersFor targetHashes
