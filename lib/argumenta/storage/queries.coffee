@@ -550,16 +550,19 @@ class Queries
   @insertDiscussion: (discussion) ->
     return insertDiscussionQuery =
       text: """
-        INSERT INTO Discussions ( discussion_id,
-                                  target_type, target_sha1, target_owner,
+        INSERT INTO Discussions ( target_type, target_sha1,
+                                  target_owner,
                                   creator, created_at, updated_at )
-        VALUES( DEFAULT,
-                $1, $2, $3,
-                $4, $5, $6 )
+        SELECT $1, $2,
+               ( SELECT committer
+                 FROM Commits
+                 WHERE target_sha1 = $2
+                 ORDER BY commit_id ASC LIMIT 1 ),
+               $3, $4, $5
         RETURNING discussion_id;
       """
       values: [
-        discussion.targetType, discussion.targetSha1, discussion.targetOwner,
+        discussion.targetType, discussion.targetSha1,
         discussion.creator, discussion.createdAt, discussion.updatedAt
       ]
 

@@ -303,6 +303,8 @@ class LocalStore extends Base
     id = @discussions.byId.length
     @discussions.byId[id] = discussion
     discussion.discussionId = id
+    discussion.targetOwner =
+      @commits.withTargetSha1[discussion.targetSha1][0].committer
 
     hash = discussion.targetSha1
     @discussions.withTargetSha1[hash] or= []

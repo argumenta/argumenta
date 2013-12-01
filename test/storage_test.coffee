@@ -659,7 +659,6 @@ describeStorageTests = (storage, type) ->
           params =
             targetType: 'argument'
             targetSha1: argument.sha1()
-            targetOwner: user.username
             creator: user.username
             createdAt: new Date()
           discussion = new Discussion params
@@ -669,6 +668,7 @@ describeStorageTests = (storage, type) ->
               should.not.exist err
               discussions[0].should.include params
               discussions[0].discussionId.should.be.a.number
+              discussions[0].targetOwner.should.equal user.username
               done()
 
     describe 'getDiscussions( ids, callback )', ->
