@@ -162,6 +162,9 @@ class Discussion
     return true
 
   @validateTargetOwner: (targetOwner) ->
+    unless targetOwner?
+      return true
+
     try
       User.validateUsername targetOwner
     catch err
