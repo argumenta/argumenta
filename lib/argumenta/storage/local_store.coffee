@@ -308,7 +308,7 @@ class LocalStore extends Base
     @discussions.withTargetSha1[hash] or= []
     @discussions.withTargetSha1[hash].push discussion
 
-    return cb null
+    return cb null, id
 
   # Get discussions by ids.
   getDiscussions: (ids, cb) ->

@@ -668,6 +668,7 @@ describeStorageTests = (storage, type) ->
             storage.getDiscussionsFor [params.targetSha1], (err, discussions) ->
               should.not.exist err
               discussions[0].should.include params
+              discussions[0].discussionId.should.be.a.number
               done()
 
     describe 'getDiscussions( ids, callback )', ->

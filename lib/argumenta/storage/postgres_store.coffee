@@ -612,8 +612,13 @@ class PostgresStore extends Base
       return callback err if err
 
       query = Queries.insertDiscussion discussion
-      session.query query, (err) =>
-        session.finalize err, callback
+      session.query query, (err, results) =>
+        session.finalize err, (err) =>
+          if err
+            return callback err
+          else
+            id = results.rows[0].discussion_id
+            return callback null, id
 
   # Get discussions by ids.
   # @api public

@@ -555,7 +555,8 @@ class Queries
                                   creator, created_at, updated_at )
         VALUES( DEFAULT,
                 $1, $2, $3,
-                $4, $5, $6 );
+                $4, $5, $6 )
+        RETURNING discussion_id;
       """
       values: [
         discussion.targetType, discussion.targetSha1, discussion.targetOwner,

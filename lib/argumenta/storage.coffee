@@ -558,17 +558,18 @@ class Storage extends Base
   # Add a discussion to the store.
   #
   # @param [Discussion]        discussion
-  # @param [Function]          cb(err)
+  # @param [Function]          cb(err, id)
   # @param [Error]             err
+  # @param [Number]            id
   addDiscussion: (discussion, cb) ->
     unless discussion instanceof Discussion
       return cb new @InputError "Discussion instance required to store discussion."
     unless discussion.validate()
       return cb new @InputError "Discussion to store must be valid."
 
-    @store.addDiscussion discussion, (err) =>
+    @store.addDiscussion discussion, (err, id) =>
       return cb new @Error "Failed storing discussion.", err if err
-      return cb null
+      return cb null, id
 
   # Get discussions by ids.
   #
