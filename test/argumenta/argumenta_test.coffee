@@ -2,6 +2,8 @@ Argumenta    = require '../../lib/argumenta'
 Auth         = require '../../lib/argumenta/auth'
 Storage      = require '../../lib/argumenta/storage'
 Arguments    = require '../../lib/argumenta/arguments'
+Comments     = require '../../lib/argumenta/comments'
+Discussions  = require '../../lib/argumenta/discussions'
 Propositions = require '../../lib/argumenta/propositions'
 Publications = require '../../lib/argumenta/publications'
 Search       = require '../../lib/argumenta/search'
@@ -16,6 +18,8 @@ describe 'Argumenta', ->
       argumenta.auth.should.be.an.instanceof Auth
       argumenta.storage.store.should.be.an.instanceOf LocalStore
       argumenta.arguments.should.be.an.instanceof Arguments
+      argumenta.comments.should.be.an.instanceof Comments
+      argumenta.discussions.should.be.an.instanceof Discussions
       argumenta.propositions.should.be.an.instanceof Propositions
       argumenta.publications.should.be.an.instanceof Publications
       argumenta.search.should.be.an.instanceof Search

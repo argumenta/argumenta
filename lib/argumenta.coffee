@@ -2,6 +2,8 @@ Auth         = require './argumenta/auth'
 Logger       = require './argumenta/logger'
 Storage      = require './argumenta/storage'
 Arguments    = require './argumenta/arguments'
+Comments     = require './argumenta/comments'
+Discussions  = require './argumenta/discussions'
 Propositions = require './argumenta/propositions'
 Publications = require './argumenta/publications'
 Search       = require './argumenta/search'
@@ -21,6 +23,8 @@ class Argumenta
     @auth         = new Auth this
     @storage      = new Storage storageOpts
     @arguments    = new Arguments this, @storage
+    @comments     = new Comments this, @storage
+    @discussions  = new Discussions this, @storage
     @propositions = new Propositions this, @storage
     @publications = new Publications this, @storage
     @search       = new Search this, @storage
