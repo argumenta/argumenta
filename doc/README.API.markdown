@@ -18,8 +18,8 @@
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 221
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -27,7 +27,7 @@
       "message": "Welcome aboard, tester!",
       "user": {
         "username": "tester",
-        "join_date": "2013-10-17T11:56:21.893Z",
+        "join_date": "2013-12-02T20:41:56.735Z",
         "gravatar_id": "cf3321b32988beb65273932bf8de619e"
       },
       "error": null
@@ -49,8 +49,8 @@
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 378
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -83,8 +83,8 @@
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 276
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -114,8 +114,8 @@
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 423
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -149,8 +149,8 @@
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 431
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -168,6 +168,80 @@
       "error": null
     }
 
+    # POST /discussions.json
+    curl -i -X POST http://localhost:3000/discussions.json \
+      -d 'target_type=argument' \
+      -d 'target_sha1=675f1c4a2a2bec4fa1e5b745a4b94322dda294e6' \
+      -d 'comment_text=The commentary text...' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    HTTP/1.1 201 Created
+
+    X-Powered-By: Express
+    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Methods: GET,PUT,POST
+    Access-Control-Allow-Headers: Content-Type, Authorization
+    Content-Type: application/json
+    Content-Length: 598
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
+    Connection: keep-alive
+
+    {
+      "url": "/discussions/1",
+      "message": "Created a new discussion!",
+      "discussion": {
+        "discussion_id": 1,
+        "target_type": "argument",
+        "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
+        "target_owner": "tester",
+        "creator": "tester",
+        "created_at": "2013-12-02T20:41:57.622Z",
+        "updated_at": "2013-12-02T20:41:57.622Z",
+        "comments": [
+          {
+            "comment_id": 1,
+            "author": "tester",
+            "comment_date": "2013-12-02T20:41:57.622Z",
+            "comment_text": "The commentary text...",
+            "discussion_id": 1
+          }
+        ]
+      },
+      "error": null
+    }
+
+    # POST /comments.json
+    curl -i -X POST http://localhost:3000/comments.json \
+      -d 'comment_text=The commentary text...' \
+      -d 'discussion_id=1' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    HTTP/1.1 201 Created
+
+    X-Powered-By: Express
+    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Methods: GET,PUT,POST
+    Access-Control-Allow-Headers: Content-Type, Authorization
+    Content-Type: application/json
+    Content-Length: 264
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
+    Connection: keep-alive
+
+    {
+      "url": "/comments/2",
+      "message": "Created a new comment!",
+      "comment": {
+        "comment_id": 2,
+        "author": "tester",
+        "comment_date": "2013-12-02T20:41:57.732Z",
+        "comment_text": "The commentary text...",
+        "discussion_id": 1
+      },
+      "error": null
+    }
+
 -->
 
 # Argumenta API
@@ -180,9 +254,9 @@
 The Argumenta API provides a RESTful interface to data in JSON form.
 
 It can be used to access resources including Users, Repos, Arguments, Propositions, and Tags.  
-Search is now also available.
+Search, Comments, and Discussions are now also available.
 Planned resources include Follows and Activity.  
-The current version (0.1.1) provides the following features:
+The current version (0.1.3) provides the following features:
 
 + Read access for general use by unauthenticated clients.
 + Cookie-based authenticated sessions for account creation, login, and publishing.
@@ -225,6 +299,10 @@ The current version (0.1.1) provides the following features:
     <td width="300px"><a href="#get-argument-propositions">GET /arguments/:sha1/propositions.json</td>
     <td width="300px">Get an argument's propositions.</td>
   </tr>
+  <tr>
+    <td width="300px"><a href="#get-argument-discussions">GET /arguments/:sha1/discussions.json</td>
+    <td width="300px">Get an argument's discussions.</td>
+  </tr>
 </table>
 
 ### [Propositions](#propositions)
@@ -250,6 +328,24 @@ The current version (0.1.1) provides the following features:
   <tr>
     <td width="300px"><a href="#get-tag">GET /tags/:sha1.json</td>
     <td width="300px">Get a tag by its sha1.</td>
+  </tr>
+</table>
+
+### [Discussions](#discussions)
+
+<table class="routes" width="600px">
+  <tr>
+    <td width="300px"><a href="#get-discussion">GET /discussions/:id.json</td>
+    <td width="300px">Get a discussion by id.</td>
+  </tr>
+</table>
+
+### [Comments](#comments)
+
+<table class="routes" width="600px">
+  <tr>
+    <td width="300px"><a href="#get-comment">GET /comments/:id.json</td>
+    <td width="300px">Get a comment by id.</td>
   </tr>
 </table>
 
@@ -304,6 +400,14 @@ The current version (0.1.1) provides the following features:
   <tr>
     <td width="300px"><a href="#post-tags">POST /tags.json</td>
     <td width="300px">Create a new tag (support, dispute, citation, or commentary).</td>
+  </tr>
+  <tr>
+    <td width="300px"><a href="#post-discussions">POST /discussions.json</td>
+    <td width="300px">Create a new discussion, with initial comment.</td>
+  </tr>
+  <tr>
+    <td width="300px"><a href="#post-comments">POST /comments.json</td>
+    <td width="300px">Create a new comment, for an existing discussion.</td>
   </tr>
 </table>
 
@@ -415,12 +519,35 @@ The current version (0.1.1) provides the following features:
       citation_text: [String]
     }
 
+## Discussion
+
+    discussion: {
+      discussion_id: [Number]
+      target_type:   [String]
+      target_sha1:   [String]
+      target_owner:  [String]
+      creator:       [String]
+      created_at:    [String]            // ISO 8601
+      updated_at:    [String]            // ISO 8601
+      comments:      [Array<Comment>]
+    }
+
+## Comment
+
+    comment: {
+      comment_id:     [Number]
+      author:         [String]
+      comment_text:   [String]
+      comment_date:   [String]          // ISO 8601
+      discussion_id:  [Number]
+    }
+
 ## Search
 
     results: {
       users:        [Array<User>]
       arguments:    [Array<Argument>]
-      propositions: [Array<Proposition>] // PLANNED
+      propositions: [Array<Proposition>]
       tags:         [Array<Tag>]         // PLANNED
     }
 
@@ -459,14 +586,14 @@ Here, we access the user `tester`, replacing the regular `.json` extension with 
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: text/javascript
     Content-Length: 253
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     jsonpCallback({
       "user": {
         "username": "tester",
-        "join_date": "2013-10-17T11:56:21.893Z",
+        "join_date": "2013-12-02T20:41:56.735Z",
         "gravatar_id": "cf3321b32988beb65273932bf8de619e",
         "metadata": {
           "username": "tester",
@@ -494,14 +621,14 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: text/javascript
     Content-Length: 244
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     myCb({
       "user": {
         "username": "tester",
-        "join_date": "2013-10-17T11:56:21.893Z",
+        "join_date": "2013-12-02T20:41:56.735Z",
         "gravatar_id": "cf3321b32988beb65273932bf8de619e",
         "metadata": {
           "username": "tester",
@@ -535,14 +662,14 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 237
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
       "user": {
         "username": "tester",
-        "join_date": "2013-10-17T11:56:21.893Z",
+        "join_date": "2013-12-02T20:41:56.735Z",
         "gravatar_id": "cf3321b32988beb65273932bf8de619e",
         "metadata": {
           "username": "tester",
@@ -573,15 +700,15 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 1249
-    ETag: "391866904"
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    ETag: "787451302"
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
       "user": {
         "username": "tester",
-        "join_date": "2013-10-17T11:56:21.893Z",
+        "join_date": "2013-12-02T20:41:56.735Z",
         "gravatar_id": "cf3321b32988beb65273932bf8de619e",
         "metadata": {
           "username": "tester",
@@ -593,16 +720,16 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
             "reponame": "my-argument-^_^",
             "user": {
               "username": "tester",
-              "join_date": "2013-10-17T11:56:21.893Z",
+              "join_date": "2013-12-02T20:41:56.735Z",
               "gravatar_id": "cf3321b32988beb65273932bf8de619e"
             },
             "commit": {
               "object_type": "commit",
-              "sha1": "fd94c1c3574c2be456b5d579a30cc7ae182f0737",
+              "sha1": "42d835d3dee3cd2964c45ea872553448997744a8",
               "target_type": "argument",
               "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
               "committer": "tester",
-              "commit_date": "2013-10-17T11:56:22Z",
+              "commit_date": "2013-12-02T20:41:57Z",
               "parent_sha1s": [],
               "host": "testing.argumenta.io"
             },
@@ -648,8 +775,8 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 898
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
@@ -658,16 +785,16 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
         "reponame": "my-argument-^_^",
         "user": {
           "username": "tester",
-          "join_date": "2013-10-17T11:56:21.893Z",
+          "join_date": "2013-12-02T20:41:56.735Z",
           "gravatar_id": "cf3321b32988beb65273932bf8de619e"
         },
         "commit": {
           "object_type": "commit",
-          "sha1": "fd94c1c3574c2be456b5d579a30cc7ae182f0737",
+          "sha1": "42d835d3dee3cd2964c45ea872553448997744a8",
           "target_type": "argument",
           "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
           "committer": "tester",
-          "commit_date": "2013-10-17T11:56:22Z",
+          "commit_date": "2013-12-02T20:41:57Z",
           "parent_sha1s": [],
           "host": "testing.argumenta.io"
         },
@@ -714,9 +841,9 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 2256
-    ETag: "1872831280"
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    ETag: "-1982655459"
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
@@ -732,11 +859,11 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
         "repo": "my-argument-^_^",
         "commit": {
           "object_type": "commit",
-          "sha1": "fd94c1c3574c2be456b5d579a30cc7ae182f0737",
+          "sha1": "42d835d3dee3cd2964c45ea872553448997744a8",
           "target_type": "argument",
           "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
           "committer": "tester",
-          "commit_date": "2013-10-17T11:56:22Z",
+          "commit_date": "2013-12-02T20:41:57Z",
           "parent_sha1s": [],
           "host": "testing.argumenta.io"
         },
@@ -829,8 +956,8 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Content-Type: application/json
     Content-Length: 1789
     ETag: "1174394911"
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
@@ -908,6 +1035,65 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "error": null
     }
 
+<a name="argument-discussions"></a>
+## Argument Discussions [&para;](#argument-discussions)
+
+<a name="get-argument-discussions"></a>
+### GET /arguments/:sha1/discussions.json
+
+*Get an argument's discussions.*
+
+#### Params
+
++ sha1 - The argument's sha1.
+
+#### Example
+
+    curl -i http://localhost:3000/arguments/675f1c4a2a2bec4fa1e5b745a4b94322dda294e6/discussions.json
+
+    HTTP/1.1 200 OK
+
+    X-Powered-By: Express
+    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Methods: GET,PUT,POST
+    Access-Control-Allow-Headers: Content-Type, Authorization
+    Content-Type: application/json
+    Content-Length: 787
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
+    Connection: keep-alive
+
+    {
+      "discussions": [
+        {
+          "discussion_id": 1,
+          "target_type": "argument",
+          "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
+          "target_owner": "tester",
+          "creator": "tester",
+          "created_at": "2013-12-02T20:41:57.622Z",
+          "updated_at": "2013-12-02T20:41:57.622Z",
+          "comments": [
+            {
+              "comment_id": 1,
+              "author": "tester",
+              "comment_date": "2013-12-02T20:41:57.622Z",
+              "comment_text": "The commentary text...",
+              "discussion_id": 1
+            },
+            {
+              "comment_id": 2,
+              "author": "tester",
+              "comment_date": "2013-12-02T20:41:57.732Z",
+              "comment_text": "The commentary text...",
+              "discussion_id": 1
+            }
+          ]
+        }
+      ],
+      "error": null
+    }
+
 <a name="propositions"></a>
 ## Propositions [&para;](#propositions)
 
@@ -937,8 +1123,8 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 565
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
@@ -992,8 +1178,8 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 683
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
@@ -1044,9 +1230,9 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 1527
-    ETag: "775282813"
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    ETag: "291248104"
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
@@ -1079,21 +1265,21 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
       "commits": [
         {
           "object_type": "commit",
-          "sha1": "e722839c757481d4dbe4b381640776cd7071f37c",
+          "sha1": "161c922ab1e861eead5f2b5ce4570b17bd079c1b",
           "target_type": "tag",
           "target_sha1": "08f6c25476af45f8d8ee4cb0601740bc7bf098ab",
           "committer": "tester",
-          "commit_date": "2013-10-17T11:56:22Z",
+          "commit_date": "2013-12-02T20:41:57Z",
           "parent_sha1s": [],
           "host": "testing.argumenta.io"
         },
         {
           "object_type": "commit",
-          "sha1": "dc730be24737aa9539ccdad1b7b37e72cd720102",
+          "sha1": "f3c0b481e392e4b9fc5c84205381cbbac08fcdda",
           "target_type": "tag",
           "target_sha1": "412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae",
           "committer": "tester",
-          "commit_date": "2013-10-17T11:56:22Z",
+          "commit_date": "2013-12-02T20:41:57Z",
           "parent_sha1s": [],
           "host": "testing.argumenta.io"
         }
@@ -1130,8 +1316,8 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 329
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
@@ -1142,6 +1328,112 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
         "target_sha1": "30be8f3b68d20f5c3898265e33c583ddee374a6a",
         "citation_text": "The citation text, with url: http://wikipedia.org/wiki/Citation",
         "sha1": "412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae"
+      },
+      "error": null
+    }
+
+<a name="discussions"></a>
+## Discussions [&para;](#discussions)
+
+<a name="get-discussion"></a>
+### GET /discussions/:id.json
+
+*Get a discussion by id.*
+
+#### Params
+
++ id: The discussion id.
+
+#### Returns
+
++ Success: 200 (OK)
++ Error: 404 (Not Found)
+
+#### Example
+
+    curl -i http://localhost:3000/discussions/1.json
+
+    HTTP/1.1 200 OK
+
+    X-Powered-By: Express
+    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Methods: GET,PUT,POST
+    Access-Control-Allow-Headers: Content-Type, Authorization
+    Content-Type: application/json
+    Content-Length: 728
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
+    Connection: keep-alive
+
+    {
+      "discussion": {
+        "discussion_id": 1,
+        "target_type": "argument",
+        "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
+        "target_owner": "tester",
+        "creator": "tester",
+        "created_at": "2013-12-02T20:41:57.622Z",
+        "updated_at": "2013-12-02T20:41:57.622Z",
+        "comments": [
+          {
+            "comment_id": 1,
+            "author": "tester",
+            "comment_date": "2013-12-02T20:41:57.622Z",
+            "comment_text": "The commentary text...",
+            "discussion_id": 1
+          },
+          {
+            "comment_id": 2,
+            "author": "tester",
+            "comment_date": "2013-12-02T20:41:57.732Z",
+            "comment_text": "The commentary text...",
+            "discussion_id": 1
+          }
+        ]
+      },
+      "error": null
+    }
+
+<a name="comments"></a>
+## Comments [&para;](#comments)
+
+<a name="get-comment"></a>
+### GET /comments/:id.json
+
+*Get a comment by id.*
+
+#### Params
+
++ id: The comment id.
+
+#### Returns
+
++ Success: 200 (OK)
++ Error: 404 (Not Found)
+
+#### Example
+
+    curl -i http://localhost:3000/comments/1.json
+
+    HTTP/1.1 200 OK
+
+    X-Powered-By: Express
+    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Methods: GET,PUT,POST
+    Access-Control-Allow-Headers: Content-Type, Authorization
+    Content-Type: application/json
+    Content-Length: 201
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
+    Connection: keep-alive
+
+    {
+      "comment": {
+        "comment_id": 1,
+        "author": "tester",
+        "comment_date": "2013-12-02T20:41:57.622Z",
+        "comment_text": "The commentary text...",
+        "discussion_id": 1
       },
       "error": null
     }
@@ -1180,9 +1472,9 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 2464
-    ETag: "-1746341401"
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    ETag: "1665290217"
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
@@ -1199,11 +1491,11 @@ For convenience, you may use the `query` param in the URL's path or query string
           "repo": "my-argument-^_^",
           "commit": {
             "object_type": "commit",
-            "sha1": "fd94c1c3574c2be456b5d579a30cc7ae182f0737",
+            "sha1": "42d835d3dee3cd2964c45ea872553448997744a8",
             "target_type": "argument",
             "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
             "committer": "tester",
-            "commit_date": "2013-10-17T11:56:22Z",
+            "commit_date": "2013-12-02T20:41:57Z",
             "parent_sha1s": [],
             "host": "testing.argumenta.io"
           },
@@ -1286,9 +1578,9 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 2464
-    ETag: "-1746341401"
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.tZ%2FdkBlgDpfzpCiB%2FxAv0E%2F1gaNnCqVqkv4ZqPnV%2F8I; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    ETag: "1665290217"
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%7D.IduvgXvQtLWjWRgMgYx6LR8eowjCrldCZ8%2BbbmP3IUvBsdFXC19UyOLesqZ5p%2FM5Ez2cVZx%2FaFZgEQy%2B%2BZYsfw; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:58 GMT
     Connection: keep-alive
 
     {
@@ -1305,11 +1597,11 @@ For convenience, you may use the `query` param in the URL's path or query string
           "repo": "my-argument-^_^",
           "commit": {
             "object_type": "commit",
-            "sha1": "fd94c1c3574c2be456b5d579a30cc7ae182f0737",
+            "sha1": "42d835d3dee3cd2964c45ea872553448997744a8",
             "target_type": "argument",
             "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
             "committer": "tester",
-            "commit_date": "2013-10-17T11:56:22Z",
+            "commit_date": "2013-12-02T20:41:57Z",
             "parent_sha1s": [],
             "host": "testing.argumenta.io"
           },
@@ -1401,8 +1693,8 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 372
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:59 GMT
     Connection: keep-alive
 
     {
@@ -1434,8 +1726,8 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 86
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:59 GMT
     Connection: keep-alive
 
     {
@@ -1485,8 +1777,8 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 221
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -1494,7 +1786,7 @@ For convenience, you may use the `query` param in the URL's path or query string
       "message": "Welcome aboard, tester!",
       "user": {
         "username": "tester",
-        "join_date": "2013-10-17T11:56:21.893Z",
+        "join_date": "2013-12-02T20:41:56.735Z",
         "gravatar_id": "cf3321b32988beb65273932bf8de619e"
       },
       "error": null
@@ -1533,8 +1825,8 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 76
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:59 GMT
     Connection: keep-alive
 
     {
@@ -1569,8 +1861,8 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 74
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22%22%7D.dhwbAdpQpnG8xdJjGd0bFso7kWN9cHxDp1%2BmcrAgI8A; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22%22%7D.AJY%2Fn4IAE2DtwZfmTqqyhynLvqswFNU3sUzlQ0uCPQqZNWHvHZaOBzcAm5e7ZTbbOSDiPUDpiq4ibWFyTb49ww; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:59 GMT
     Connection: keep-alive
 
     {
@@ -1616,8 +1908,8 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 378
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -1666,8 +1958,8 @@ For convenience, you may use the `query` param in the URL's path or query string
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 276
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -1730,8 +2022,8 @@ Required for **commentary** tags:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 423
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -1766,8 +2058,8 @@ Required for **commentary** tags:
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 431
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:22 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
     Connection: keep-alive
 
     {
@@ -1781,6 +2073,119 @@ Required for **commentary** tags:
         "source_type": "proposition",
         "source_sha1": "dfe2394f3cdad27e56023cd0574be36b9a5f9e6e",
         "sha1": "08f6c25476af45f8d8ee4cb0601740bc7bf098ab"
+      },
+      "error": null
+    }
+
+<a name="post-discussions"></a>
+### POST /discussions.json
+
+*Create a new discussion, with initial comment.*
+
+#### Params
+
+Required values:
+
++ target_type: The object type of the discussion target. (Allowed values: 'argument')
++ target_sha1: The sha1 of the discussion target.
++ comment_text The text of the initial comment.
+
+#### Returns
+
++ Success: 201 (Created)
++ Error: 400 (Bad Request)
++ Error: 401 (Unauthorized)
+
+#### Example
+
+    curl -i -X POST http://localhost:3000/discussions.json \
+      -d 'target_type=argument' \
+      -d 'target_sha1=675f1c4a2a2bec4fa1e5b745a4b94322dda294e6' \
+      -d 'comment_text=The commentary text...' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    HTTP/1.1 201 Created
+
+    X-Powered-By: Express
+    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Methods: GET,PUT,POST
+    Access-Control-Allow-Headers: Content-Type, Authorization
+    Content-Type: application/json
+    Content-Length: 598
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
+    Connection: keep-alive
+
+    {
+      "url": "/discussions/1",
+      "message": "Created a new discussion!",
+      "discussion": {
+        "discussion_id": 1,
+        "target_type": "argument",
+        "target_sha1": "675f1c4a2a2bec4fa1e5b745a4b94322dda294e6",
+        "target_owner": "tester",
+        "creator": "tester",
+        "created_at": "2013-12-02T20:41:57.622Z",
+        "updated_at": "2013-12-02T20:41:57.622Z",
+        "comments": [
+          {
+            "comment_id": 1,
+            "author": "tester",
+            "comment_date": "2013-12-02T20:41:57.622Z",
+            "comment_text": "The commentary text...",
+            "discussion_id": 1
+          }
+        ]
+      },
+      "error": null
+    }
+
+<a name="post-comments"></a>
+### POST /comments.json
+
+*Create a new comment, for an existing discussion.*
+
+#### Params
+
+Required values:
+
++ comment_text: The comment text
++ discussion_id: The id of the discussion the comment appears in.
+
+#### Returns
+
++ Success: 201 (Created)
++ Error: 400 (Bad Request)
++ Error: 401 (Unauthorized)
+
+#### Example
+
+    curl -i -X POST http://localhost:3000/comments.json \
+      -d 'comment_text=The commentary text...' \
+      -d 'discussion_id=1' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    HTTP/1.1 201 Created
+
+    X-Powered-By: Express
+    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Methods: GET,PUT,POST
+    Access-Control-Allow-Headers: Content-Type, Authorization
+    Content-Type: application/json
+    Content-Length: 264
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:57 GMT
+    Connection: keep-alive
+
+    {
+      "url": "/comments/2",
+      "message": "Created a new comment!",
+      "comment": {
+        "comment_id": 2,
+        "author": "tester",
+        "comment_date": "2013-12-02T20:41:57.732Z",
+        "comment_text": "The commentary text...",
+        "discussion_id": 1
       },
       "error": null
     }
@@ -1821,8 +2226,8 @@ Users may only delete their own repos.
     Access-Control-Allow-Headers: Content-Type, Authorization
     Content-Type: application/json
     Content-Length: 86
-    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.tApE6accbxYTh9LSGCwb9EjvTS13B4WqV4dpXmodbQw; Path=/; HttpOnly
-    Date: Thu, 17 Oct 2013 11:56:23 GMT
+    Set-Cookie: connect.sess=s%3Aj%3A%7B%22flash%22%3A%7B%7D%2C%22username%22%3A%22tester%22%7D.0bdDTiafhwxCfkA%2BJQumBL17tYkebS5qSQgpuopgH2Kbgv%2B5IjfP6W2h12P4iS0ptBn2oYgOM02djfmZr8jSpA; Path=/; HttpOnly
+    Date: Mon, 02 Dec 2013 20:41:59 GMT
     Connection: keep-alive
 
     {
@@ -1833,6 +2238,10 @@ Users may only delete their own repos.
 
 <a name="changes"></a>
 # Changes
+
+## 0.1.3
+
+Add Comments and Discussions routes.
 
 ## 0.1.2
 

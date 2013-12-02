@@ -40,6 +40,19 @@
       -d 'source_sha1=dfe2394f3cdad27e56023cd0574be36b9a5f9e6e' \
       -b ~/tmp/cookies -c ~/tmp/cookies
 
+    # POST /discussions.json
+    curl -i -X POST http://localhost:3000/discussions.json \
+      -d 'target_type=argument' \
+      -d 'target_sha1=675f1c4a2a2bec4fa1e5b745a4b94322dda294e6' \
+      -d 'comment_text=The commentary text...' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+    # POST /comments.json
+    curl -i -X POST http://localhost:3000/comments.json \
+      -d 'comment_text=The commentary text...' \
+      -d 'discussion_id=1' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
 -->
 
 # Argumenta API
@@ -52,9 +65,9 @@
 The Argumenta API provides a RESTful interface to data in JSON form.
 
 It can be used to access resources including Users, Repos, Arguments, Propositions, and Tags.  
-Search is now also available.
+Search, Comments, and Discussions are now also available.
 Planned resources include Follows and Activity.  
-The current version (0.1.2) provides the following features:
+The current version (0.1.3) provides the following features:
 
 + Read access for general use by unauthenticated clients.
 + Cookie-based authenticated sessions for account creation, login, and publishing.
@@ -97,6 +110,10 @@ The current version (0.1.2) provides the following features:
     <td width="300px"><a href="#get-argument-propositions">GET /arguments/:sha1/propositions.json</td>
     <td width="300px">Get an argument's propositions.</td>
   </tr>
+  <tr>
+    <td width="300px"><a href="#get-argument-discussions">GET /arguments/:sha1/discussions.json</td>
+    <td width="300px">Get an argument's discussions.</td>
+  </tr>
 </table>
 
 ### [Propositions](#propositions)
@@ -122,6 +139,24 @@ The current version (0.1.2) provides the following features:
   <tr>
     <td width="300px"><a href="#get-tag">GET /tags/:sha1.json</td>
     <td width="300px">Get a tag by its sha1.</td>
+  </tr>
+</table>
+
+### [Discussions](#discussions)
+
+<table class="routes" width="600px">
+  <tr>
+    <td width="300px"><a href="#get-discussion">GET /discussions/:id.json</td>
+    <td width="300px">Get a discussion by id.</td>
+  </tr>
+</table>
+
+### [Comments](#comments)
+
+<table class="routes" width="600px">
+  <tr>
+    <td width="300px"><a href="#get-comment">GET /comments/:id.json</td>
+    <td width="300px">Get a comment by id.</td>
   </tr>
 </table>
 
@@ -176,6 +211,14 @@ The current version (0.1.2) provides the following features:
   <tr>
     <td width="300px"><a href="#post-tags">POST /tags.json</td>
     <td width="300px">Create a new tag (support, dispute, citation, or commentary).</td>
+  </tr>
+  <tr>
+    <td width="300px"><a href="#post-discussions">POST /discussions.json</td>
+    <td width="300px">Create a new discussion, with initial comment.</td>
+  </tr>
+  <tr>
+    <td width="300px"><a href="#post-comments">POST /comments.json</td>
+    <td width="300px">Create a new comment, for an existing discussion.</td>
   </tr>
 </table>
 
@@ -285,6 +328,29 @@ The current version (0.1.2) provides the following features:
       target_type:   [String]
       target_sha1:   [String]
       citation_text: [String]
+    }
+
+## Discussion
+
+    discussion: {
+      discussion_id: [Number]
+      target_type:   [String]
+      target_sha1:   [String]
+      target_owner:  [String]
+      creator:       [String]
+      created_at:    [String]            // ISO 8601
+      updated_at:    [String]            // ISO 8601
+      comments:      [Array<Comment>]
+    }
+
+## Comment
+
+    comment: {
+      comment_id:     [Number]
+      author:         [String]
+      comment_text:   [String]
+      comment_date:   [String]          // ISO 8601
+      discussion_id:  [Number]
     }
 
 ## Search
@@ -415,6 +481,22 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 
     curl -i http://localhost:3000/arguments/675f1c4a2a2bec4fa1e5b745a4b94322dda294e6/propositions.json
 
+<a name="argument-discussions"></a>
+## Argument Discussions [&para;](#argument-discussions)
+
+<a name="get-argument-discussions"></a>
+### GET /arguments/:sha1/discussions.json
+
+*Get an argument's discussions.*
+
+#### Params
+
++ sha1 - The argument's sha1.
+
+#### Example
+
+    curl -i http://localhost:3000/arguments/675f1c4a2a2bec4fa1e5b745a4b94322dda294e6/discussions.json
+
 <a name="propositions"></a>
 ## Propositions [&para;](#propositions)
 
@@ -490,6 +572,48 @@ Here we set the callback to `myCb` by adding `?callback=myCb`:
 #### Example
 
     curl -i http://localhost:3000/tags/412cd5f899b6f01685e7f8ab6cbaf0ef00ebb7ae.json
+
+<a name="discussions"></a>
+## Discussions [&para;](#discussions)
+
+<a name="get-discussion"></a>
+### GET /discussions/:id.json
+
+*Get a discussion by id.*
+
+#### Params
+
++ id: The discussion id.
+
+#### Returns
+
++ Success: 200 (OK)
++ Error: 404 (Not Found)
+
+#### Example
+
+    curl -i http://localhost:3000/discussions/1.json
+
+<a name="comments"></a>
+## Comments [&para;](#comments)
+
+<a name="get-comment"></a>
+### GET /comments/:id.json
+
+*Get a comment by id.*
+
+#### Params
+
++ id: The comment id.
+
+#### Returns
+
++ Success: 200 (OK)
++ Error: 404 (Not Found)
+
+#### Example
+
+    curl -i http://localhost:3000/comments/1.json
 
 <a name="search"></a>
 ## Search [&para;](#search)
@@ -715,6 +839,58 @@ Required for **commentary** tags:
       -d 'source_sha1=dfe2394f3cdad27e56023cd0574be36b9a5f9e6e' \
       -b ~/tmp/cookies -c ~/tmp/cookies
 
+<a name="post-discussions"></a>
+### POST /discussions.json
+
+*Create a new discussion, with initial comment.*
+
+#### Params
+
+Required values:
+
++ target_type: The object type of the discussion target. (Allowed values: 'argument')
++ target_sha1: The sha1 of the discussion target.
++ comment_text The text of the initial comment.
+
+#### Returns
+
++ Success: 201 (Created)
++ Error: 400 (Bad Request)
++ Error: 401 (Unauthorized)
+
+#### Example
+
+    curl -i -X POST http://localhost:3000/discussions.json \
+      -d 'target_type=argument' \
+      -d 'target_sha1=675f1c4a2a2bec4fa1e5b745a4b94322dda294e6' \
+      -d 'comment_text=The commentary text...' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
+<a name="post-comments"></a>
+### POST /comments.json
+
+*Create a new comment, for an existing discussion.*
+
+#### Params
+
+Required values:
+
++ comment_text: The comment text
++ discussion_id: The id of the discussion the comment appears in.
+
+#### Returns
+
++ Success: 201 (Created)
++ Error: 400 (Bad Request)
++ Error: 401 (Unauthorized)
+
+#### Example
+
+    curl -i -X POST http://localhost:3000/comments.json \
+      -d 'comment_text=The commentary text...' \
+      -d 'discussion_id=1' \
+      -b ~/tmp/cookies -c ~/tmp/cookies
+
 <a name="delete"></a>
 ## Delete [&para;](#delete)
 
@@ -745,6 +921,10 @@ Users may only delete their own repos.
 
 <a name="changes"></a>
 # Changes
+
+## 0.1.3
+
+Add Comments and Discussions routes.
 
 ## 0.1.2
 
