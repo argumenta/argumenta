@@ -28,7 +28,7 @@ class Comment
     @commentText   = params.commentText ? params.comment_text
     @discussionId  = params.discussionId ? params.discussion_id
     # Defaults
-    @commentDate = @commentDate or new Date()
+    @commentDate = @commentDate ? new Date()
 
   # Checks for equality with another comment.
   #
