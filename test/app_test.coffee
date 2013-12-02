@@ -1,5 +1,6 @@
 config     = require '../config'
 fixtures   = require '../test/fixtures'
+_          = require 'underscore'
 superagent = require 'superagent'
 request    = require 'request'
 should     = require 'should'
@@ -102,6 +103,35 @@ sessionWithTag = (callback) ->
       res.status.should.equal 201
       callback user, argumentData, tagData, get, post, put, del
 
+# Session with discussion helper - provides user, discussion, get, post
+sessionWithDiscussion = (callback) ->
+  sessionWithArgument (user, argument, get, post) ->
+    data =
+      target_type:    'argument'
+      target_sha1:    argument.sha1
+      comment_author: user.username
+      comment_text:   'The comment text...'
+    post '/discussions.json', data, (res) ->
+      res.status.should.equal 201
+      json = res.body
+      json.discussion.should.exist
+      json.discussion.comments.length.should.equal 1
+      callback user, json.discussion, get, post
+
+# Session with comment helper - provides user, comment, get, post
+sessionWithComment = (callback) ->
+  sessionWithDiscussion (user1, discussion) ->
+    session (user2, get, post) ->
+      data =
+        author:        user2.username
+        comment_text:  'Another comment...'
+        discussion_id: discussion.discussion_id
+      post '/comments.json', data, (res) ->
+        res.status.should.equal 201
+        json = res.body
+        json.comment.should.include data
+        callback user2, json.comment, get, post
+
 # Verify JSONP Helper - Given a JSONP response, invokes callback with json.
 verifyJSONP = (res, callback) ->
   res.type.should.equal 'text/javascript'
@@ -140,6 +170,8 @@ describeAppTests = (type, app) ->
         should.not.exist err
         done()
 
+    #### Index ####
+
     describe '/', () ->
       describe 'GET /', ->
         it 'should respond with index and links to log in', (done) ->
@@ -168,6 +200,8 @@ describeAppTests = (type, app) ->
             res.header['content-encoding'].should.equal('gzip')
             res.header['content-type'].should.equal('text/css')
             done()
+
+    #### Users ####
 
     describe '/users', () ->
 
@@ -266,6 +300,8 @@ describeAppTests = (type, app) ->
             res.text.should.match /error.*user.*nobody.*not found/i
             done()
 
+    #### Login ####
+
     describe '/login', ->
 
       describe 'GET /login', ->
@@ -315,6 +351,8 @@ describeAppTests = (type, app) ->
               res.status.should.equal 401
               res.body.error.should.match /Invalid username and password combination./
               done()
+
+    #### Arguments ####
 
     describe '/arguments', ->
 
@@ -465,6 +503,23 @@ describeAppTests = (type, app) ->
                 matchesPropositionsData json.propositions, expectedData
                 done()
 
+    #### Argument Discussions ####
+
+    describe '/arguments/:sha1/discussions', ->
+
+      describe 'GET /arguments/:sha1/discussions', ->
+        it 'should get discussions for the given argument', (done) ->
+          sessionWithDiscussion (user, discussion, get, post) ->
+            sha1 = discussion.target_sha1
+            get '/arguments/' + sha1 + '/discussions.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              json.discussions[0].should.include discussion
+              done()
+
+    #### Propositions ####
+
     describe '/propositions', ->
 
       describe 'GET /propositions/:hash.:format?', ->
@@ -608,6 +663,8 @@ describeAppTests = (type, app) ->
               json.error.should.match /Login to publish propositions./
               done()
 
+    #### Tags ####
+
     describe '/tags', ->
       describe 'GET /tags/:hash.:format?', ->
         it 'should return a tag as json', (done) ->
@@ -657,6 +714,75 @@ describeAppTests = (type, app) ->
               json.error.should.exist
               done()
 
+    #### Discussions ####
+
+    describe '/discussions', ->
+
+      describe 'POST /discussions', ->
+        it 'should create a new discussion', (done) ->
+          sessionWithArgument (user, argument, get, post) ->
+            data =
+              target_type:    'argument'
+              target_sha1:    argument.sha1
+              comment_author: user.username
+              comment_text:   'The comment text...'
+            post '/discussions.json', data, (res) ->
+              res.status.should.equal 201
+              json = res.body
+              json.discussion.should.include _.pick data,
+                'target_type',
+                'target_sha1'
+              json.discussion.comments.length.should.equal 1
+              json.discussion.comments[0].should.include _.pick data,
+                'author',
+                'comment_text'
+              done()
+
+      describe 'GET /discussions/:id', ->
+        it 'should get a discussion by id', (done) ->
+          sessionWithDiscussion (user, discussion, get, post) ->
+            id = discussion.discussion_id
+            get '/discussions/' + id + '.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              json.discussion.discussion_id.should.be.a.number
+              json.discussion.should.include discussion
+              done()
+
+    #### Comments ####
+
+    describe '/comments', ->
+
+      describe 'POST /comments', ->
+        it 'should create a new comment', (done) ->
+          sessionWithDiscussion (user1, discussion) ->
+            session (user2, get, post) ->
+              data =
+                author:        user2.username
+                comment_text:  'Another comment...'
+                discussion_id: discussion.discussion_id
+              post '/comments.json', data, (res) ->
+                res.status.should.equal 201
+                json = res.body
+                json.comment.comment_id.should.be.a.number
+                json.comment.comment_date.should.be.a.date
+                json.comment.should.include data
+                done()
+
+      describe 'GET /comments/:id', ->
+        it 'should get a comment by id', (done) ->
+          sessionWithComment (user, comment, get, post) ->
+            id = comment.comment_id
+            get '/comments/' + id + '.json', (res) ->
+              res.status.should.equal 200
+              res.redirects.should.eql []
+              json = res.body
+              json.comment.should.include comment
+              done()
+
+    #### Search ####
+
     describe '/search', ->
 
       describe 'GET /search/:query.json', ->
@@ -697,6 +823,8 @@ describeAppTests = (type, app) ->
               json.users[0].username.should.equal user.username
               done()
 
+    #### Logout ####
+
     describe '/logout', ->
       describe 'GET /logout', ->
         it 'should clear session cookie and redirect to index', (done) ->
@@ -717,6 +845,8 @@ describeAppTests = (type, app) ->
                 post '/arguments.json', {}, (res) ->
                   res.status.should.equal 401
                   done()
+
+    #### User Pages ####
 
     describe '/:name.:format?', ->
 
@@ -753,6 +883,8 @@ describeAppTests = (type, app) ->
               json.user.repos[0].username.should.equal user.username
               json.user.repos[0].target.should.eql argument
               done()
+
+    #### User Repos ####
 
     describe '/:name/:repo.:format?', ->
       describe 'GET /:name/:repo.:format?', ->

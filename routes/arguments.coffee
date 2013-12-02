@@ -78,3 +78,15 @@ exports.propositions = (req, res) ->
       return res.reply 'arguments/propositions',
         argument: argument
         propositions: propositions
+
+# Get an argument's discussions
+exports.discussions = (req, res) ->
+  hash = req.param 'hash'
+
+  argumenta.storage.getDiscussionsFor [hash], (err, discussions) ->
+    if err
+      return res.failed '/', err.message,
+        Errors.statusFor err
+    else
+      return res.reply 'arguments/discussions',
+        discussions: discussions

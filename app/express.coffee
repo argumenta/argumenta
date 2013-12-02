@@ -88,6 +88,7 @@ app.get  '/arguments/new',                                 routes.arguments.new
 app.post '/arguments.:format?',                            routes.arguments.create
 app.get  '/arguments/:hash.:format?',                      routes.arguments.show
 app.get  '/arguments/:hash/propositions.:format?',         routes.arguments.propositions
+app.get  '/arguments/:hash/discussions.:format?',          routes.arguments.discussions
 
 app.get  '/propositions/new',                              routes.propositions.new
 app.post '/propositions.:format?',                         routes.propositions.create
@@ -99,6 +100,12 @@ app.get  '/search/:query?.:format?',                       routes.search.query
 
 app.get  '/tags/:hash.:format?',                           routes.tags.show
 app.post '/tags.:format?',                                 routes.tags.create
+
+app.get  '/discussions/:id.:format?',                      routes.discussions.show
+app.post '/discussions.:format?',                          routes.discussions.create
+
+app.get  '/comments/:id.:format?',                         routes.comments.show
+app.post '/comments.:format?',                             routes.comments.create
 
 app.get  '/:name.:format?',                                routes.users.public
 app.get  '/:name/:repo.:format?',                          routes.repos.show
