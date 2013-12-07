@@ -14,10 +14,11 @@ class CommentsRoutes
       else
         return res.redirect "/login"
 
+    toInt = (str) -> parseInt str, 10
     comment = new Comment
       author:       username
       commentText:  req.param 'comment_text'
-      discussionId: req.param 'discussion_id'
+      discussionId: toInt req.param 'discussion_id'
 
     argumenta.comments.add comment, (er1, id) ->
       argumenta.comments.get [id], (er2, comments) ->
