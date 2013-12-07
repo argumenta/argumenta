@@ -9,7 +9,10 @@ class DiscussionsRoutes
   # Creates a new discussion via POST.
   @create: (req, res) ->
     unless username = req.session.username
-      return res.redirect "/login"
+      if /\.json/.test req.path
+        return res.failed "/", "Login to create discussions.", 401
+      else
+        return res.redirect "/login"
 
     comment = new Comment
       author:      username

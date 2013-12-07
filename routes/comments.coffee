@@ -9,7 +9,10 @@ class CommentsRoutes
   # Creates a new comment for an existing discussion.
   @create: (req, res) ->
     unless username = req.session.username
-      return res.redirect "/login"
+      if /\.json/.test req.path
+        return res.failed "/", "Login to create comments.", 401
+      else
+        return res.redirect "/login"
 
     comment = new Comment
       author:       username
