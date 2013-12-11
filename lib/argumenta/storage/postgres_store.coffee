@@ -391,7 +391,13 @@ class PostgresStore extends Base
       data = {}
       for row in result.rows
         sha1 = row.argument_sha1
-        data[sha1] ?= { title: row.title, propositions: [] }
+        data[sha1] ?= {
+          title: row.title
+          propositions: []
+          metadata: {
+            discussions_count: row.discussions_count
+          }
+        }
         data[sha1].propositions.push( row.text )
 
       args = []
@@ -399,7 +405,9 @@ class PostgresStore extends Base
         if d = data[hash]
           d.premises = d.propositions
           d.conclusion = d.propositions.pop()
-          args.push new Argument( d.title, d.premises, d.conclusion )
+          args.push new Argument(
+            d.title, d.premises, d.conclusion, d.metadata
+          )
 
       return callback null, args
 

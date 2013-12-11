@@ -162,6 +162,9 @@ class LocalStore extends Base
     hash = argument.sha1()
     @arguments.bySha1[ hash ] = argument
 
+    argument.metadata =
+      discussions_count: 0
+
     @addPropositions argument.propositions, (err) ->
       return cb err if err
       return cb null
@@ -309,6 +312,11 @@ class LocalStore extends Base
     hash = discussion.targetSha1
     @discussions.withTargetSha1[hash] or= []
     @discussions.withTargetSha1[hash].push discussion
+
+    if discussion.targetType is 'argument'
+      argument = @arguments.bySha1[discussion.targetSha1]
+      metadata = argument.metadata ?= {}
+      metadata.discussions_count = @discussions.withTargetSha1[hash].length
 
     return cb null, id
 

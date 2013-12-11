@@ -357,6 +357,7 @@ describeStorageTests = (storage, type) ->
           storage.getArgument [argument.sha1()], (err, arg) ->
             should.not.exist err
             arg.equals(argument).should.equal true
+            arg.metadata.discussions_count.should.equal 0
             done()
 
     describe 'getArguments( hashes, callback )', ->
