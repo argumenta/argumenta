@@ -36,13 +36,19 @@ class Argument
   #     arg = new Argument( title, premises, conclusion )
   #
   # @api public
-  # @param [String]        title The title text.
-  # @param [Array<String>] premises The premise texts.
+  # @param [String]        title      The title text.
+  # @param [Array<String>] premises   The premise texts.
   # @param [String]        conclusion The conclusion text.
-  constructor: (title='', premises=[], conclusion='') ->
+  # @param [Object]        metadata   The argument metadata (optional).
+  constructor: (title='', premises=[], conclusion='', metadata=null) ->
     if arguments.length is 1 and arguments[0]?.title?
       params = arguments[0]
-      return new Argument( params.title, params.premises, params.conclusion )
+      return new Argument(
+        params.title,
+        params.premises,
+        params.conclusion,
+        params.metadata
+      )
 
     title = Argument.sanitizeTitle title
     premises = Argument.sanitizePremises premises
@@ -52,6 +58,7 @@ class Argument
     @premises.push new Proposition p for p in premises
     @conclusion = new Proposition conclusion
     @propositions = [].concat @premises, @conclusion
+    @metadata = metadata
 
   ### Accessors ###
 
@@ -125,6 +132,7 @@ class Argument
       sha1: @sha1()
       repo: @repo()
     }
+    data.metadata = @metadata if @metadata
     data.commit = @commit.data() if @commit
     if @propositions[0].metadata
       data.propositions = []

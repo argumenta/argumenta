@@ -5,28 +5,31 @@ Fixtures    = require '../../../test/fixtures'
 
 describe 'Argument', ->
 
-  title = 'The Argument Title'
-  premises = [
-    'The first premise.'
-    'The second premise.'
-  ]
-  conclusion = 'The conclusion.'
+  defaults =
+    title: 'The Argument Title'
+    premises: [
+      'The first premise.'
+      'The second premise.'
+    ]
+    conclusion: 'The conclusion.'
+    metadata:
+      discussions_count: 2
 
-  describe 'new Argument( title, premises, conclusion )', ->
+  { title, premises, conclusion, metadata } = defaults
+
+  describe 'new Argument( title, premises, conclusion, metadata )', ->
 
     it 'should create a new instance', ->
-      argument = new Argument title, premises, conclusion
+      argument = new Argument title, premises, conclusion, metadata
       argument.should.be.an.instanceOf Argument
       argument.propositions.length.should.equal 3
-
       argument.title.should.equal 'The Argument Title'
-
       argument.premises.length.should.equal 2
       argument.premises[0].should.be.an.instanceOf Proposition
       argument.premises[0].text.should.equal 'The first premise.'
-
       argument.conclusion.should.be.an.instanceOf Proposition
       argument.conclusion.text.should.equal 'The conclusion.'
+      argument.metadata.should.eql metadata
 
     it 'should create an invalid instance if params are missing', ->
       argument = new Argument null, null, null
@@ -121,6 +124,11 @@ describe 'Argument', ->
         sha1: argument.sha1()
         repo: argument.repo()
       }
+
+    it 'should include argument metadata if present', ->
+      argument = new Argument defaults
+      data = argument.data()
+      data.metadata.should.eql metadata
 
     it 'should include commit data if present', ->
       argument = new Argument title, premises, conclusion
