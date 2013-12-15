@@ -21,12 +21,14 @@ class Comment
   # @param [Date]           params.commentDate
   # @param [String]         params.commentText
   # @param [Number]         params.discussionId
+  # @param [String]         params.gravatarId
   constructor: (params) ->
     @commentId     = params.commentId ? params.comment_id
     @author        = params.author
     @commentDate   = params.commentDate ? params.comment_date
     @commentText   = params.commentText ? params.comment_text
     @discussionId  = params.discussionId ? params.discussion_id
+    @gravatarId    = params.gravatarId ? params.gravatar_id
     # Defaults
     @commentDate = @commentDate ? new Date()
 
@@ -56,6 +58,7 @@ class Comment
       comment_date   : @commentDate
       comment_text   : @commentText
       discussion_id  : @discussionId
+      gravatar_id    : @gravatarId
     }
     return data
 

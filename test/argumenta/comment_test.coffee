@@ -11,6 +11,7 @@ describe 'Comment', ->
     commentDate  : fixtures.validCommentDate()
     commentText  : fixtures.validCommentText()
     discussionId : fixtures.validDiscussionId()
+    gravatarId   : fixtures.validGravatarId()
 
   describe 'new Comment( params )', ->
 
@@ -25,6 +26,7 @@ describe 'Comment', ->
       comment.commentDate.should.equal params.commentDate
       comment.commentText.should.equal params.commentText
       comment.discussionId.should.equal params.discussionId
+      comment.gravatarId.should.equal params.gravatarId
       comment.validate().should.equal true
 
   describe 'equals( comment )', ->
@@ -40,6 +42,14 @@ describe 'Comment', ->
       comment1 = new Comment params
       comment2 = new Comment _.extend({}, params, {author: 'Senpai'})
       should.ok !comment1.equals comment2
+
+  describe 'data()', ->
+
+    it "should include the gravatar id", ->
+      params = defaultParams
+      comment = new Comment params
+      data = comment.data()
+      data.gravatar_id.should.equal params.gravatarId
 
   describe 'validate()', ->
 
