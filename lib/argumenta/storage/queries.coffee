@@ -492,8 +492,9 @@ class Queries
       text: """
         SELECT comment_id,
                author, comment_date, comment_text,
-               discussion_id
+               discussion_id, pu.gravatar_id
         FROM Comments c
+        JOIN PublicUsers pu ON (c.author = pu.username)
         WHERE c.comment_id IN (#{ placeholders })
         ORDER BY c.comment_date ASC;
         """
@@ -525,9 +526,11 @@ class Queries
                target_type, target_sha1, target_owner,
                creator, created_at, updated_at,
                comment_id,
-               author, comment_date, comment_text
+               author, comment_date, comment_text,
+               pu.gravatar_id
         FROM Discussions d
         LEFT OUTER JOIN Comments c USING (discussion_id)
+        LEFT OUTER JOIN PublicUsers pu ON (c.author = pu.username)
         WHERE d.discussion_id IN (#{ placeholders })
         ORDER BY d.updated_at DESC, c.comment_date ASC;
         """
@@ -542,9 +545,11 @@ class Queries
                target_type, target_sha1, target_owner,
                creator, created_at, updated_at,
                comment_id,
-               author, comment_date, comment_text
+               author, comment_date, comment_text,
+               pu.gravatar_id
         FROM Discussions d
         LEFT OUTER JOIN Comments c USING (discussion_id)
+        LEFT OUTER JOIN PublicUsers pu ON (c.author = pu.username)
         WHERE d.target_sha1 IN (#{ placeholders })
         ORDER BY d.updated_at DESC, c.comment_date ASC;
         """

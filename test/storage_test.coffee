@@ -710,6 +710,7 @@ describeStorageTests = (storage, type) ->
               comments.length.should.equal 1
               comments[0].should.include params
               comments[0].commentId.should.be.a.number
+              comments[0].gravatarId.should.match /^[0-9,a-f]{32}$/
               done()
 
     describe 'getComments( commentIds, callback )', ->

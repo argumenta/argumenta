@@ -281,15 +281,19 @@ class LocalStore extends Base
 
   # Add a comment to the store.
   addComment: (comment, cb) ->
-    id = @comments.byId.length
-    @comments.byId[id] = comment
-    comment.commentId = id
+    @getUser comment.author, (err, publicUser) =>
+      return cb err if err
 
-    discussionId = comment.discussionId
-    @comments.withDiscussionId[discussionId] or= []
-    @comments.withDiscussionId[discussionId].push comment
+      id = @comments.byId.length
+      @comments.byId[id] = comment
+      comment.commentId = id
+      comment.gravatarId = publicUser.gravatarId
 
-    return cb null, id
+      discussionId = comment.discussionId
+      @comments.withDiscussionId[discussionId] or= []
+      @comments.withDiscussionId[discussionId].push comment
+
+      return cb null, id
 
   # Get comments by ids.
   getComments: (ids, cb) ->
