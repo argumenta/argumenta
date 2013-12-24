@@ -692,6 +692,14 @@ describeStorageTests = (storage, type) ->
             should.ok discussions[0].equals discussion
             done()
 
+      it 'should get an empty array when no discussions exist', (done) ->
+        withArgument (user, commit, argument) ->
+          hashes = [argument.sha1()]
+          storage.getDiscussionsFor hashes, (err, discussions) ->
+            should.not.exist err
+            discussions.should.eql []
+            done()
+
     #### Comments ####
 
     describe 'addComment( comment, callback )', ->

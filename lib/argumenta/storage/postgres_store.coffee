@@ -648,10 +648,10 @@ class PostgresStore extends Base
 
       discussions = []
       for id in ids
-        discussions.push byId[id]
+        d = byId[id]
+        discussions.push d if d
 
       return callback null, discussions
-
 
   # Get discussions for given target hashes.
   # @api public
@@ -676,7 +676,9 @@ class PostgresStore extends Base
 
       discussions = []
       for h in targetHashes
-        discussions = discussions.concat withTarget[h]
+        continue unless withTarget[h]
+        for d in withTarget[h]
+          discussions.push d if d
 
       return callback null, discussions
 

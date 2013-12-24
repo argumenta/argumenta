@@ -336,7 +336,9 @@ class LocalStore extends Base
   getDiscussionsFor: (targetHashes, cb) ->
     discussions = []
     for hash in targetHashes
-      discussions = discussions.concat @discussions.withTargetSha1[hash]
+      continue unless @discussions.withTargetSha1[hash]
+      for d in @discussions.withTargetSha1[hash]
+        discussions.push d if d
 
     return cb null, discussions
 
