@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "browserify": "~1.15.4",
-    "mocha": "1.0.x",
+    "mocha": "1.16.2",
     "request": "~2.9.202",
     "should": "2.1.0",
     "superagent": "0.15.7",
