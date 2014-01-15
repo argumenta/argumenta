@@ -1,6 +1,12 @@
 
 # Changes
 
+## 0.1.3 / 2013-12-25
+
++ Add discussions and comments.
++ Add migration for discussions.
++ Add API routes for discussions and comments.
+
 ## 0.1.2 / 2013-10-23
 
 + Add proposition publishing.
