@@ -333,8 +333,8 @@ class Queries
       text: """
         SELECT a.argument_sha1, a.title, p.text,
                ( SELECT COUNT(*)
-                 FROM Arguments a
-                 JOIN Discussions d ON (a.argument_sha1 = d.target_sha1)
+                 FROM Discussions d
+                 WHERE (a.argument_sha1 = d.target_sha1)
                ) AS discussions_count
         FROM Arguments a
         JOIN ArgumentPropositions ap USING(argument_sha1)

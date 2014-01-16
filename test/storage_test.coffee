@@ -76,8 +76,9 @@ describeStorageTests = (storage, type) ->
         commit = new Commit 'argument', argument.sha1(), user.username
         storage.addArgument argument, (er1) ->
           storage.addCommit commit, (er2) ->
-            [er1, er2].should.eql [1..2].map -> null
-            callback user, commit, argument
+            storage.getArgumentsWithMetadata [argument.sha1()], (er3, args) ->
+              [er1, er2, er3].should.eql [1..3].map -> null
+              callback user, commit, args[0]
 
     # WithArgumentRepo Helper
     withArgumentRepo = (callback) ->
@@ -152,8 +153,23 @@ describeStorageTests = (storage, type) ->
           should.not.exist err
           storage.getDiscussionsFor [params.targetSha1], (err, discussions) ->
             should.not.exist err
-            discussions[0].should.include params
-            callback user, argument, discussions[0]
+            storage.getArgumentsWithMetadata [argument.sha1()], (er3, args) ->
+              should.not.exist err
+              discussions[0].should.include params
+              callback user, args[0], discussions[0]
+
+    # Add discussion for an argument with owner and creator
+    addDiscussionFor = (argument, owner, creator, callback) ->
+      discussion = new Discussion
+        targetType: 'argument'
+        targetSha1: argument.sha1()
+        targetOwner: owner.username
+        creator: creator.username
+      storage.addDiscussion discussion, (err) ->
+        should.not.exist err
+        storage.getArgumentsWithMetadata [argument.sha1()], (err, args) ->
+          should.not.exist err
+          callback args[0], discussion
 
     # With Comment
     withComment = (callback) ->
@@ -381,6 +397,14 @@ describeStorageTests = (storage, type) ->
               should.not.exist err
               args.length.should.equal 2
               should.exist args[0].propositions[0].metadata
+              done()
+
+      it 'should have correct discussions count', (done) ->
+        withDiscussion (user1, argument1, discussion1) ->
+          withArgument (user2, commit2, argument2) ->
+            addDiscussionFor argument1, user1, user2, (argument1, discussion2) ->
+              argument1.metadata.discussions_count.should.equal 2
+              argument2.metadata.discussions_count.should.equal 0
               done()
 
     #### Commits ####
