@@ -302,6 +302,29 @@ class Fixtures
   @validDiscussionId: () ->
     return 1234
 
+  @validDiscussionTargetType: () ->
+    return 'argument'
+
+  @validDiscussionTargetSha1: () ->
+    return '0123456789abcdef000000000000000000000000'
+
+  @validDiscussionOwner: () ->
+    return @uniqueUsername()
+
+  @validDiscussionCreator: () ->
+    return @uniqueUsername()
+
+  @validDiscussionCreationDate: () ->
+    return new Date()
+
+  @uniqueDiscussion: () ->
+    return new Discussion
+      targetType:   @validDiscussionTargetType()
+      targetSha1:   @validDiscussionTargetSha1()
+      targetOwner:  @validDiscussionOwner()
+      creator:      @validDiscussionCreator()
+      createdAt:    @validDiscussionCreationDate()
+
   #### Comments ####
 
   @validCommentAuthor: () ->
