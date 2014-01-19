@@ -38,8 +38,14 @@ NGINX_CONFIG=$(cat <<-END
 	  }
 
 	  server {
+	    listen 80;
 	    server_name argumenta.io;
+	    return 301 https://argumenta.io\$request_uri;
+	  }
+
+	  server {
 	    listen 443;
+	    server_name argumenta.io;
 
 	    ssl on;
 	    ssl_certificate ${SSL_DIR}/argumenta.crt;
