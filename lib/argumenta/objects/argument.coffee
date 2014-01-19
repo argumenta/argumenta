@@ -234,7 +234,7 @@ class Argument
   # @param [String] text The text to slugify.
   # @return [String] The slugified text.
   @slugify: (text) ->
-    text.toLowerCase().replace(new RegExp(' ', 'g'), '-')
+    text.toLowerCase().replace(/\ +/g, '-')
 
   # Validates title text.
   #
