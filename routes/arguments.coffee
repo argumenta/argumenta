@@ -46,7 +46,7 @@ exports.create = (req, res) ->
         return res.failed '/arguments/new', err.message,
           status: Errors.statusFor err
     else
-      reponame = argument.repo()
+      reponame = encodeURIComponent argument.repo()
       return res.created "/#{username}/#{reponame}",
         "Created a new argument!", {argument}
 

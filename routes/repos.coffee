@@ -21,7 +21,7 @@ exports.create = (req, res) ->
         status: Errors.statusFor err
     else
       user = req.session.username
-      repo = argument.repo()
+      repo = encodeURIComponent argument.repo()
       return res.redirect "/#{user}/#{repo}"
 
 # Show a repo as html, json, or jsonp
