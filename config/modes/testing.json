@@ -3,6 +3,7 @@
 , "baseUrl":     "http://localhost:3000"
 , "host":        "testing.argumenta.io"
 , "port":        3000
+, "proxy":       true
 , "appSecret":   "SECRET"
 , "logLevel":    "fatal"
 , "siteName":    "Argumenta"

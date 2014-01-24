@@ -2,6 +2,7 @@
   "baseUrl":     "https://argumenta.io"
 , "host":        "argumenta.io"
 , "port":        8080
+, "proxy":       true
 , "appSecret":   "SECRET"
 , "logLevel":    "info"
 , "siteName":    "Argumenta"
