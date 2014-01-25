@@ -1,6 +1,8 @@
 - var commitData = (typeof commit !== 'undefined') ? commit.data() : {}
 
-.argument-widget('data-argument'=argument.data(), 'data-commit'=commitData)
+.argument-widget('data-argument'=argument.data(),
+                 'data-commit'=commitData,
+                 'data-show_discussions'=argument.show_discussions)
   .argument-container
     .argument-main
       .argument-title.trebuchet.bold.shadowed= argument.title
