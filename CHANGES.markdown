@@ -1,6 +1,13 @@
 
 # Changes
 
+## 0.1.4 / 2014-01-26
+
++ Trust proxy headers.
++ Add config option for `proxy`.
++ Show propositions on index page.
++ Show discussions for argument repos.
+
 ## 0.1.3 / 2013-12-25
 
 + Add discussions and comments.
