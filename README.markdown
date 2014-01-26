@@ -27,7 +27,7 @@ Install via npm to get the `argumenta` command:
 ```bash
 $ npm install -g argumenta
 $ argumenta
-Argumenta 0.1.3 (development mode) | http://localhost:3000
+Argumenta 0.1.4 (development mode) | http://localhost:3000
 ```
 
 See [Install][Install] for server configuration details, and [Developers][Developers] for notes on working from source.
