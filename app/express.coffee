@@ -15,7 +15,7 @@ app = module.exports = express()
 # Config
 configure = () ->
   app.configure ->
-    app.set 'trust proxy' if config.proxy
+    app.enable 'trust proxy' if config.proxy
     app.set 'views', __dirname + '/../views'
     app.set 'view engine', 'jade'
     app.set 'view options', {layout: false}
