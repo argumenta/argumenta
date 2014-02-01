@@ -40,6 +40,7 @@ class PostgresStore extends Base
   #       query = 'SELECT * FROM Objects WHERE sha1 = $1'
   #       client.query query, [sha1], (err, result) ->
   #         console.log result.rows[0]
+  #         client.done()
   #
   # @api private
   # @see pg.Client
@@ -47,7 +48,8 @@ class PostgresStore extends Base
     if @sessionClient
       return callback null, @sessionClient
 
-    @pg.connect @connectionUrl, (err, client) =>
+    @pg.connect @connectionUrl, (err, client, done) =>
+      client.done = done
       callback err, client
 
   # Creates a session with a new or nested transaction.
@@ -66,7 +68,7 @@ class PostgresStore extends Base
     @client (err, client) =>
       return callback err if err
 
-      transaction = new Transaction client, @transaction
+      transaction = new Transaction client, @transaction, client.done
       transaction.start (err) =>
         return callback err if err
 
@@ -80,6 +82,7 @@ class PostgresStore extends Base
     @client (err, client) ->
       return callback err if err
       client.query args..., callback
+      client.done() unless @transaction
 
   # Runs queries within a nested transaction, rolling back on any error.
   #
