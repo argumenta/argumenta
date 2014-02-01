@@ -370,7 +370,7 @@ describeStorageTests = (storage, type) ->
         argument = fixtures.validArgument()
         storage.addArgument argument, (err) ->
           should.not.exist err
-          storage.getArgument [argument.sha1()], (err, arg) ->
+          storage.getArgument argument.sha1(), (err, arg) ->
             should.not.exist err
             arg.equals(argument).should.equal true
             arg.metadata.discussions_count.should.equal 0
