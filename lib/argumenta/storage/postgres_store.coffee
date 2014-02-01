@@ -13,6 +13,8 @@ Session      = null
 
 {Argument, Proposition, Commit, Tag} = Objects
 
+pg.defaults.parseInt8 = true
+
 #
 # PostgresStore provides a datastore backed by PostgreSQL.  
 # Designed for use with the Storage module.
