@@ -270,7 +270,6 @@ class PostgresStore extends Base
       data = {byKey: {}, byCommit: {}, byTarget: {}}
       argSha1s = []
       for row in result.rows
-        row.parent_sha1s = Queries.parseArray row.parent_sha1s
         repoData = {
           username: row.username
           reponame: row.reponame
@@ -328,7 +327,6 @@ class PostgresStore extends Base
 
       data = {}
       for row in result.rows
-        row.parent_sha1s = Queries.parseArray(row.parent_sha1s)
         data[row.commit_sha1] = row
 
       commits = []
@@ -347,7 +345,6 @@ class PostgresStore extends Base
 
       data = { byTarget: {} }
       for row in result.rows
-        row.parent_sha1s = Queries.parseArray(row.parent_sha1s)
         data.byTarget[row.target_sha1] = row
 
       commits = []

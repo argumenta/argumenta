@@ -13,17 +13,6 @@ class Queries
 
   ### Helpers ###
 
-  # Parses a Postgres array string and returns a JavaScript array.
-  #
-  #     Example: "{100,200,300}"
-  #     Result:  [ 100, 200, 300 ]
-  #
-  @parseArray = (string) ->
-    elements = string.substr(1, string.length - 2)
-    if elements.length is 0
-    then return []
-    else return elements.split ','
-
   # Builds a string of positional params for given items.
   #
   #     Example: placeholdersfor( ['a', 'b', 'c'] )
