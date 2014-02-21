@@ -27,7 +27,9 @@ configure = () ->
     app.use express.bodyParser()
     app.use express.cookieParser( config.appSecret )
     app.use express.methodOverride()
-    app.use express.cookieSession()
+    app.use express.cookieSession
+      key: 'session'
+      cookie: { path: '/', httpOnly: false, maxAge: null }
     app.use flash()
     app.use middleware.globals
       baseUrl:  config.baseUrl,
