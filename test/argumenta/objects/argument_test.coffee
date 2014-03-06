@@ -168,3 +168,19 @@ describe 'Argument', ->
       premises = Argument.sanitizePremises( unwrapped )
       premises.length.should.equal 1
       premises[0].should.equal unwrapped
+
+  describe 'Argument.slugify( title )', ->
+    it 'should replace spaces with hyphens', ->
+      @title = 'My Argument'
+      slug = Argument.slugify(@title)
+      slug.should.equal 'my-argument'
+
+    it 'should replace periods with hyphens', ->
+      @title = 'No.6'
+      slug = Argument.slugify(@title)
+      slug.should.equal 'no-6'
+
+    it 'should merge consecutive hyphens', ->
+      @title = 'Mt. Gox'
+      slug = Argument.slugify(@title)
+      slug.should.equal 'mt-gox'

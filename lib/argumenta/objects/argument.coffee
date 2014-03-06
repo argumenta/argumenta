@@ -226,15 +226,17 @@ class Argument
       premises = [premises]
     return premises
 
-  # Slugify a text string.  
-  # Lowercases text, and replaces spaces with '-'.
+  # Slugify a text string.
+  #
+  # Lowercases text, and replaces any number of consecutive
+  # spaces, periods, or hyphens with a single hyphen.
   #
   # @api private
   # @see Argument#repo()
   # @param [String] text The text to slugify.
   # @return [String] The slugified text.
   @slugify: (text) ->
-    text.toLowerCase().replace(/\ +/g, '-')
+    text.toLowerCase().replace(/[ .-]+/g, '-')
 
   # Validates title text.
   #
