@@ -47,11 +47,11 @@ class Arguments extends Base
       return callback err, null if err
 
       commit = new Commit
-        targetType: 'argument'
-        targetSha1: argument.sha1()
-        committer:  username
-        parents:    [hash] if hash
-        host:       @argumenta.options.host
+        targetType:  'argument'
+        targetSha1:  argument.sha1()
+        committer:   username
+        parentSha1s: [hash] if hash
+        host:        @argumenta.options.host
 
       @storage.addArgument argument, (err) =>
         return callback err, null if err

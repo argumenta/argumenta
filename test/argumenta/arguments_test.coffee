@@ -58,6 +58,22 @@ describe 'Arguments', ->
                 commit.host.should.equal 'testing.argumenta.io'
                 done()
 
+    it 'should set the commit parent and update existing repos', (done) ->
+      withArgument (user1, commit1, argument1) ->
+        username = user1.username
+        reponame = argument1.repo()
+        argument2 = fixtures.uniqueArgument()
+        argument2.title = argument1.title
+        a = new Argumenta options
+        a.arguments.commit username, argument2, (err, commit2) ->
+          should.not.exist err
+          commit2.parentSha1s.length.should.equal 1
+          commit2.parentSha1s[0].should.equal commit1.sha1()
+          a.storage.getRepoHash username, reponame, (err, hash) ->
+            should.not.exist err
+            hash.should.equal commit2.sha1()
+            done()
+
   describe 'arguments.get( hashes, callback )', ->
     it 'should get argument resources by hashes', (done) ->
       withArgument (user1, commit1, argument1) ->
