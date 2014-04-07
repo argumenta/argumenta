@@ -233,8 +233,11 @@ class PostgresStore extends Base
     @session (err, session) ->
       return callback err if err
 
-      query = Queries.insertRepo(username, reponame, commitHash)
-      session.query query, (err) ->
+      queries = [
+        Queries.deleteRepo(username, reponame)
+        Queries.insertRepo(username, reponame, commitHash)
+      ]
+      session.runQueries queries, (err) ->
         session.finalize err, callback
 
   # Delete a repo by owner and name.

@@ -1,4 +1,4 @@
-# Argumenta instance, Argument, Storage and Errors classes
+_         = require 'underscore'
 argumenta = require '../app/argumenta'
 Argument  = require '../lib/argumenta/objects/argument'
 Storage   = require '../lib/argumenta/storage'
@@ -21,9 +21,31 @@ exports.new = (req, res) ->
     conclusion: 'A concluding proposition.'
   }
 
+  _.defaults placeholder.premises, params.premises
+
   return res.reply "arguments/new",
     argument: new Argument(params),
     placeholder: new Argument(placeholder)
+
+# Edit an argument via GET
+exports.edit = (req, res) ->
+  unless username = req.session.username
+    return res.redirect "/login"
+
+  hash = req.param 'hash'
+  unless hash
+    return res.reply 'index', error: "Error getting argument: missing hash."
+
+  argumenta.arguments.get [hash], (err, args) ->
+   if err
+     return res.reply 'index',
+       error: err.message,
+       status: Errors.statusFor err
+   else
+     argument = args[0]
+     return res.reply 'arguments/edit',
+       argument: argument
+       placeholder: argument
 
 # Create an argument via POST
 exports.create = (req, res) ->

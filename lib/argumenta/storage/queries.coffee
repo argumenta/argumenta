@@ -244,12 +244,21 @@ class Queries
         """
       values: [username]
 
+  # Delete a repo for the given username and reponame.
+  @deleteRepo: (username, reponame) ->
+    return deleteRepoQuery =
+      text: """
+        DELETE FROM Repos
+        WHERE (username, reponame) = ($1, $2);
+        """
+      values: [ username, reponame ]
+
   # Insert a repo for the given username, reponame, and commit sha1.
   @insertRepo: (username, reponame, commit_sha1) ->
     return insertRepoQuery =
       text: """
         INSERT INTO Repos (username, reponame, commit_sha1)
-        VALUES ($1, $2, $3)
+        VALUES ($1, $2, $3);
         """
       values: [ username, reponame, commit_sha1 ]
 
