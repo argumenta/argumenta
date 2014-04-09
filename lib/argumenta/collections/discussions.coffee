@@ -1,6 +1,6 @@
 _           = require 'underscore'
-Base        = require '../argumenta/base'
-Discussion  = require '../argumenta/discussion'
+Base        = require '../../argumenta/base'
+Discussion  = require '../../argumenta/discussion'
 
 #
 # Discussions models a discussions collection.  

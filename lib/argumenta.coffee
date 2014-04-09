@@ -1,14 +1,14 @@
 Auth         = require './argumenta/auth'
 Logger       = require './argumenta/logger'
 Storage      = require './argumenta/storage'
-Arguments    = require './argumenta/arguments'
-Comments     = require './argumenta/comments'
-Discussions  = require './argumenta/discussions'
-Propositions = require './argumenta/propositions'
-Publications = require './argumenta/publications'
+Arguments    = require './argumenta/collections/arguments'
+Comments     = require './argumenta/collections/comments'
+Discussions  = require './argumenta/collections/discussions'
+Propositions = require './argumenta/collections/propositions'
+Publications = require './argumenta/collections/publications'
+Tags         = require './argumenta/collections/tags'
+Users        = require './argumenta/collections/users'
 Search       = require './argumenta/search'
-Tags         = require './argumenta/tags'
-Users        = require './argumenta/users'
 
 class Argumenta
 

@@ -1,7 +1,7 @@
-Base = require '../argumenta/base'
-Auth = require '../argumenta/auth'
-User = require '../argumenta/user'
-PublicUser = require '../argumenta/public_user'
+Base = require '../../argumenta/base'
+Auth = require '../../argumenta/auth'
+User = require '../../argumenta/user'
+PublicUser = require '../../argumenta/public_user'
 
 #
 # Users models user accounts.  

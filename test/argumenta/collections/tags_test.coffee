@@ -1,7 +1,7 @@
-Argumenta = require '../../lib/argumenta'
-Storage   = require '../../lib/argumenta/storage'
-Tags      = require '../../lib/argumenta/tags'
-fixtures  = require '../../test/fixtures'
+Argumenta = require '../../../lib/argumenta'
+Storage   = require '../../../lib/argumenta/storage'
+Tags      = require '../../../lib/argumenta/collections/tags'
+fixtures  = require '../../../test/fixtures'
 should    = require 'should'
 
 describe 'Tags', ->

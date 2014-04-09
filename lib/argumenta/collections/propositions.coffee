@@ -1,7 +1,7 @@
 _           = require 'underscore'
-Base        = require '../argumenta/base'
-Commit      = require '../argumenta/objects/commit'
-Proposition = require '../argumenta/objects/proposition'
+Base        = require '../../argumenta/base'
+Commit      = require '../../argumenta/objects/commit'
+Proposition = require '../../argumenta/objects/proposition'
 
 #
 # Propositions models a propositions collection.  

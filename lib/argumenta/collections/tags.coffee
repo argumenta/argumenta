@@ -1,6 +1,6 @@
-Base      = require '../argumenta/base'
-Tag       = require '../argumenta/objects/tag'
-Commit    = require '../argumenta/objects/commit'
+Base      = require '../../argumenta/base'
+Tag       = require '../../argumenta/objects/tag'
+Commit    = require '../../argumenta/objects/commit'
 
 #
 # Tags models a tags collection.  

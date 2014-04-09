@@ -1,6 +1,6 @@
 _           = require 'underscore'
-Base        = require '../argumenta/base'
-Comment     = require '../argumenta/comment'
+Base        = require '../../argumenta/base'
+Comment     = require '../../argumenta/comment'
 
 #
 # Comments models a comments collection.  

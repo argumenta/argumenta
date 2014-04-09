@@ -1,8 +1,8 @@
-config      = require '../../config'
-Argumenta = require '../../lib/argumenta'
-Storage   = require '../../lib/argumenta/storage'
-Arguments = require '../../lib/argumenta/arguments'
-fixtures  = require '../../test/fixtures'
+config      = require '../../../config'
+Argumenta = require '../../../lib/argumenta'
+Storage   = require '../../../lib/argumenta/storage'
+Arguments = require '../../../lib/argumenta/collections/arguments'
+fixtures  = require '../../../test/fixtures'
 should    = require 'should'
 
 describe 'Arguments', ->

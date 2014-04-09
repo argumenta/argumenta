@@ -1,7 +1,7 @@
 _         = require 'underscore'
-Base      = require '../argumenta/base'
-Argument  = require '../argumenta/objects/argument'
-Commit    = require '../argumenta/objects/commit'
+Base      = require '../../argumenta/base'
+Argument  = require '../../argumenta/objects/argument'
+Commit    = require '../../argumenta/objects/commit'
 
 #
 # Arguments models an arguments collection.  
