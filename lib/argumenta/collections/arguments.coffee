@@ -69,7 +69,7 @@ class Arguments extends Base
   # @param [Array<Argument>] arguments
   get: (hashes, callback) ->
     unless _.isArray hashes
-      return new @Error "Hashes must be an array."
+      return callback new @Error "Hashes must be an array."
 
     if hashes.length is 0
       return callback null, []
