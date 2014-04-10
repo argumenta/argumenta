@@ -184,11 +184,11 @@ describeAppTests = (type, app) ->
             done()
 
       describe 'GET /.json', ->
-        it 'should include latest users and arguments data', (done) ->
+        it 'should include latest users and repos data', (done) ->
           get '/.json', (res) ->
             res.status.should.equal 200
             json = res.body
-            json.latest_arguments.should.eql []
+            json.latest_repos.should.eql []
             json.latest_users.should.eql []
             done()
 

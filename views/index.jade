@@ -1,12 +1,14 @@
 extends layout
 
 block content
-  if latest_arguments
+  if latest_repos
     h1 Latest Arguments
     div.content-pane
-      each argument in latest_arguments
+      each repo in latest_repos
         div.argument-widget(
-          'data-argument'=argument.data(),
+          'data-argument'=repo.target.data(),
+          'data-commit'=repo.commit.data(),
+          'data-user'=repo.user.data(),
           'data-show_propositions'='true'
         )
 
