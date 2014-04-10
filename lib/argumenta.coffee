@@ -6,6 +6,7 @@ Comments     = require './argumenta/collections/comments'
 Discussions  = require './argumenta/collections/discussions'
 Propositions = require './argumenta/collections/propositions'
 Publications = require './argumenta/collections/publications'
+Repos        = require './argumenta/collections/repos'
 Tags         = require './argumenta/collections/tags'
 Users        = require './argumenta/collections/users'
 Search       = require './argumenta/search'
@@ -27,6 +28,7 @@ class Argumenta
     @discussions  = new Discussions this, @storage
     @propositions = new Propositions this, @storage
     @publications = new Publications this, @storage
+    @repos        = new Repos this, @storage
     @search       = new Search this, @storage
     @tags         = new Tags this, @storage
     @users        = new Users this, @storage

@@ -26,6 +26,7 @@ class Errors
   @Discussions:      class DiscussionsError extends BaseError
   @Propositions:     class PropositionsError extends BaseError
   @Publications:     class PublicationsError extends BaseError
+  @Repos:            class ReposError extends BaseError
   @Search:           class SearchError extends BaseError
   @Users:            class UsersError extends BaseError
 

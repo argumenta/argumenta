@@ -306,6 +306,18 @@ class PostgresStore extends Base
 
         return callback null, repos
 
+  # List key pairs for latest repos.
+  # @api public
+  listRepos: (options..., callback) ->
+    options = options[0]
+
+    @query Queries.listRepos(options), (err, res) =>
+      return callback err if err
+
+      keys = []
+      keys.push [row.username, row.reponame] for row in res.rows
+      return callback null, keys
+
   #### Commits ####
 
   # Add a commit to the store.

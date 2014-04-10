@@ -219,6 +219,21 @@ class Queries
         """
       values: [limit, offset]
 
+  # List repos, starting with the latest or earliest.
+  @listRepos: (opts={}) ->
+    limit  = opts.limit  ? 50
+    offset = opts.offset ? 0
+    latest = opts.latest ? true
+    orderPlaceholder = if latest then 'DESC' else 'ASC'
+    return listUserReposQuery =
+      text: """
+        SELECT username, reponame
+        FROM Repos r
+        ORDER BY repo_id #{ orderPlaceholder }
+        LIMIT $1 OFFSET $2;
+        """
+      values: [limit, offset]
+
   # List user repos, starting with the latest or earliest.
   @listUserRepos: (username, opts={}) ->
     limit  = opts.limit  ? 50

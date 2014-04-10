@@ -155,6 +155,29 @@ class LocalStore extends Base
 
     return callback null, repos
 
+  # List key pairs for latest repos.
+  listRepos: (options, callback) ->
+    limit  = options.limit  ? 50
+    offset = options.offset ? 0
+    latest = options.latest ? true
+
+    commits = _(@commits.bySha1)
+      .chain()
+      .values()
+      .where(targetType: 'argument')
+
+    commits = commits.reverse() unless latest
+    commits = commits.slice(offset, offset + limit).value()
+
+    keys = []
+    for c in commits
+      username = c.committer
+      argument = @arguments.bySha1[c.targetSha1]
+      reponame = argument.repo()
+      keys.push [username, reponame]
+
+    return callback null, keys
+
   #### Objects ####
 
   # Add an argument to the store
