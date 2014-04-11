@@ -11,8 +11,6 @@ class Comments extends Base
   ### Errors ###
 
   Error: @Error = @Errors.Comment
-  StorageConflictError: @StorageConflictError = @Errors.StorageConflict
-  StorageError: @StorageError = @Errors.Storage
 
   ### Constructor ###
 

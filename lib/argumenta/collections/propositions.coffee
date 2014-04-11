@@ -12,8 +12,6 @@ class Propositions extends Base
   ### Errors ###
 
   Error: @Error = @Errors.Propositions
-  StorageConflictError: @StorageConflictError = @Errors.StorageConflict
-  StorageError: @StorageError = @Errors.Storage
 
   ### Constructor ###
 

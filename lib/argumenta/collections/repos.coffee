@@ -10,8 +10,6 @@ class Repos extends Base
   ### Errors ###
 
   Error: @Error = @Errors.Repos
-  StorageConflictError: @StorageConflictError = @Errors.StorageConflict
-  StorageError: @StorageError = @Errors.Storage
 
   ### Constructor ###
 

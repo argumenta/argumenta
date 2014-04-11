@@ -12,8 +12,6 @@ class Publications extends Base
   ### Errors ###
 
   Error: @Error = @Errors.Publications
-  StorageConflictError: @StorageConflictError = @Errors.StorageConflict
-  StorageError: @StorageError = @Errors.Storage
 
   ### Constructor ###
 

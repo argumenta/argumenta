@@ -11,8 +11,6 @@ class Discussions extends Base
   ### Errors ###
 
   Error: @Error = @Errors.Discussions
-  StorageConflictError: @StorageConflictError = @Errors.StorageConflict
-  StorageError: @StorageError = @Errors.Storage
 
   ### Constructor ###
 

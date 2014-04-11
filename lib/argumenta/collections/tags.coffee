@@ -11,8 +11,6 @@ class Tags extends Base
   ### Errors ###
 
   Error: @Error = @Errors.Arguments
-  StorageConflictError: @StorageConflictError = @Errors.StorageConflict
-  StorageError: @StorageError = @Errors.Storage
 
   ### Constructor ###
 

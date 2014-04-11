@@ -12,9 +12,6 @@ class Users extends Base
   ### Errors ###
 
   Error: @Error = @Errors.Users
-  ValidationError: @ValidationError = @Errors.Validation
-  StorageConflictError: @StorageConflictError = @Errors.StorageConflict
-  StorageError: @StorageError = @Errors.Storage
 
   ### Constructor ###
 
