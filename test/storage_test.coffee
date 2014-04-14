@@ -376,7 +376,7 @@ describeStorageTests = (storage, type) ->
             arg.metadata.discussions_count.should.equal 0
             done()
 
-    describe 'getArguments( hashes, callback )', ->
+    describe 'getArguments( hashes, options..., callback )', ->
       it 'should retrieve stored arguments by hashes', (done) ->
         withArgument (user1, commit1, argument1) ->
           withArgument (user2, commit2, argument2) ->
@@ -387,6 +387,24 @@ describeStorageTests = (storage, type) ->
               args[0].equals(argument1).should.equal true
               args[1].equals(argument2).should.equal true
               done()
+
+      it 'should include metadata when option is true', (done) ->
+        withArgument (user1, commit1, argument1) ->
+          hashes = [ argument1.sha1() ]
+          options = { metadata: true }
+          storage.getArguments hashes, options, (err, args) ->
+            should.not.exist err
+            args[0].metadata.discussions_count.should.equal 0
+            done()
+
+      it 'should exclude metadata when option is false', (done) ->
+        withArgument (user1, commit1, argument1) ->
+          hashes = [ argument1.sha1() ]
+          options = { metadata: false }
+          storage.getArguments hashes, options, (err, args) ->
+            should.not.exist err
+            args[0].metadata.should.not.exist
+            done()
 
     describe 'getArgumentsWithMetadata( hashes, callback )', ->
       it 'should retrieve stored arguments with propositions metadata', (done) ->

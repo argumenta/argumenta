@@ -299,11 +299,16 @@ class Storage extends Base
 
   # Get arguments from the store by hashes.
   #
-  # @param [Array<String>] hashes Hash ids of the arguments to retrieve.
-  # @param [Function]      cb(err, args) Called on completion or error.
-  # @param [StorageError]  err Any error.
-  # @param [Array<Argument>] args The retrieved arguments.
-  getArguments: (hashes, cb) ->
+  # @param [Array<String>]   hashes
+  # @param [Object]          options
+  # @param [Boolean]         options.metadata
+  # @param [Function]        cb(err, args)
+  # @param [StorageError]    err
+  # @param [Array<Argument>] args
+  getArguments: (hashes, options..., cb) ->
+    options = options[0] ? {}
+    return @getArgumentsWithMetadata hashes, cb if options.metadata
+
     @store.getArguments hashes, (err, args) =>
       return cb new @RetrievalError "Failed getting arguments from the store." if err
       return cb null, args
