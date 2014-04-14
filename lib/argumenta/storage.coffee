@@ -71,9 +71,14 @@ class Storage extends Base
 
   # Add a user to the store.
   #
-  # @param [User] user A valid user with a unique username.
-  # @param [Function] cb(err) Called on completion or error.
-  # @param [StorageError|ValidationError|StorageConflictError] err Any error.
+  # Only valid users with unique usernames are accepted.
+  #
+  # Possible errors include:
+  #   StorageError, ValidationError, StorageConflictError
+  #
+  # @param [User]               user
+  # @param [Function]           cb(err)
+  # @param [Error]              err
   addUser: (user, cb) ->
     unless user instanceof User
       return cb new @Error "User instance required to add user."
@@ -91,32 +96,32 @@ class Storage extends Base
 
   # Delete *all* entities from the store.
   #
-  # @param [Object]       opts An options hash.
-  # @param [Boolean]      opts.quick Enables quick deletion.
-  # @param [Function]     cb(err) Called on completion or error.
-  # @param [StorageError] err Any error.
-  clearAll: (opts={}, cb) ->
-    @store.clearAll opts, (err) ->
+  # @param [Object]             options
+  # @param [Boolean]            options.quick
+  # @param [Function]           cb(err)
+  # @param [StorageError]       err
+  clearAll: (options={}, cb) ->
+    @store.clearAll options, (err) ->
       return cb err
 
   # Get a user by username, omitting sensitive fields.
   #
   # @see getPasswordHash()
-  # @param [String]       username Of the user to retrieve.
-  # @param [Function]     cb(err, user) Called on completion or error.
-  # @param [StorageError] err Any error.
-  # @param [Object]       user The retrieved user's public fields.
+  # @param [String]             username
+  # @param [Function]           cb(err, user)
+  # @param [StorageError]       err
+  # @param [PublicUser]         user
   getUser: (username, cb) ->
     @store.getUser username, (err, user) ->
-      return cb new @Error("Failed getting user: " + username, err) if err
+      return cb new @Error "Failed getting user '#{username}'.", err if err
       return cb null, user
 
   # Get users by usernames, omitting sensitive fields.
   #
-  # @param [Array<String>]     usernames
-  # @param [Function]          cb(err, users)
-  # @param [StorageError]      err
-  # @param [Array<PublicUser>] users
+  # @param [Array<String>]      usernames
+  # @param [Function]           cb(err, users)
+  # @param [StorageError]       err
+  # @param [Array<PublicUser>]  users
   getUsers: (usernames, cb) ->
     @store.getUsers usernames, (err, users) ->
       return cb new @Error "Failed getting users from store." if err
@@ -124,10 +129,10 @@ class Storage extends Base
 
   # Get metadata for users by usernames.
   #
-  # @param [Array<String>] usernames
-  # @param [Function]      cb(err, metadata)
-  # @param [StorageError]  err
-  # @param [Array<Object>] metadata
+  # @param [Array<String>]      usernames
+  # @param [Function]           cb(err, metadata)
+  # @param [StorageError]       err
+  # @param [Array<Object>]      metadata
   getUsersMetadata: (usernames, cb) ->
     @store.getUsersMetadata usernames, (err, metadata) ->
       return cb new @Error "Failed getting users metadata from store." if err
@@ -135,10 +140,10 @@ class Storage extends Base
 
   # Get users with metadata by usernames, omitting sensitive fields.
   #
-  # @param [Array<String>]     usernames
-  # @param [Function]          cb(err, users)
-  # @param [StorageError]      err
-  # @param [Array<PublicUser>] users
+  # @param [Array<String>]      usernames
+  # @param [Function]           cb(err, users)
+  # @param [StorageError]       err
+  # @param [Array<PublicUser>]  users
   getUsersWithMetadata: (usernames, cb) ->
     @store.getUsers usernames, (er1, users) =>
       @store.getUsersMetadata usernames, (er2, metadata) =>
@@ -153,22 +158,22 @@ class Storage extends Base
 
   # Get repos for a given user.
   #
-  # @param [String] username     The username of the repo owner.
-  # @param [Object] opts         Options for retrieval.
-  # @param [Number] opts.limit   The maximum number of repos to return (Default: 50).
-  # @param [Number] opts.offset  The number of repos to skip. (Default: 0).
-  # @param [Boolean] opts.latest Whether to start with the latest repos. (Default: true).
-  getUserRepos: (username, opts, cb) ->
-    @store.getUserRepos username, opts, (err, repos) ->
+  # @param [String]             username
+  # @param [Object]             options
+  # @param [Number]             options.limit  (Default: 50)
+  # @param [Number]             options.offset (Default: 0)
+  # @param [Boolean]            options.latest (Default: true)
+  getUserRepos: (username, options, cb) ->
+    @store.getUserRepos username, options, (err, repos) ->
       return cb new @Error "Failed getting user repos for '#{username}'", err if err
       return cb null, repos
 
   # Get a user's password hash.
   #
-  # @param [String]       username Of the user whose hash to retrieve.
-  # @param [Function]     cb(err, hash) Called on completion or error.
-  # @param [StorageError] err Any error.
-  # @param [String]       hash The retrieved password hash.
+  # @param [String]             username
+  # @param [Function]           cb(err, hash)
+  # @param [StorageError]       err
+  # @param [String]             hash
   getPasswordHash: (username, cb) ->
     @store.getPasswordHash username, (err, hash) ->
       return cb new @Error("Failed getting user: "  + username, err) if err
@@ -176,9 +181,9 @@ class Storage extends Base
 
   # Get an array of all users, omitting sensitive fields.
   #
-  # @param [Function]      cb(err, users) Called on completion or error.
-  # @param [StorageError]  err Any error.
-  # @param [Array<Object>] users An object array of users' public fields.
+  # @param [Function]           cb(err, users)
+  # @param [StorageError]       err
+  # @param [Array<Object>]      users
   getAllUsers: (cb) ->
     @store.listUsers (er1, usernames) =>
       @getUsersWithMetadata usernames, (er2, users) =>
@@ -190,11 +195,11 @@ class Storage extends Base
 
   # Add a user repo for a given commit hash.
   #
-  # @param [String] username The user's name.
-  # @param [String] reponame The repo's name.
-  # @param [Function] callback Called on success or error.
-  # @param [Error] err Any error.
-  # @param [String] commitHash The commit's hash.
+  # @param [String]             username
+  # @param [String]             reponame
+  # @param [Function]           callback
+  # @param [Error]              err
+  # @param [String]             commitHash
   addRepo: (username, reponame, commitHash, callback) ->
     @getUser username, (err, user) =>
       if err or not user
@@ -204,10 +209,10 @@ class Storage extends Base
 
   # Delete a repo by owner and name.
   #
-  # @param [String] username The repo owner.
-  # @param [String] reponame The repo name.
-  # @param [Function] cb(err) Called on success or error.
-  # @param [Error] err Any error.
+  # @param [String]             username
+  # @param [String]             reponame
+  # @param [Function]           cb(err)
+  # @param [Error]              err
   deleteRepo: (username, reponame, cb) ->
     @store.deleteRepo username, reponame, (err) =>
       if err
@@ -221,11 +226,11 @@ class Storage extends Base
   #     storage.getRepoHash username, repo, (err, hash) ->
   #       console.log "This repo points to commit: #{hash}!"
   #
-  # @param [String] username The user's name.
-  # @param [String] reponame The repo's name.
-  # @param [Function] callback Called on success or error.
-  # @param [Error] err Any error.
-  # @param [String] commitHash This repo's commit hash.
+  # @param [String]             username
+  # @param [String]             reponame
+  # @param [Function]           callback
+  # @param [Error]              err
+  # @param [String]             commitHash
   getRepoHash: (username, reponame, callback) ->
     @store.getRepoHash username, reponame, (err, hash) ->
       return callback null, hash
@@ -233,15 +238,15 @@ class Storage extends Base
   # Get the commit and target for a given user repo.
   #
   #     storage.getRepoTarget name, repo, (err, commit, target) ->
-  #       console.log "This repo points to commit: #{commit.sha1()}\n"
+  #       console.log "Got repo for commit: #{commit.sha1()}\n"
   #                   "with target: #{target.sha1()}"
   #
-  # @param [String] username The user's name.
-  # @param [String] reponame The repo's name.
-  # @param [Function] cb(err, commit, target) Called on success or error.
-  # @param [Error] err Any error.
-  # @param [Commit] commit The target commit.
-  # @param [Argument] target The target object.
+  # @param [String]             username
+  # @param [String]             reponame
+  # @param [Function]           cb(err, commit, target)
+  # @param [Error]              err
+  # @param [Commit]             commit
+  # @param [Argument]           target
   getRepoTarget: (username, reponame, cb) ->
     @getRepoHash username, reponame, (er1, hash) =>
       @getCommit hash, (er2, commit) =>
@@ -261,10 +266,10 @@ class Storage extends Base
   #     storage.getRepos keys, (err, repos) ->
   #       console.log "Got repos: ", repos
   #
-  # @param [Array<Array<String>>] keys An array of [username, reponame] arrays.
-  # @param [Function] cb(err, repos) Called on completion or error.
-  # @param [StorageError] err Any error.
-  # @param [Array<Repo>] repos The retrieved repos.
+  # @param [Array<Array<String>>] keys
+  # @param [Function]             cb(err, repos)
+  # @param [StorageError]         err
+  # @param [Array<Repo>]          repos
   getRepos: (keys, cb) ->
     @store.getRepos keys, (err, repos) ->
       return cb err if err
@@ -274,9 +279,9 @@ class Storage extends Base
 
   # Add an argument to the store.
   #
-  # @param [Argument] argument The argument to store.
-  # @param [Function] cb(err) Called on completion or error.
-  # @param [StorageError] err Any error.
+  # @param [Argument]           argument
+  # @param [Function]           cb(err)
+  # @param [StorageError]       err
   addArgument: (argument, cb) ->
     unless argument instanceof Argument
       return cb new @InputError "Argument instance required to store argument."
@@ -287,10 +292,10 @@ class Storage extends Base
 
   # Get an argument from the store by hash.
   #
-  # @param [String] hash Hash id of the argument to retrieve.
-  # @param [Function] cb(err, args) Called on completion or error.
-  # @param [StorageError] err Any error.
-  # @param [Argument] arg The retrieved argument.
+  # @param [String]             hash
+  # @param [Function]           cb(err, args)
+  # @param [StorageError]       err
+  # @param [Argument]           arg
   getArgument: (hash, cb) ->
     @store.getArguments [hash], (err, args) =>
       return cb new @RetrievalError "Failed getting arguments from the store." if err
@@ -299,12 +304,12 @@ class Storage extends Base
 
   # Get arguments from the store by hashes.
   #
-  # @param [Array<String>]   hashes
-  # @param [Object]          options
-  # @param [Boolean]         options.metadata
-  # @param [Function]        cb(err, args)
-  # @param [StorageError]    err
-  # @param [Array<Argument>] args
+  # @param [Array<String>]      hashes
+  # @param [Object]             options
+  # @param [Boolean]            options.metadata
+  # @param [Function]           cb(err, args)
+  # @param [StorageError]       err
+  # @param [Array<Argument>]    args
   getArguments: (hashes, options..., cb) ->
     options = options[0] ? {}
     return @getArgumentsWithMetadata hashes, cb if options.metadata
@@ -315,10 +320,10 @@ class Storage extends Base
 
   # Get arguments along with metadata from the store by hashes.
   #
-  # @param [Array<String>]   hashes
-  # @param [Function]        cb(err, args)
-  # @param [StorageError]    err
-  # @param [Array<Argument>] args
+  # @param [Array<String>]      hashes
+  # @param [Function]           cb(err, args)
+  # @param [StorageError]       err
+  # @param [Array<Argument>]    args
   getArgumentsWithMetadata: (hashes, cb) ->
     @store.getArguments hashes, (err, args) =>
       return cb new @RetrievalError "Failed getting arguments from the store." if err
@@ -342,9 +347,9 @@ class Storage extends Base
 
   # Add an array of propositions to the store.
   #
-  # @param [Array<Proposition>] propositions The propositions array.
-  # @param [Function]     cb(err) Called on completion or error.
-  # @param [StorageError] err Any error.
+  # @param [Array<Proposition>] propositions
+  # @param [Function]           cb(err)
+  # @param [StorageError]       err
   addPropositions: (propositions, cb) ->
     for p in propositions
       unless p instanceof Proposition
@@ -358,10 +363,10 @@ class Storage extends Base
 
   # Get a proposition from the store by hash.
   #
-  # @param [String] hash Hash id of the proposition to retrieve.
-  # @param [Function] cb(err, proposition) Called on completion or error.
-  # @param [StorageError] err Any error.
-  # @param [Proposition] proposition The retrieved proposition.
+  # @param [String]             hash
+  # @param [Function]           cb(err, proposition)
+  # @param [StorageError]       err
+  # @param [Proposition]        proposition
   getProposition: (hash, cb) ->
     @store.getPropositions [hash], (err, propositions) =>
       return cb new @RetrievalError "Failed getting proposition from the store." if err
@@ -370,12 +375,12 @@ class Storage extends Base
 
   # Get propositions from the store by hashes.
   #
-  # @param [Array<String>]       hashes
-  # @param [Object]              options
-  # @param [Boolean]             options.metadata
-  # @param [Function]            cb(err, propositions)
-  # @param [StorageError]        err
-  # @param [Array<Proposition>]  propositions
+  # @param [Array<String>]      hashes
+  # @param [Object]             options
+  # @param [Boolean]            options.metadata
+  # @param [Function]           cb(err, propositions)
+  # @param [StorageError]       err
+  # @param [Array<Proposition>] propositions
   getPropositions: (hashes, options..., cb) ->
     options = options[0] ? {}
     return @getPropositionsWithMetadata hashes, cb if options.metadata
@@ -386,10 +391,10 @@ class Storage extends Base
 
   # Get propositions metadata from the store by hashes.
   #
-  # @param [Array<String>] hashes Hash ids of the propositions to retrieve.
-  # @param [Function]      cb(err, propositions) Called on completion or error.
-  # @param [StorageError]  err Any error.
-  # @param [Array<Object>] metadata The retrieved metadata.
+  # @param [Array<String>]      hashes
+  # @param [Function]           cb(err, propositions)
+  # @param [StorageError]       err
+  # @param [Array<Object>]      metadata
   getPropositionsMetadata: (hashes, cb) ->
     @store.getPropositionsMetadata hashes, (err, metadata) ->
       return cb new @Error "Failed getting propositions metadata from the store." if err
@@ -397,10 +402,10 @@ class Storage extends Base
 
   # Get propositions (along with metadata) from the store by hashes.
   #
-  # @param [Array<String>] hashes Hash ids of the propositions to retrieve.
-  # @param [Function]      cb(err, propositions) Called on completion or error.
-  # @param [StorageError]  err Any error.
-  # @param [Array<Proposition>] propositions The retrieved propositions (with metadata).
+  # @param [Array<String>]       hashes
+  # @param [Function]            cb(err, propositions)
+  # @param [StorageError]        err
+  # @param [Array<Proposition>]  propositions
   getPropositionsWithMetadata: (hashes, cb) ->
     @store.getPropositions hashes, (er1, propositions) =>
       @store.getPropositionsMetadata hashes, (er2, metadata) =>
@@ -413,9 +418,9 @@ class Storage extends Base
 
   # Add a commit to the store.
   #
-  # @param [Commit] commit The commit to store.
-  # @param [Function] cb(err) Called on completion or error.
-  # @param [StorageError] err Any error.
+  # @param [Commit]             commit
+  # @param [Function]           cb(err)
+  # @param [StorageError]       err
   addCommit: (commit, cb) ->
     unless commit instanceof Commit
       return cb new @InputError "Commit instance required to store commit."
@@ -428,10 +433,10 @@ class Storage extends Base
 
   # Get a commit from the store by hash.
   #
-  # @param [String] hash Hash id of the commit to retrieve.
-  # @param [Function] cb(err, commit) Called on completion or error.
-  # @param [StorageError] err Any error.
-  # @param [Commit] commit The retrieved commit.
+  # @param [String]             hash
+  # @param [Function]           cb(err, commit)
+  # @param [StorageError]       err
+  # @param [Commit]             commit
   getCommit: (hash, cb) ->
     @store.getCommits [hash], (err, commits) =>
       return cb new @RetrievalError "Failed getting commit from the store." if err
@@ -440,10 +445,10 @@ class Storage extends Base
 
   # Get commits from the store by hashes.
   #
-  # @param [Array<String>] hashes Hash ids of the commits to retrieve.
-  # @param [Function]      cb(err, commits) Called on completion or error.
-  # @param [StorageError]  err Any error.
-  # @param [Array<Commit>] commits The retrieved commits.
+  # @param [Array<String>]      hashes
+  # @param [Function]           cb(err, commits)
+  # @param [StorageError]       err
+  # @param [Array<Commit>]      commits
   getCommits: (hashes, cb) ->
     @store.getCommits hashes, (err, commits) ->
       return cb new @RetrievalError "Failed getting commits from the store." if err
@@ -451,10 +456,10 @@ class Storage extends Base
 
   # Get commits from the store with given target hashes.
   #
-  # @param [Array<String>]  targetHashes Target hashes of tags to retrieve.
-  # @param [Function]       cb(err, commits) Called on completion or error.
-  # @param [StorageError]   err Any error.
-  # @param [Array<Commits>] commits The retrieved commits.
+  # @param [Array<String>]      targetHashes
+  # @param [Function]           cb(err, commits)
+  # @param [StorageError]       err
+  # @param [Array<Commits>]     commits
   getCommitsFor: (targetHashes, cb) ->
     @store.getCommitsFor targetHashes, (err, commits) ->
       return cb new @RetrievalError "Failed getting commits from the store." if err
@@ -462,9 +467,9 @@ class Storage extends Base
 
   # Add a tag to the store.
   #
-  # @param [Tag] tag The tag to store.
-  # @param [Function] cb(err) Called on completion or error.
-  # @param [StorageError] err Any error.
+  # @param [Tag]                tag
+  # @param [Function]           cb(err)
+  # @param [StorageError]       err
   addTag: (tag, cb) ->
     unless tag instanceof Tag
       return cb new @InputError "Tag instance required to store tag."
@@ -475,10 +480,10 @@ class Storage extends Base
 
   # Get a tag from the store by hash.
   #
-  # @param [String] hash Hash id of the tag to retrieve.
-  # @param [Function] cb(err, tag) Called on completion or error.
-  # @param [StorageError] err Any error.
-  # @param [Tag] tag The retrieved tag.
+  # @param [String]             hash
+  # @param [Function]           cb(err, tag)
+  # @param [StorageError]       err
+  # @param [Tag]                tag
   getTag: (hash, cb) ->
     @store.getTags [hash], (err, tags) =>
       return cb new @RetrievalError "Failed getting tag from the store." if err
@@ -487,10 +492,10 @@ class Storage extends Base
 
   # Get tags from the store by hashes.
   #
-  # @param [Array<String>] hashes Hash ids of the tags to retrieve.
-  # @param [Function]      cb(err, tags) Called on completion or error.
-  # @param [StorageError]  err Any error.
-  # @param [Array<Tag>] tags The retrieved tags.
+  # @param [Array<String>]      hashes
+  # @param [Function]           cb(err, tags)
+  # @param [StorageError]       err
+  # @param [Array<Tag>]         tags
   getTags: (hashes, cb) ->
     @store.getTags hashes, (err, tags) ->
       return cb new @RetrievalError "Failed getting tags from the store." if err
@@ -498,23 +503,25 @@ class Storage extends Base
 
   # Get tags from the store with given target hashes.
   #
-  # @param [Array<String>] targetHashes Target hashes of tags to retrieve.
-  # @param [Function]      cb(err, tags) Called on completion or error.
-  # @param [StorageError]  err Any error.
-  # @param [Array<Tag>]    tags The retrieved tags.
+  # @param [Array<String>]      targetHashes
+  # @param [Function]           cb(err, tags)
+  # @param [StorageError]       err
+  # @param [Array<Tag>]         tags
   getTagsFor: (targetHashes, cb) ->
     @store.getTagsFor targetHashes, (err, tags) ->
       return cb new @RetrievalError "Failed getting tags from the store." if err
       return cb null, tags
 
-  # Get tags (plus any source objects) from the store given target hashes.
+  # Get tags (plus any source objects) from the store for given target hashes.
   #
-  # @param [Array<String>] targetHashes Target hashes of tags to retrieve.
-  # @param [Function]      cb(err, tags, sources, commits) Called on completion or error.
-  # @param [StorageError]  err Any error.
-  # @param [Array<Tag>]    tags The tags for the given targets.
-  # @param [Array<Object>] sources Any source objects for the tags.
-  # @param [Array<Commit>] commits The commits for tags and sources.
+  # Commits for all tags and sources are also retrieved.
+  #
+  # @param [Array<String>]      targetHashes
+  # @param [Function]           cb(err, tags, sources, commits)
+  # @param [StorageError]       err
+  # @param [Array<Tag>]         tags
+  # @param [Array<Object>]      sources
+  # @param [Array<Commit>]      commits
   getTagsPlusSources: (targetHashes, cb) ->
     @getTagsFor targetHashes, (er1, tags) =>
       objectHashes = []
@@ -537,10 +544,12 @@ class Storage extends Base
 
   # Add a comment to the store.
   #
-  # @param [Comment]           comment
-  # @param [Function]          cb(err, id)
-  # @param [Error]             err
-  # @param [Number]            id
+  # The comment id is retrieved on success.
+  #
+  # @param [Comment]            comment
+  # @param [Function]           cb(err, id)
+  # @param [Error]              err
+  # @param [Number]             id
   addComment: (comment, cb) ->
     unless comment instanceof Comment
       return cb new @InputError "Comment instance required to store comment."
@@ -553,10 +562,10 @@ class Storage extends Base
 
   # Get comments by ids.
   #
-  # @param [Array<String>]     ids
-  # @param [Function]          cb(err, comments)
-  # @param [Error]             err
-  # @param [Array<Comment>]    comments
+  # @param [Array<String>]      ids
+  # @param [Function]           cb(err, comments)
+  # @param [Error]              err
+  # @param [Array<Comment>]     comments
   getComments: (ids, cb) ->
     @store.getComments ids, (err, comments) =>
       if err
@@ -567,10 +576,12 @@ class Storage extends Base
 
   # Add a discussion to the store.
   #
-  # @param [Discussion]        discussion
-  # @param [Function]          cb(err, id)
-  # @param [Error]             err
-  # @param [Number]            id
+  # The discussion id is retrieved on success.
+  #
+  # @param [Discussion]         discussion
+  # @param [Function]           cb(err, id)
+  # @param [Error]              err
+  # @param [Number]             id
   addDiscussion: (discussion, cb) ->
     unless discussion instanceof Discussion
       return cb new @InputError "Discussion instance required to store discussion."
@@ -597,10 +608,10 @@ class Storage extends Base
 
   # Get discussions for the given target hashes.
   #
-  # @param [Array<String>]     targetHashes
-  # @param [Function]          cb(err, discussions)
-  # @param [Error]             err
-  # @param [Array<Discussion>] discussions
+  # @param [Array<String>]      targetHashes
+  # @param [Function]           cb(err, discussions)
+  # @param [Error]              err
+  # @param [Array<Discussion>]  discussions
   getDiscussionsFor: (targetHashes, cb) ->
     @store.getDiscussionsFor targetHashes, (err, discussions) =>
       if err
