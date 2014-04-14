@@ -370,11 +370,16 @@ class Storage extends Base
 
   # Get propositions from the store by hashes.
   #
-  # @param [Array<String>] hashes Hash ids of the propositions to retrieve.
-  # @param [Function]      cb(err, propositions) Called on completion or error.
-  # @param [StorageError]  err Any error.
-  # @param [Array<Proposition>] propositions The retrieved propositions.
-  getPropositions: (hashes, cb) ->
+  # @param [Array<String>]       hashes
+  # @param [Object]              options
+  # @param [Boolean]             options.metadata
+  # @param [Function]            cb(err, propositions)
+  # @param [StorageError]        err
+  # @param [Array<Proposition>]  propositions
+  getPropositions: (hashes, options..., cb) ->
+    options = options[0] ? {}
+    return @getPropositionsWithMetadata hashes, cb if options.metadata
+
     @store.getPropositions hashes, (err, propositions) ->
       return cb new @Error "Failed getting propositions from the store." if err
       return cb null, propositions

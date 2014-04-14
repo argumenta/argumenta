@@ -645,7 +645,7 @@ describeStorageTests = (storage, type) ->
             prop2.sha1().should.equal hash
             done()
 
-    describe 'getPropositions( hashes, callback )', ->
+    describe 'getPropositions( hashes, options..., callback )', ->
       it 'should get stored propositions', (done) ->
         propA = fixtures.uniqueProposition()
         propB = fixtures.uniqueProposition()
@@ -658,6 +658,24 @@ describeStorageTests = (storage, type) ->
             propositions.length.should.equal 2
             should.ok propositions[0].equals propA
             should.ok propositions[1].equals propB
+            done()
+
+      it 'should include metadata when option is true', (done) ->
+        withProposition (proposition1) ->
+          hashes = [ proposition1.sha1() ]
+          options = { metadata: true }
+          storage.getPropositions hashes, options, (err, props) ->
+            should.not.exist err
+            props[0].metadata.tag_counts.support.should.equal 0
+            done()
+
+      it 'should exclude metadata when option is false', (done) ->
+        withProposition (proposition1) ->
+          hashes = [ proposition1.sha1() ]
+          options = { metadata: false }
+          storage.getPropositions hashes, options, (err, props) ->
+            should.not.exist err
+            should.not.exist props[0].metadata
             done()
 
     describe 'getPropositionsMetadata( hashes, callback )', ->
