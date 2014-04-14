@@ -398,16 +398,6 @@ describeStorageTests = (storage, type) ->
             args[0].propositions[0].metadata.tag_counts.support.should.equal 0
             done()
 
-      it 'should exclude metadata when option is false', (done) ->
-        withArgument (user1, commit1, argument1) ->
-          hashes = [ argument1.sha1() ]
-          options = { metadata: false }
-          storage.getArguments hashes, options, (err, args) ->
-            should.not.exist err
-            should.not.exist args[0].metadata
-            should.not.exist args[0].propositions[0].metadata
-            done()
-
     describe 'getArgumentsWithMetadata( hashes, callback )', ->
       it 'should retrieve stored arguments with propositions metadata', (done) ->
         withArgument (user1, commit1, argument1) ->
