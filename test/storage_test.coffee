@@ -212,7 +212,7 @@ describeStorageTests = (storage, type) ->
             user.gravatarId.should.match /^[0-9,a-f]{32}$/
             done()
 
-    describe 'getUsers( usernames, callback )', ->
+    describe 'getUsers( usernames, options..., callback )', ->
       it 'should get stored users', (done) ->
         withUser (user1) ->
           withUser (user2) ->
@@ -225,6 +225,16 @@ describeStorageTests = (storage, type) ->
               should.ok _.some users, (u) -> u.equals pubUser1
               should.ok _.some users, (u) -> u.equals pubUser2
               done()
+
+      it 'should include metadata when option is set', (done) ->
+        withUser (user1) ->
+          usernames = [ user1.username ]
+          options = { metadata: true }
+          storage.getUsers usernames, options, (err, users) ->
+            should.not.exist err
+            should.exist users[0].metadata
+            users[0].metadata.repos_count.should.equal 0
+            done()
 
     describe 'getUsersWithMetadata( usernames, callback )', ->
       it 'should get stored users with metadata', (done) ->

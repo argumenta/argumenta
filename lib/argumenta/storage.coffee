@@ -119,10 +119,15 @@ class Storage extends Base
   # Get users by usernames, omitting sensitive fields.
   #
   # @param [Array<String>]      usernames
+  # @param [Object]             options
+  # @param [Boolean]            options.metadata
   # @param [Function]           cb(err, users)
   # @param [StorageError]       err
   # @param [Array<PublicUser>]  users
-  getUsers: (usernames, cb) ->
+  getUsers: (usernames, options..., cb) ->
+    options = options[0] ? {}
+    return @getUsersWithMetadata usernames, cb if options.metadata
+
     @store.getUsers usernames, (err, users) ->
       return cb new @Error "Failed getting users from store." if err
       return cb null, users
