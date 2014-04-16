@@ -253,10 +253,11 @@ class Storage extends Base
   # @param [Commit]             commit
   # @param [Argument]           target
   getRepoTarget: (username, reponame, cb) ->
-    @getRepoHash username, reponame, (er1, hash) =>
-      @getCommit hash, (er2, commit) =>
-        @getArgument commit.targetSha1, (er3, argument) =>
-          err = er1 or er2 or er3
+    @getRepoHash username, reponame, (err, hash) =>
+      return cb err if err
+      @getCommit hash, (err, commit) =>
+        return cb err if err
+        @getArgument commit.targetSha1, (err, argument) =>
           return cb err if err
           return cb null, commit, argument
 

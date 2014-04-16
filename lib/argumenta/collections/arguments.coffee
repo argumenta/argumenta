@@ -41,14 +41,16 @@ class Arguments extends Base
         new @Error "Valid argument required to create commit."
       return callback err, null
 
-    @storage.getRepoHash username, argument.repo(), (err, hash) =>
-      return callback err, null if err
+    @storage.getRepoTarget username, argument.repo(), (err, parent, target) =>
+      if argument.sha1() is parent?.targetSha1
+        return callback null, parent
 
+      parentHash = parent?.sha1()
       commit = new Commit
         targetType:  'argument'
         targetSha1:  argument.sha1()
         committer:   username
-        parentSha1s: [hash] if hash
+        parentSha1s: [parentHash] if parentHash
         host:        @argumenta.options.host
 
       @storage.addArgument argument, (err) =>
