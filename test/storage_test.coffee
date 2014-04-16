@@ -307,7 +307,7 @@ describeStorageTests = (storage, type) ->
             hash.should.equal commit.sha1()
             done()
 
-    describe 'getRepos( keys, callback )', ->
+    describe 'getRepos( keys, options..., callback )', ->
       it 'should retrieve repos by [username, reponame] keys', (done) ->
         withArgumentRepo (user1, repo1, commit1, argument1) ->
           withArgumentRepo (user2, repo2, commit2, argument2) ->
@@ -319,6 +319,20 @@ describeStorageTests = (storage, type) ->
               repos.length.should.equal 2
               should.ok repos[0].equals new Repo( user1, repo1, commit1, argument1 )
               should.ok repos[1].equals new Repo( user2, repo2, commit2, argument2 )
+              done()
+
+      it 'should include metadata when option is set', (done) ->
+        withArgumentRepo (user1, repo1, commit1, argument1) ->
+          withArgumentRepo (user2, repo2, commit2, argument2) ->
+            key1 = [ user1.username, repo1 ]
+            key2 = [ user2.username, repo2 ]
+            keys = [ key1, key2 ]
+            options = { metadata: true }
+            storage.getRepos keys, options, (err, repos) ->
+              should.not.exist err
+              repos.length.should.equal 2
+              repos[0].target.metadata.should.exist
+              repos[0].target.propositions[0].metadata.should.exist
               done()
 
     describe 'getRepoTarget( username, reponame, callback )', ->

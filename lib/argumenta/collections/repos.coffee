@@ -26,14 +26,18 @@ class Repos extends Base
   #
   # @api public
   # @param [Array<Array<String>>]   keys
+  # @param [Object]                 options
+  # @param [Boolean]                options.metadata
   # @param [Function]               callback(err, repos)
   # @param [Error]                  err
   # @param [Array<Repo>]            repos
-  get: (keys, callback) ->
+  get: (keys, options..., callback) ->
+    options = options[0] ? {}
+
     return callback new @Error "Keys must be an array." unless _.isArray keys
     return callback null, [] if keys.length is 0
 
-    @storage.getRepos keys, (err, repos) =>
+    @storage.getRepos keys, options, (err, repos) =>
       return callback new @Error "Failed getting repos." if err
       return callback new @Error "Repos not found." if repos.length is 0
       return callback null, repos
@@ -54,7 +58,7 @@ class Repos extends Base
       return callback new @Error "Latest repo key pairs not found." if err
       return callback null, [] if keys.length is 0
 
-      @get keys, (err, repos) =>
+      @get keys, options, (err, repos) =>
         return callback new @Error "Latest repos not found." if err
         return callback null, repos
 

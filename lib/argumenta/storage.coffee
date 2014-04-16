@@ -272,13 +272,39 @@ class Storage extends Base
   #       console.log "Got repos: ", repos
   #
   # @param [Array<Array<String>>] keys
+  # @param [Object]               options
+  # @param [Boolean]              options.metadata
   # @param [Function]             cb(err, repos)
   # @param [StorageError]         err
   # @param [Array<Repo>]          repos
-  getRepos: (keys, cb) ->
+  getRepos: (keys, options..., cb) ->
+    options = options[0] ? {}
+    return @getReposWithMetadata keys, cb if options.metadata
+
     @store.getRepos keys, (err, repos) ->
       return cb err if err
       return cb null, repos
+
+  # Get the repo with metadata for each [username, reponame] key pair.
+  #
+  # @param [Array<Array<String>>] keys
+  # @param [Function]             cb(err, repos)
+  # @param [StorageError]         err
+  # @param [Array<Repo>]          repos
+  getReposWithMetadata: (keys, cb) ->
+    @getRepos keys, (err, repos) =>
+      return cb err if err
+
+      hashes = (r.target.sha1() for r in repos)
+      @getArgumentsWithMetadata hashes, (err, args) =>
+        return cb err if err
+
+        byHash = {}
+        byHash[a.sha1()] = a for a in args
+        for repo in repos
+          repo.target = byHash[repo.target.sha1()]
+
+        return cb null, repos
 
   #### Objects ####
 
