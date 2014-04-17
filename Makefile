@@ -13,10 +13,12 @@ build: server client production gzip
 production:
 	ln -sf -T '../../build/client/objects.js' public/javascripts/objects.js
 	ln -sf -T '../node_modules/argumenta-widgets/production' public/widgets
+	ln -sf -T 'widgets/js/argumenta-widgets.js' public/widgets.js
 
 development:
 	ln -sf -T '../../build/client/objects.js' public/javascripts/objects.js
 	ln -sf -T '../node_modules/argumenta-widgets/development' public/widgets
+	ln -sf -T 'widgets/js/argumenta-widgets.js' public/widgets.js
 
 server: coffee stylus
 
