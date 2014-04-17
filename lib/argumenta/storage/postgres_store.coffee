@@ -218,7 +218,7 @@ class PostgresStore extends Base
   # List latest publication sha1s for given usernames.
   # @api public
   listPublications: (usernames, options, callback) ->
-    query = Queries.listCommitsByUsers(usernames, options)
+    query = Queries.listPublicationsByUsers(usernames, options)
     @query query, (err, res) =>
       return callback err if err
 

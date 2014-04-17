@@ -173,6 +173,34 @@ class Queries
         """
       values: [limit, offset]
 
+  # List publications for given usernames, starting with the latest.
+  @listPublicationsByUsers: (usernames, opts={}) ->
+    limit  = opts.limit  ? 100
+    offset = opts.offset ? 0
+    values = [].concat usernames, limit, offset
+    placeholders = placeholdersFor(values).split(', ')
+    $users = placeholders.slice(0, -2).join(', ')
+    $limit = placeholders.slice(-2, -1)
+    $offset = placeholders.slice(-1)
+    return listCommitsByUsersQuery =
+      text: """
+        SELECT commit_sha1, target_sha1, commit_id
+        FROM Commits
+        JOIN Repos r USING (commit_sha1)
+        WHERE committer IN (#{ $users })
+
+        UNION
+
+        SELECT commit_sha1, target_sha1, commit_id
+        FROM Commits
+        WHERE committer IN (#{ $users })
+          AND target_type = 'proposition'
+
+        ORDER BY 3 DESC
+        LIMIT #{ $limit } OFFSET #{ $offset };
+        """
+      values: values
+
   # List commit sha1s for given usernames, starting with the latest.
   @listCommitsByUsers: (usernames, opts={}) ->
     limit  = opts.limit  ? 100
