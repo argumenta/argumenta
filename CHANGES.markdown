@@ -1,6 +1,21 @@
 
 # Changes
 
+## 0.1.5 / 2014-04-16
+
++ Add feature for argument editing.
++ Add collection for repos.
++ Add collections directory.
++ Add robots.txt file.
++ Add link to widgets shim.
++ Add metadata option for Storage accessors.
++ Show argument repos on homepage.
++ Show latest publications on profile pages.
++ Change tag icon to ribbon.
++ Change `Argument#slugify()` to replace periods.
++ Disable httpOnly for session cookies.
++ Update modules `pg`, `pg-nest`.
+
 ## 0.1.4 / 2014-01-26
 
 + Trust proxy headers.
