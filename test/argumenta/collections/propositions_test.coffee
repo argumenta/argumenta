@@ -56,6 +56,17 @@ describe 'Propositions', ->
               commit.host.should.equal 'testing.argumenta.io'
               done()
 
+    it 'should commit propositions only once per user', (done) ->
+      withProposition (user1, commit1, proposition1) ->
+        username = user1.username
+        argumenta.propositions.commit username, proposition1, (err, commit) ->
+          should.not.exist err
+          should.ok commit.equals commit1
+          argumenta.getCommitsFor proposition1.sha1(), (err, commits) ->
+            should.not.exist err
+            commits.length.should.equal 1
+            done()
+
   describe 'propositions.get( hashes, callback )', ->
     it 'should get proposition resources by hashes', (done) ->
       withProposition (user1, commit1, proposition1) ->

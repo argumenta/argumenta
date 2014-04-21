@@ -48,11 +48,17 @@ class Propositions extends Base
       parents:    null
       host:       @argumenta.options.host
 
-    @storage.addPropositions [proposition], (err) =>
-      return callback err if err
-      @storage.addCommit commit, (err) =>
+    hashes = [ commit.targetSha1 ]
+    options = { committer: username }
+    @storage.getCommitsFor hashes, options, (err, commits) =>
+      if commits.length > 0
+        return callback null, commits[0]
+
+      @storage.addPropositions [proposition], (err) =>
         return callback err if err
-        return callback null, commit
+        @storage.addCommit commit, (err) =>
+          return callback err if err
+          return callback null, commit
 
   # Gets proposition resources by hashes.
   #
