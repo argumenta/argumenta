@@ -390,8 +390,8 @@ class PostgresStore extends Base
 
       sha1 = argument.sha1()
       session.getArguments [sha1], (err, args) ->
-        return callback err if err
-        return callback null if args[0]?
+        if err or args[0]?
+          return session.finalize err, callback
 
         async.series [
           (cb) -> session.query Queries.insertObject(argument), cb
