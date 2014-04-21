@@ -59,13 +59,16 @@ describe 'Propositions', ->
     it 'should commit propositions only once per user', (done) ->
       withProposition (user1, commit1, proposition1) ->
         username = user1.username
-        argumenta.propositions.commit username, proposition1, (err, commit) ->
-          should.not.exist err
-          should.ok commit.equals commit1
-          argumenta.getCommitsFor proposition1.sha1(), (err, commits) ->
+        republish = ->
+          argumenta.propositions.commit username, proposition1, (err, commit) ->
             should.not.exist err
-            commits.length.should.equal 1
-            done()
+            should.ok commit.equals commit1
+            hashes = [ proposition1.sha1() ]
+            argumenta.storage.getCommitsFor hashes, (err, commits) ->
+              should.not.exist err
+              commits.length.should.equal 1
+              done()
+        setTimeout republish, 1000
 
   describe 'propositions.get( hashes, callback )', ->
     it 'should get proposition resources by hashes', (done) ->
