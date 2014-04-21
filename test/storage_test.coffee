@@ -501,7 +501,7 @@ describeStorageTests = (storage, type) ->
               commit2.equals(commits[1]).should.equal true
               done()
 
-    describe 'getCommitsFor( hashes, callback )', ->
+    describe 'getCommitsFor( hashes, options..., callback )', ->
       it 'should retrieve stored commits by target hash', (done) ->
         withArgument (user, commit1, argument1) ->
           withArgument (user, commit2, argument2) ->
@@ -511,6 +511,17 @@ describeStorageTests = (storage, type) ->
               commits.length.should.equal 2
               should.ok commit1.equals commits[0]
               should.ok commit2.equals commits[1]
+              done()
+
+      it 'should filter by committer when option is set', (done) ->
+        withArgument (user1, commit1, argument1) ->
+          withArgument argument1, (user2, commit2, argument2) ->
+            targetHashes = [argument1.sha1()]
+            options = { committer: user1.username }
+            storage.getCommitsFor targetHashes, options, (err, commits) ->
+              should.not.exist err
+              commits.length.should.equal 1
+              should.ok commit1.equals commits[0]
               done()
 
     #### Tags ####

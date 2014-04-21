@@ -367,6 +367,22 @@ class Queries
         """
       values: targetHashes
 
+  # Select commits by their target sha1s and committer.
+  @selectCommitsByTargetsAndCommitter: (targetHashes, committer) ->
+    values = [].concat targetHashes, committer
+    placeholders  = placeholdersFor(values).split(', ')
+    $target_sha1s = placeholders.slice(0, -1).join(', ')
+    $committer    = placeholders.slice(-1)
+    return selectCommitsQuery =
+      text: """
+        SELECT commit_sha1, committer, commit_date,
+               target_type, target_sha1, parent_sha1s, host
+        FROM Commits
+        WHERE target_sha1 IN (#{ $target_sha1s })
+          AND committer = #{ $committer };
+        """
+      values: values
+
   # Select arguments by their sha1s.
   @selectArgumentsBySha1s: (hashes) ->
     placeholders = placeholdersFor hashes

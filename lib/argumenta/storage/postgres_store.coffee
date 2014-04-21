@@ -358,8 +358,14 @@ class PostgresStore extends Base
 
   # Get commits from the store for the given target hashes.
   # @api public
-  getCommitsFor: (targetHashes, callback) ->
-    query = Queries.selectCommitsByTargetSha1s(targetHashes)
+  getCommitsFor: (targetHashes, options..., callback) ->
+    options = options[0] ? {}
+    committer = options.committer
+
+    if committer
+    then query = Queries.selectCommitsByTargetsAndCommitter(targetHashes, committer)
+    else query = Queries.selectCommitsByTargetSha1s(targetHashes)
+
     @query query, (err, result) ->
       return callback err if err
 

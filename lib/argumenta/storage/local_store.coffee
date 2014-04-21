@@ -1,3 +1,4 @@
+_           = require 'underscore'
 Base        = require '../../argumenta/base'
 Comment     = require '../../argumenta/comment'
 Discussion  = require '../../argumenta/discussion'
@@ -265,11 +266,18 @@ class LocalStore extends Base
     return cb null, results
 
   # Get commits from the store with given target hashes.
-  getCommitsFor: (targetHashes, cb) ->
+  getCommitsFor: (targetHashes, options..., cb) ->
+    options = options[0] ? {}
+    committer = options.committer
+
     results = []
     for hash in targetHashes
       commits = @commits.withTargetSha1[hash]
       results = results.concat commits or []
+
+    if committer
+      results = _(results)
+        .where(committer: committer)
 
     return cb null, results
 

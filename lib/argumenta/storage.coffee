@@ -490,10 +490,13 @@ class Storage extends Base
   #
   # @param [Array<String>]      targetHashes
   # @param [Function]           cb(err, commits)
+  # @param [Object]             options
+  # @param [String]             options.committer
   # @param [StorageError]       err
   # @param [Array<Commits>]     commits
-  getCommitsFor: (targetHashes, cb) ->
-    @store.getCommitsFor targetHashes, (err, commits) ->
+  getCommitsFor: (targetHashes, options..., cb) ->
+    options = options[0] ? {}
+    @store.getCommitsFor targetHashes, options, (err, commits) ->
       return cb new @RetrievalError "Failed getting commits from the store." if err
       return cb null, commits
 
