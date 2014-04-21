@@ -248,8 +248,8 @@ class PostgresStore extends Base
 
       key = [username, reponame]
       @getRepos [key], (err, repos) ->
-        return callback err if err
-        return callback null if repos.length == 0
+        if err or repos.length == 0
+          return session.finalize err, callback
 
         query = Queries.deleteRepo(username, reponame)
         session.query query, (err) ->
@@ -390,7 +390,7 @@ class PostgresStore extends Base
 
       sha1 = argument.sha1()
       session.getArguments [sha1], (err, args) ->
-        if err or args[0]?
+        if err or args.length > 0
           return session.finalize err, callback
 
         async.series [
@@ -455,8 +455,8 @@ class PostgresStore extends Base
       return callback err if err
 
       session.getPropositions [proposition.sha1()], (err, props) ->
-        return callback err if err
-        return callback null if props.length > 0
+        if err or props.length > 0
+          return session.finalize err, callback
 
         queries = [
           Queries.insertObject(proposition)
@@ -546,8 +546,8 @@ class PostgresStore extends Base
       return callback err if err
 
       session.getTags [tag.sha1()], (err, tags) ->
-        return callback err if err
-        return callback null if tags[0]?
+        if err or tags.length > 0
+          return session.finalize err, callback
 
         queries = [
           Queries.insertObject(tag)
